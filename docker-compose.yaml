@@ -10,7 +10,13 @@ services:
       - "3200:3200"
     networks:
       - grumblr_default
-
+  db:
+    image: couchbase:community-7.2.0
+    container_name: db
+    ports:
+      - "8091:8091"
+    networks:
+      - grumblr_default
   dev:
     image: grumblr-web-dev
     container_name: grumblr-web-dev
@@ -21,6 +27,7 @@ services:
       - 5173:5173
     links:
       - grumblrapi
+      - db
     command: npm run dev -- --host 0.0.0.0
     networks:
       - grumblr_default

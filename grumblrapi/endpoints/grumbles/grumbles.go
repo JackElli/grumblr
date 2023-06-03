@@ -1,10 +1,9 @@
 package grumbles
 
 import (
-	"grumblrapi/grumble"
+	"grumblrapi/grumblestore"
 	"grumblrapi/responder"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -12,27 +11,26 @@ import (
 var route = "/grumbles"
 
 type GrumblesMgr struct {
-	Router    *mux.Router
-	Responder responder.Responder
+	Router        *mux.Router
+	Responder     responder.Responder
+	GrumbleStorer grumblestore.GrumbleStorer
 }
 
-func NewGrumblesMgr(router *mux.Router, responder responder.Responder) *GrumblesMgr {
+func NewGrumblesMgr(router *mux.Router, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer) *GrumblesMgr {
 	return &GrumblesMgr{
-		Router:    router,
-		Responder: responder,
+		Router:        router,
+		Responder:     responder,
+		GrumbleStorer: grumbleStorer,
 	}
 }
 
 func (mgr *GrumblesMgr) Grumbles() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
-		mockGrumbles := []grumble.Grumble{
-			{
-				CreatedBy: "user:1",
-				Message:   "this is the very first grumble",
-				Date:      time.Now(),
-			},
+		grumbles, err := mgr.GrumbleStorer.GetAll()
+		if err != nil {
+			mgr.Responder.Error(w, 500, err)
 		}
-		mgr.Responder.Respond(w, 200, mockGrumbles)
+		mgr.Responder.Respond(w, 200, grumbles)
 	}
 }
 

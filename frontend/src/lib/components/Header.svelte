@@ -12,7 +12,7 @@
 			<SearchBar />
 		</div>
 		<div class="flex gap-5 items-center">
-			<ActionButton>New rant</ActionButton>
+			<ActionButton>New grumble</ActionButton>
 		</div>
 	</div>
 </div>

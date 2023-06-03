@@ -18,10 +18,13 @@ func main() {
 	r := mux.NewRouter()
 
 	endpoints := endpoints.NewEndpointsMgr(logger)
-	endpoints.SetupEndpoints(r)
+	err := endpoints.SetupEndpoints(r)
+	if err != nil {
+		logger.Error("Cannot setup endpoints", zap.Error(err))
+	}
 
 	logger.Info("Started grumblr api")
-	err := http.ListenAndServe(":3200", cors.CORS(r))
+	err = http.ListenAndServe(":3200", cors.CORS(r))
 	if err != nil {
 		log.Fatal("cannot start server")
 	}

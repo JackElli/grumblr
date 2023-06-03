@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import { onMount } from 'svelte';
-	import type { Grumble } from './grumbles';
+	import type { _Grumble } from './grumbles';
+	import Grumble from '$lib/components/Grumble.svelte';
 
-	let grumbles: Grumble[];
+	let grumbles: _Grumble[];
 
 	onMount(async () => {
 		const resp = await fetch('http://localhost:3200/grumbles', {
@@ -19,7 +19,7 @@
 {#if grumbles}
 	<div class="mt-4">
 		{#each grumbles as grumble}
-			<Card>{grumble.message}</Card>
+			<Grumble {grumble} />
 		{/each}
 	</div>
 {/if}
