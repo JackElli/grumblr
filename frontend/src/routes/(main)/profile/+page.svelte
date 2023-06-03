@@ -1,1 +1,5 @@
-<h1>Profile</h1>
+<script>
+	import PageTitle from '$lib/components/PageTitle.svelte';
+</script>
+
+<PageTitle>Profile</PageTitle>
