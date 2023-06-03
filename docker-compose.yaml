@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  grumblrapi:
+    image: grumblrapi
+    container_name: grumblrapi
+    build:
+      context: ./grumblrapi
+      dockerfile: Dockerfile
+    ports:
+      - "3200:3200"
+    networks:
+      - grumblr_default
+
+  dev:
+    image: grumblr-web-dev
+    container_name: grumblr-web-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    links:
+      - grumblrapi
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - grumblr_default
+    volumes:
+      - ./frontend/:/app/
+      - /app/node_modules
+
+networks:
+  grumblr_default:
+    name: grumblr_default
+    external: true

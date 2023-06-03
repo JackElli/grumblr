@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"grumblrapi/endpoints/grumbles"
 	"grumblrapi/endpoints/newgrumble"
 	"grumblrapi/responder"
 
@@ -12,15 +13,19 @@ type Endpoints struct {
 	Logger *zap.Logger
 }
 
-func NewEndpointsMgr() *Endpoints {
+func NewEndpointsMgr(logger *zap.Logger) *Endpoints {
 	return &Endpoints{
-		Logger: &zap.Logger{},
+		Logger: logger,
 	}
 }
 
 func (e *Endpoints) SetupEndpoints(r *mux.Router) {
 	responder := responder.NewResponder()
 
-	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(r, responder)
+	public := r.PathPrefix("/").Subrouter()
+
+	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(public, responder)
 	newGrumbleMgr.Register()
+	grumblesMgr := grumbles.NewGrumblesMgr(public, responder)
+	grumblesMgr.Register()
 }
