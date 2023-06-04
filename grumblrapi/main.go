@@ -1,8 +1,8 @@
 package main
 
 import (
-	"grumblrapi/cors"
 	"grumblrapi/endpoints"
+	"grumblrapi/main/cors"
 	"log"
 	"net/http"
 

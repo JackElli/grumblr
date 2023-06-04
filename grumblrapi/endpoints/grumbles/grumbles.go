@@ -1,23 +1,26 @@
 package grumbles
 
 import (
-	"grumblrapi/grumblestore"
-	"grumblrapi/responder"
+	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/responder"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
 )
 
 var route = "/grumbles"
 
 type GrumblesMgr struct {
+	Logger        *zap.Logger
 	Router        *mux.Router
 	Responder     responder.Responder
 	GrumbleStorer grumblestore.GrumbleStorer
 }
 
-func NewGrumblesMgr(router *mux.Router, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer) *GrumblesMgr {
+func NewGrumblesMgr(logger *zap.Logger, router *mux.Router, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer) *GrumblesMgr {
 	return &GrumblesMgr{
+		Logger:        logger,
 		Router:        router,
 		Responder:     responder,
 		GrumbleStorer: grumbleStorer,
@@ -31,6 +34,7 @@ func (mgr *GrumblesMgr) FriendsGrumbles() func(w http.ResponseWriter, req *http.
 		if err != nil {
 			mgr.Responder.Error(w, 500, err)
 		}
+		mgr.Logger.Info("Successfully retrieved grumbles")
 		mgr.Responder.Respond(w, 200, grumbles)
 	}
 }

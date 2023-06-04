@@ -2,14 +2,15 @@ package grumbles
 
 import (
 	"encoding/json"
-	"grumblrapi/grumble"
-	"grumblrapi/grumblestore"
-	"grumblrapi/responder"
+	"grumblrapi/main/grumble"
+	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/responder"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
 	"gotest.tools/v3/assert"
 )
 
@@ -22,6 +23,8 @@ func TestGrumbles(t *testing.T) {
 		expectedStatus    int
 	}
 
+	loggerMock, _ := zap.NewProduction()
+	defer loggerMock.Sync()
 	responderMock := responder.NewResponder()
 	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
 
@@ -38,6 +41,7 @@ func TestGrumbles(t *testing.T) {
 			rMock := mux.NewRouter()
 
 			grumblesMgrMock := NewGrumblesMgr(
+				loggerMock,
 				rMock,
 				responderMock,
 				grumbleStoreMock,

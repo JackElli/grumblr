@@ -1,7 +1,7 @@
 package grumblestore
 
 import (
-	"grumblrapi/grumble"
+	"grumblrapi/main/grumble"
 	"time"
 )
 

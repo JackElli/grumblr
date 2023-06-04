@@ -1,11 +1,11 @@
 package endpoints
 
 import (
-	"grumblrapi/couchbase"
 	"grumblrapi/endpoints/grumbles"
 	"grumblrapi/endpoints/newgrumble"
-	"grumblrapi/grumblestore"
-	"grumblrapi/responder"
+	"grumblrapi/main/couchbase"
+	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/responder"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
@@ -34,9 +34,9 @@ func (e *Endpoints) SetupEndpoints(r *mux.Router) error {
 
 	public := r.PathPrefix("/").Subrouter()
 
-	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(public, responder, grumbleStorer)
+	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(e.Logger, public, responder, grumbleStorer)
 	newGrumbleMgr.Register()
-	grumblesMgr := grumbles.NewGrumblesMgr(public, responder, grumbleStorer)
+	grumblesMgr := grumbles.NewGrumblesMgr(e.Logger, public, responder, grumbleStorer)
 	grumblesMgr.Register()
 
 	return nil

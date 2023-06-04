@@ -5,17 +5,21 @@
 	import Grumble from '$lib/components/Grumble.svelte';
 	import ActionButton from '$lib/components/ActionButton.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import Loading from '$lib/components/Loading.svelte';
 
 	let grumbles: _Grumble[];
 	let newGrumbleModalVisible = false;
 	let grumbleText: string;
+	let loading = true;
 
 	async function getGrumbles() {
+		loading = true;
 		const resp = await fetch('http://localhost:3200/grumbles', {
 			method: 'GET',
 			credentials: 'include'
 		});
 		grumbles = await resp.json();
+		loading = false;
 	}
 
 	async function newGrumble() {
@@ -42,10 +46,8 @@
 
 		newGrumbleModalVisible = false;
 
-		//dont know why we need this timeout
-		setTimeout(async function () {
-			await getGrumbles();
-		}, 200);
+		grumbles.splice(0, 0, newGrumble);
+		grumbles = grumbles;
 	}
 
 	onMount(async () => {
@@ -72,10 +74,12 @@
 		>
 	</Modal>
 </div>
-{#if grumbles}
-	<div class="mt-4">
-		{#each grumbles as grumble}
-			<Grumble {grumble} />
-		{/each}
-	</div>
-{/if}
+<Loading {loading}>
+	{#if grumbles}
+		<div class="mt-4">
+			{#each grumbles as grumble}
+				<Grumble {grumble} />
+			{/each}
+		</div>
+	{/if}
+</Loading>

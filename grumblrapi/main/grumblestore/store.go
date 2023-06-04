@@ -1,8 +1,7 @@
 package grumblestore
 
 import (
-	"fmt"
-	"grumblrapi/grumble"
+	"grumblrapi/main/grumble"
 
 	"github.com/couchbase/gocb/v2"
 	"go.uber.org/zap"
@@ -44,7 +43,6 @@ func (store *GrumbleStore) GetAll() ([]grumble.Grumble, error) {
 		}
 		grumbles = append(grumbles, result)
 	}
-	store.Logger.Info(fmt.Sprintf("Successfully queried and recieved %d results", len(grumbles)))
 	return grumbles, nil
 }
 
@@ -68,7 +66,6 @@ func (store *GrumbleStore) Query(querystr string) ([]grumble.Grumble, error) {
 		}
 		grumbles = append(grumbles, result)
 	}
-	store.Logger.Info(fmt.Sprintf("Successfully queried and recieved %d results", len(grumbles)))
 	return grumbles, nil
 }
 

@@ -14,3 +14,19 @@ export async function getGrumbles(page: Page) {
 		});
 	});
 }
+
+export async function getLongGrumbles(page: Page) {
+	await page.route('http://localhost:3200/grumbles', async (route) => {
+		const grumbles = [
+			{
+				createdBy: 'user:1',
+				message:
+					'This is a very long grumble This is a very long grumble This is a very long grumble This is a very long grumble This is a very long grumble',
+				dateCreated: '2023-06-03T20:24:35.060986337Z'
+			}
+		];
+		await route.fulfill({
+			body: JSON.stringify(grumbles)
+		});
+	});
+}
