@@ -5,9 +5,9 @@
 	import SubHeader from '../../lib/components/SubHeader.svelte';
 </script>
 
-<Header />
-<SubHeader />
-<div class="bg-gray-200 h-screen">
+<div class="bg-gray-200 min-h-screen pb-10">
+	<Header />
+	<SubHeader />
 	<div class="block w-[90%] mx-auto pt-4">
 		<slot />
 	</div>

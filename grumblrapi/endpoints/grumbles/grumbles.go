@@ -24,9 +24,10 @@ func NewGrumblesMgr(router *mux.Router, responder responder.Responder, grumbleSt
 	}
 }
 
-func (mgr *GrumblesMgr) Grumbles() func(w http.ResponseWriter, req *http.Request) {
+// Grumbles returns all of the friends grumbles
+func (mgr *GrumblesMgr) FriendsGrumbles() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
-		grumbles, err := mgr.GrumbleStorer.GetAll()
+		grumbles, err := mgr.GrumbleStorer.Query("SELECT grumbles.* from grumblr.dev.grumbles WHERE type='friends' ORDER BY dateCreated DESC LIMIT 50")
 		if err != nil {
 			mgr.Responder.Error(w, 500, err)
 		}
@@ -35,5 +36,5 @@ func (mgr *GrumblesMgr) Grumbles() func(w http.ResponseWriter, req *http.Request
 }
 
 func (mgr *GrumblesMgr) Register() {
-	mgr.Router.HandleFunc(route, mgr.Grumbles()).Methods("GET")
+	mgr.Router.HandleFunc(route, mgr.FriendsGrumbles()).Methods("GET")
 }

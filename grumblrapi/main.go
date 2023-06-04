@@ -26,7 +26,7 @@ func main() {
 	logger.Info("Started grumblr api")
 	err = http.ListenAndServe(":3200", cors.CORS(r))
 	if err != nil {
-		log.Fatal("cannot start server")
+		log.Fatal("Cannot start server")
 	}
 
 }

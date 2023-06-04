@@ -27,15 +27,14 @@ func (e *Endpoints) SetupEndpoints(r *mux.Router) error {
 		return err
 	}
 	scope := cb.Bucket.Scope("dev")
-	col := cb.Collection("grumbles")
+	col := scope.Collection("grumbles")
 
 	grumbleStorer := grumblestore.NewGrumbleStore(e.Logger, scope, col)
-
 	responder := responder.NewResponder()
 
 	public := r.PathPrefix("/").Subrouter()
 
-	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(public, responder)
+	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(public, responder, grumbleStorer)
 	newGrumbleMgr.Register()
 	grumblesMgr := grumbles.NewGrumblesMgr(public, responder, grumbleStorer)
 	grumblesMgr.Register()

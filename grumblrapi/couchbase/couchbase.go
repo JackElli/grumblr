@@ -28,7 +28,7 @@ func NewCouchbase(logger *zap.Logger, connectionStr string, username string, pas
 	}
 
 	bucket := cluster.Bucket(bucketName)
-	err = bucket.WaitUntilReady(5*time.Second, nil)
+	err = bucket.WaitUntilReady(15*time.Second, nil)
 	if err != nil {
 		return nil, err
 	}
