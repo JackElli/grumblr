@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import type { _Grumble } from '../../routes/(main)/grumbles/grumbles';
-	import ActionButton from './ActionButton.svelte';
-	import Modal from './Modal.svelte';
 	import SearchBar from './SearchBar.svelte';
 </script>
 
@@ -14,6 +10,8 @@
 			</a>
 			<SearchBar />
 		</div>
-		<div class="flex gap-5 items-center" />
+		<div class="flex gap-5 items-center">
+			<p class="text-white">Beta</p>
+		</div>
 	</div>
 </div>
