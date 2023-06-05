@@ -1,12 +1,11 @@
 <script type="ts">
-	import Tabs from '../components/Tabs.svelte';
-	import Tab from './Tab.svelte';
+	import Tabs from './NavTabs.svelte';
+	import Tab from './NavTab.svelte';
 </script>
 
 <div class="sticky top-0 z-10 w-full bg-[#AD3428] h-14 border-b border-b-black">
-	<Tabs>
+	<Tabs class="justify-center">
 		<Tab href="/grumbles" class="text-white">Friends Grumbles</Tab>
 		<Tab href="/global" class="text-white">Global Grumbles</Tab>
-		<Tab href="/profile" class="text-white">Profile</Tab>
 	</Tabs>
 </div>

@@ -5,5 +5,5 @@
 
 <div class="flex items-center justify-between">
 	<PageTitle>Global grumbles</PageTitle>
-	<ActionButton>New global grumble</ActionButton>
+	<ActionButton>New grumble</ActionButton>
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { dateDiff } from '../../global';
+	import { dateDiff, userIconText } from '../../global';
 	import type { _Grumble } from '../../routes/(main)/grumbles/grumbles';
 	import Card from './Card.svelte';
 	export let grumble: _Grumble;
@@ -7,7 +7,12 @@
 
 <Card class="p-3 flex justify-between items-center">
 	<div class="flex gap-3 items-center">
-		<div class="w-6 h-6 border border-black rounded-full" title={grumble.createdBy} />
+		<a
+			href="/users/{grumble.createdBy}"
+			class="flex items-center justify-center w-8 h-8 border border-black rounded-full bg-gray-300 hover:bg-gray-100 cursor-pointer"
+		>
+			{userIconText(grumble.createdBy)}
+		</a>
 		<p class="max-w-[700px]">{grumble.message}</p>
 	</div>
 	<p class="text-gray-500">{dateDiff(grumble.dateCreated)}</p>

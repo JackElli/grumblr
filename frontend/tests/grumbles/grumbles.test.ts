@@ -1,16 +1,26 @@
 import { expect, test } from '@playwright/test';
 import { getGrumbles, getLongGrumbles } from '../mocks/grumbles';
 
-test('friends grumbles page loaded correctly', async ({ page }) => {
+test.beforeEach(async ({ page }) => {
 	await getGrumbles(page);
+});
+
+test('HAPPY friends grumbles page loaded correctly', async ({ page }) => {
 	await page.goto('/grumbles');
 	await expect(page.getByRole('heading').getByText('Friends grumbles')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });
 
-test('long grumble', async ({ page }) => {
+test('HAPPY long grumble', async ({ page }) => {
 	await getLongGrumbles(page);
 	await page.goto('/grumbles');
 	await expect(page.getByRole('heading').getByText('Friends grumbles')).toBeVisible();
+	await expect(page).toHaveScreenshot();
+});
+
+test('HAPPY new grumble button opens modal', async ({ page }) => {
+	await page.goto('/grumbles');
+	await page.getByRole('button').getByText('New grumble').click();
+	await expect(page.getByText('Add your grumble text')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });

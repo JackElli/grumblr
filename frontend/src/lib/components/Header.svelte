@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import SearchBar from './SearchBar.svelte';
+
+	$: selected = $page.url.pathname == '/profile';
 </script>
 
 <div class="w-full bg-[#c0392b] h-16 border-b border-b-black">
@@ -11,7 +14,14 @@
 			<SearchBar />
 		</div>
 		<div class="flex gap-5 items-center">
-			<p class="text-white">Beta</p>
+			<a
+				href="/profile"
+				class="flex items-center justify-center w-8 h-8 border border-black rounded-full {selected
+					? 'bg-gray-100'
+					: 'bg-gray-300'} hover:bg-gray-100 cursor-pointer"
+			>
+				JE
+			</a>
 		</div>
 	</div>
 </div>

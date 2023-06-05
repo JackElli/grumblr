@@ -15,5 +15,9 @@ export function dateDiff(date: string): string {
 	if (hourDiff < 24) {
 		return `${Math.round(hourDiff)} hours ago`;
 	}
-	return `${Math.round(((now - d) / 24) * 3600 * 1000)} days ago`;
+	return `${Math.round((now - d) / (3600 * 1000 * 24))} days ago`;
+}
+
+export function userIconText(username: string): string {
+	return username[0].toUpperCase();
 }

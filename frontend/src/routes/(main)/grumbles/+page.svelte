@@ -66,10 +66,10 @@
 		<p>Add your grumble text, what are you angry about?</p>
 		<textarea
 			bind:value={grumbleText}
-			class="mt-4 p-2 border border-black w-full h-40 resize-none outline-none rounded-md"
+			class="mt-4 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md"
 			placeholder="Prompt: This website needs some work..."
 		/>
-		<ActionButton colour="bg-green-700 hover:bg-green-600" class="mt-4" on:click={newGrumble}
+		<ActionButton colour="bg-green-600 hover:bg-green-500" class="mt-4" on:click={newGrumble}
 			>Save</ActionButton
 		>
 	</Modal>
