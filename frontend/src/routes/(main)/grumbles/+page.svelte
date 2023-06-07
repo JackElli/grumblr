@@ -60,6 +60,7 @@
 	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New grumble</ActionButton>
 	<Modal
 		title="New grumble to your friends"
+		subtitle="Only your friends can see this grumble"
 		bind:visible={newGrumbleModalVisible}
 		class="w-96 h-96"
 	>
@@ -69,17 +70,17 @@
 			class="mt-4 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md"
 			placeholder="Prompt: This website needs some work..."
 		/>
-		<ActionButton colour="bg-green-600 hover:bg-green-500" class="mt-4" on:click={newGrumble}
-			>Save</ActionButton
-		>
+		<ActionButton colour="bg-green-700" class="mt-2" on:click={newGrumble}>Save</ActionButton>
 	</Modal>
 </div>
 <Loading {loading}>
-	{#if grumbles}
+	{#if grumbles.length > 0}
 		<div class="mt-4">
 			{#each grumbles as grumble}
 				<Grumble {grumble} />
 			{/each}
 		</div>
+	{:else}
+		<h1>No grumbles found here.</h1>
 	{/if}
 </Loading>

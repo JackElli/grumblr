@@ -1,4 +1,4 @@
-package grumbles
+package global
 
 import (
 	"encoding/json"
@@ -14,7 +14,7 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-var testRoute = "/grumbles"
+var testRoute = "/global"
 
 func TestGrumbles(t *testing.T) {
 	type testcase struct {
@@ -40,18 +40,18 @@ func TestGrumbles(t *testing.T) {
 		t.Run(testCase.desc, func(t *testing.T) {
 			rMock := mux.NewRouter()
 
-			grumblesMgrMock := NewGrumblesMgr(
+			globalMgrMock := NewGlobalMgr(
 				loggerMock,
 				rMock,
 				responderMock,
 				grumbleStoreMock,
 			)
-			grumblesMgrMock.Register()
+			globalMgrMock.Register()
 
 			w := httptest.NewRecorder()
 
 			r, _ := http.NewRequest("GET", testRoute, nil)
-			grumblesMgrMock.Router.ServeHTTP(w, r)
+			globalMgrMock.Router.ServeHTTP(w, r)
 
 			var response []grumble.Grumble
 			json.NewDecoder(w.Body).Decode(&response)

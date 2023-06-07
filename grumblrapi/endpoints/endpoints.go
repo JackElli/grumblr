@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"grumblrapi/endpoints/global"
 	"grumblrapi/endpoints/grumbles"
 	"grumblrapi/endpoints/newgrumble"
 	"grumblrapi/main/couchbase"
@@ -38,6 +39,8 @@ func (e *Endpoints) SetupEndpoints(r *mux.Router) error {
 	newGrumbleMgr.Register()
 	grumblesMgr := grumbles.NewGrumblesMgr(e.Logger, public, responder, grumbleStorer)
 	grumblesMgr.Register()
+	globalMgr := global.NewGlobalMgr(e.Logger, public, responder, grumbleStorer)
+	globalMgr.Register()
 
 	return nil
 }
