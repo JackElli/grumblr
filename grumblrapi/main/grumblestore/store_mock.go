@@ -12,26 +12,6 @@ func NewGrumbleStoreMock() *GrumbleStoreMock {
 	return &GrumbleStoreMock{}
 }
 
-func (store *GrumbleStoreMock) GetAll() ([]grumble.Grumble, error) {
-	grumbles := []grumble.Grumble{
-		{
-
-			CreatedBy: "user:1",
-			Message:   "This is a grumble",
-			Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-			Type:      grumble.Global,
-		},
-		{
-
-			CreatedBy: "user:2",
-			Message:   "This is another grumble",
-			Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-			Type:      grumble.Friends,
-		},
-	}
-	return grumbles, nil
-}
-
 func (store *GrumbleStoreMock) Get(id string) (*grumble.Grumble, error) {
 	return nil, nil
 }

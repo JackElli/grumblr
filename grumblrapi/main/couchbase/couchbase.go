@@ -16,6 +16,7 @@ type Couchbase struct {
 	Bucket *gocb.Bucket
 }
 
+// NewCouchbase returns a new couchbase with a connection to a bucket
 func NewCouchbase(logger *zap.Logger, connectionStr string, username string, password string, bucketName string) (*Couchbase, error) {
 	cluster, err := gocb.Connect("couchbase://"+connectionStr, gocb.ClusterOptions{
 		Authenticator: gocb.PasswordAuthenticator{
@@ -38,6 +39,7 @@ func NewCouchbase(logger *zap.Logger, connectionStr string, username string, pas
 	}, nil
 }
 
+// Collection returns a collection object of collection string specified
 func (c *Couchbase) Collection(name string) *gocb.Collection {
 	return c.Bucket.Collection(name)
 }
