@@ -6,10 +6,10 @@
 	import Grumble from '$lib/components/Grumble.svelte';
 	import type { _Grumble } from '../grumbles/grumbles';
 	import Loading from '$lib/components/Loading.svelte';
+	import NewGlobalGrumbleModal from './NewGlobalGrumbleModal.svelte';
 
 	let grumbles: _Grumble[];
 	let newGrumbleModalVisible = false;
-	let grumbleText: string;
 	let loading = true;
 
 	async function getGrumbles() {
@@ -22,7 +22,8 @@
 		loading = false;
 	}
 
-	async function newGrumble() {
+	async function newGrumble(e: CustomEvent) {
+		const grumbleText = e.detail.grumbleText;
 		if (grumbleText == '') {
 			return;
 		}
@@ -58,20 +59,7 @@
 <div class="flex items-center justify-between">
 	<PageTitle>Global grumbles</PageTitle>
 	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New grumble</ActionButton>
-	<Modal
-		title="New global grumble"
-		subtitle="This grumble can be seen be everyone on the platform, write at your own risk."
-		bind:visible={newGrumbleModalVisible}
-		class="w-96 h-96"
-	>
-		<p>Add your grumble text, what are you angry about?</p>
-		<textarea
-			bind:value={grumbleText}
-			class="mt-4 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md"
-			placeholder="Prompt: This website needs some work..."
-		/>
-		<ActionButton colour="bg-green-700" class="mt-2" on:click={newGrumble}>Save</ActionButton>
-	</Modal>
+	<NewGlobalGrumbleModal bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 
 <Loading {loading}>
@@ -82,6 +70,6 @@
 			{/each}
 		</div>
 	{:else}
-		<h1>No grumbles found here.</h1>
+		<h1 class="mt-2">No grumbles found here.</h1>
 	{/if}
 </Loading>

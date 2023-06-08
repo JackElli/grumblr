@@ -1,3 +1,3 @@
-<div class="h-full flex gap-4 items-center {$$props.class}">
+<div class="border border-black rounded-md flex items-center {$$props.class}">
 	<slot />
 </div>
