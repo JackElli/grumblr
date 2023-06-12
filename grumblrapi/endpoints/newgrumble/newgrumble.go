@@ -21,7 +21,7 @@ type NewGrumbleMgr struct {
 	DataStore grumblestore.GrumbleStorer
 }
 
-func NewNewGrumbleMgr(logger *zap.Logger, router *mux.Router, responder responder.Responder, dataStore grumblestore.GrumbleStorer) *NewGrumbleMgr {
+func NewNewGrumbleMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, dataStore grumblestore.GrumbleStorer) *NewGrumbleMgr {
 	return &NewGrumbleMgr{
 		Logger:    logger,
 		Router:    router,

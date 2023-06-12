@@ -7,7 +7,7 @@
 
 <div class="bg-gray-200 min-h-screen pb-10">
 	<Header />
-	<SubHeader />
+
 	<div class="block w-[90%] mx-auto pt-4">
 		<slot />
 	</div>

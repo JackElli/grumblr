@@ -7,6 +7,7 @@
 	import type { _Grumble } from './grumbles';
 	import { onMount } from 'svelte';
 	import NewGrumbleModal from './NewGrumbleModal.svelte';
+	import StartMessage from '$lib/components/StartMessage.svelte';
 
 	let grumbles: _Grumble[];
 	let newGrumbleModalVisible = false;
@@ -62,13 +63,14 @@
 	<NewGrumbleModal bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 <Loading {loading}>
-	{#if grumbles.length > 0}
-		<div class="mt-4">
+	<div class="mt-4">
+		<StartMessage />
+		{#if grumbles.length > 0}
 			{#each grumbles as grumble}
 				<Grumble {grumble} />
 			{/each}
-		</div>
-	{:else}
-		<h1 class="mt-2">No grumbles found here.</h1>
-	{/if}
+		{:else}
+			<h1 class="mt-2">No grumbles found here.</h1>
+		{/if}
+	</div>
 </Loading>

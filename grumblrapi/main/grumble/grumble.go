@@ -9,10 +9,18 @@ const (
 	Global  Type = "global"
 )
 
+type Comment struct {
+	Id        string    `json:"id"`
+	CreatedBy string    `json:"createdBy"`
+	Message   string    `json:"message"`
+	Date      time.Time `json:"dateCreated"`
+}
+
 type Grumble struct {
 	Id        string    `json:"id"`
 	CreatedBy string    `json:"createdBy"`
 	Message   string    `json:"message"`
+	Comments  []Comment `json:"comments"`
 	Date      time.Time `json:"dateCreated"`
 	Type      Type      `json:"type"`
 }

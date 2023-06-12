@@ -18,7 +18,7 @@ type GlobalMgr struct {
 	GrumbleStorer grumblestore.GrumbleStorer
 }
 
-func NewGlobalMgr(logger *zap.Logger, router *mux.Router, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer) *GlobalMgr {
+func NewGlobalMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer) *GlobalMgr {
 	return &GlobalMgr{
 		Logger:        logger,
 		Router:        router,

@@ -51,8 +51,8 @@ func TestNewGrumble(t *testing.T) {
 			rMock := mux.NewRouter()
 
 			newGrumbleMgrMock := NewNewGrumbleMgr(
-				loggerMock,
 				rMock,
+				loggerMock,
 				responderMock,
 				grumbleStoreMock,
 			)

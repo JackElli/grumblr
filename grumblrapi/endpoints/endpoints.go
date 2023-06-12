@@ -35,11 +35,11 @@ func (e *Endpoints) SetupEndpoints(r *mux.Router) error {
 
 	public := r.PathPrefix("/").Subrouter()
 
-	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(e.Logger, public, responder, grumbleStorer)
+	newGrumbleMgr := newgrumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer)
 	newGrumbleMgr.Register()
-	grumblesMgr := grumbles.NewGrumblesMgr(e.Logger, public, responder, grumbleStorer)
+	grumblesMgr := grumbles.NewGrumblesMgr(public, e.Logger, responder, grumbleStorer)
 	grumblesMgr.Register()
-	globalMgr := global.NewGlobalMgr(e.Logger, public, responder, grumbleStorer)
+	globalMgr := global.NewGlobalMgr(public, e.Logger, responder, grumbleStorer)
 	globalMgr.Register()
 
 	return nil

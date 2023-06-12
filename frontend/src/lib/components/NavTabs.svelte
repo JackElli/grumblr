@@ -1,3 +1,3 @@
-<div class="border border-black rounded-md flex items-center {$$props.class}">
+<div class="flex items-center border border-black rounded-md {$$props.class}">
 	<slot />
 </div>

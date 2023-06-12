@@ -3,12 +3,10 @@
 	import NavTab from './NavTab.svelte';
 </script>
 
-<div
-	class="sticky flex justify-center items-center top-0 z-10 w-full bg-[#AD3428] h-14 border-b border-b-black"
->
+<div class="flex justify-center items-center w-full h-12">
 	<NavTabs class="justify-center">
-		<NavTab href="/grumbles" class="text-white">Friends Grumbles</NavTab>
-		<NavTab href="/global" class="text-white">Global Grumbles</NavTab>
-		<NavTab href="/profile" class="text-white">Your profile</NavTab>
+		<NavTab href="/grumbles">Friends Grumbles</NavTab>
+		<NavTab href="/global">Global Grumbles</NavTab>
+		<NavTab href="/profile">Your profile</NavTab>
 	</NavTabs>
 </div>
