@@ -11,6 +11,7 @@
 
 	let grumbles: _Grumble[];
 	let newGrumbleModalVisible = false;
+	let welcome: false;
 	let loading = true;
 
 	async function getGrumbles() {
@@ -21,6 +22,18 @@
 		});
 		grumbles = await resp.json();
 		loading = false;
+	}
+
+	async function getUser() {
+		const userId = '1f21823a-8682-4900-b627-d6bd39e1b95b';
+
+		const resp = await fetch(`http://localhost:3200/user/${userId}`, {
+			method: 'GET',
+			credentials: 'include'
+		});
+
+		const user = await resp.json();
+		welcome = user.welcome;
 	}
 
 	async function newGrumble(e: CustomEvent) {
@@ -53,6 +66,7 @@
 	}
 
 	onMount(async () => {
+		await getUser();
 		await getGrumbles();
 	});
 </script>
@@ -64,7 +78,9 @@
 </div>
 <Loading {loading}>
 	<div class="mt-4">
-		<StartMessage />
+		{#if welcome}
+			<StartMessage />
+		{/if}
 		{#if grumbles.length > 0}
 			{#each grumbles as grumble}
 				<Grumble {grumble} />

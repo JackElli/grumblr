@@ -1,4 +1,4 @@
-package newgrumble
+package grumble
 
 import (
 	"bytes"

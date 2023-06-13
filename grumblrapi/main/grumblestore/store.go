@@ -7,6 +7,8 @@ import (
 	"go.uber.org/zap"
 )
 
+var col = "grumbles"
+
 type GrumbleStorer interface {
 	Get(id string) (*grumble.Grumble, error)
 	Query(querystr string) ([]grumble.Grumble, error)
@@ -19,11 +21,11 @@ type GrumbleStore struct {
 	Collection *gocb.Collection
 }
 
-func NewGrumbleStore(logger *zap.Logger, scope *gocb.Scope, collection *gocb.Collection) *GrumbleStore {
+func NewGrumbleStore(logger *zap.Logger, scope *gocb.Scope) *GrumbleStore {
 	return &GrumbleStore{
 		Logger:     logger,
 		Scope:      scope,
-		Collection: collection,
+		Collection: scope.Collection(col),
 	}
 }
 
