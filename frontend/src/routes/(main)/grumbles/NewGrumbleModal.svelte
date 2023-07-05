@@ -32,5 +32,5 @@
 		class="mt-4 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md"
 		placeholder="Prompt: This website needs some work..."
 	/>
-	<ActionButton colour="bg-green-700" class="mt-4" on:click={newGrumble}>Create</ActionButton>
+	<ActionButton class="mt-4" on:click={newGrumble}>Create</ActionButton>
 </Modal>

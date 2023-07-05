@@ -4,7 +4,7 @@
 </script>
 
 <div class="flex justify-center items-center w-full h-12">
-	<NavTabs class="justify-center">
+	<NavTabs class="justify-center min-w-[500px]">
 		<NavTab href="/grumbles">Friends Grumbles</NavTab>
 		<NavTab href="/global">Global Grumbles</NavTab>
 		<NavTab href="/profile">Your profile</NavTab>

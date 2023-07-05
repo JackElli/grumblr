@@ -7,6 +7,8 @@
 	import type { _Grumble } from '../grumbles/grumbles';
 	import Loading from '$lib/components/Loading.svelte';
 	import NewGlobalGrumbleModal from './NewGlobalGrumbleModal.svelte';
+	import { Auth } from '$lib/services/AuthService';
+	import { userStore } from '$lib/stores/userStore';
 
 	let grumbles: _Grumble[];
 	let newGrumbleModalVisible = false;
@@ -29,7 +31,7 @@
 		}
 
 		const newGrumble: _Grumble = {
-			createdBy: 'user:1',
+			createdBy: $userStore.id,
 			message: grumbleText,
 			dateCreated: new Date().toISOString(),
 			type: 'global'
@@ -52,6 +54,7 @@
 	}
 
 	onMount(async () => {
+		await Auth();
 		await getGrumbles();
 	});
 </script>

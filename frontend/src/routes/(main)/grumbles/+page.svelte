@@ -2,17 +2,19 @@
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import Grumble from '$lib/components/Grumble.svelte';
 	import ActionButton from '$lib/components/ActionButton.svelte';
-	import Modal from '$lib/components/Modal.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import type { _Grumble } from './grumbles';
 	import { onMount } from 'svelte';
 	import NewGrumbleModal from './NewGrumbleModal.svelte';
 	import StartMessage from '$lib/components/StartMessage.svelte';
+	import { Auth } from '$lib/services/AuthService';
+	import { userStore } from '$lib/stores/userStore';
 
 	let grumbles: _Grumble[];
 	let newGrumbleModalVisible = false;
-	let welcome: false;
 	let loading = true;
+
+	$: welcome = $userStore?.welcome ?? true;
 
 	async function getGrumbles() {
 		loading = true;
@@ -24,18 +26,6 @@
 		loading = false;
 	}
 
-	async function getUser() {
-		const userId = '1f21823a-8682-4900-b627-d6bd39e1b95b';
-
-		const resp = await fetch(`http://localhost:3200/user/${userId}`, {
-			method: 'GET',
-			credentials: 'include'
-		});
-
-		const user = await resp.json();
-		welcome = user.welcome;
-	}
-
 	async function newGrumble(e: CustomEvent) {
 		const grumbleText = e.detail.grumbleText;
 		if (grumbleText == '') {
@@ -43,7 +33,7 @@
 		}
 
 		const newGrumble: _Grumble = {
-			createdBy: 'user:1',
+			createdBy: $userStore.id,
 			message: grumbleText,
 			dateCreated: new Date().toISOString(),
 			type: 'friends'
@@ -66,7 +56,7 @@
 	}
 
 	onMount(async () => {
-		await getUser();
+		await Auth();
 		await getGrumbles();
 	});
 </script>
