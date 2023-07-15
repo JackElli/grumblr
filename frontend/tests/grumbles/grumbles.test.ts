@@ -3,7 +3,7 @@ import { getGrumbles, getLongGrumbles, getNoGrumbles } from '../mocks/grumbles';
 import { getUser } from '../mocks/users';
 
 test.beforeEach(async ({ page }) => {
-	await getUser(page)
+	await getUser(page);
 	await getGrumbles(page);
 });
 

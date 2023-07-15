@@ -1,6 +1,10 @@
-package grumble
+package grumblestore
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Type string
 
@@ -9,13 +13,6 @@ const (
 	Global  Type = "global"
 )
 
-type Comment struct {
-	Id        string    `json:"id"`
-	CreatedBy string    `json:"createdBy"`
-	Message   string    `json:"message"`
-	Date      time.Time `json:"dateCreated"`
-}
-
 type Grumble struct {
 	Id        string    `json:"id"`
 	CreatedBy string    `json:"createdBy"`
@@ -23,13 +20,17 @@ type Grumble struct {
 	Comments  []Comment `json:"comments"`
 	Date      time.Time `json:"dateCreated"`
 	Type      Type      `json:"type"`
+	Category  string    `json:"category"`
 }
 
-func NewGrumble(createdBy string, message string, date time.Time, _type Type) *Grumble {
+func NewGrumble(createdBy string, message string, _type Type, category string) *Grumble {
 	return &Grumble{
+		Id:        uuid.New().String(),
 		CreatedBy: createdBy,
 		Message:   message,
-		Date:      date,
+		Comments:  []Comment{},
+		Date:      time.Now(),
 		Type:      _type,
+		Category:  category,
 	}
 }

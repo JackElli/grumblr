@@ -3,13 +3,12 @@ package grumble
 import (
 	"bytes"
 	"encoding/json"
-	"grumblrapi/main/grumble"
+
 	"grumblrapi/main/grumblestore"
 	"grumblrapi/main/responder"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
@@ -31,11 +30,11 @@ func TestNewGrumble(t *testing.T) {
 	responderMock := responder.NewResponder()
 	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
 
-	newGrumble := grumble.NewGrumble(
+	newGrumble := grumblestore.NewGrumble(
 		"jack",
 		"this is a test",
-		time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
 		"friends",
+		"Test",
 	)
 
 	testcases := []testcase{

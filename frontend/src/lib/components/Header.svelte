@@ -6,11 +6,11 @@
 	$: selected = $page.url.pathname == '/profile';
 </script>
 
-<div class="w-full bg-[#c0392b] h-16 border-b border-b-black">
+<div class="w-full bg-[#c0392b] h-16 border-b border-b-black sticky top-0">
 	<div class="flex h-full mx-auto justify-between w-[90%] items-center">
 		<div class="w-1/3 flex gap-5 items-center min-w-[400px]">
 			<a href="/">
-				<h1 class="text-white text-3xl rounded-sm">g</h1>
+				<h1 class="text-red-200 text-3xl bg-red-800 px-2 hover:bg-red-700">gr</h1>
 			</a>
 			<SearchBar />
 		</div>

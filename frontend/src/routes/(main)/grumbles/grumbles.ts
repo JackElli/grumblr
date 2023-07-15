@@ -4,3 +4,9 @@ export type _Grumble = {
 	dateCreated: string;
 	type: string;
 };
+
+export type _Category = {
+	type: string;
+	people: string[];
+	name: string;
+};

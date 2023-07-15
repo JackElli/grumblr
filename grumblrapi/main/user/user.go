@@ -1,6 +1,10 @@
 package user
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type User struct {
 	Id            string    `json:"id"`
@@ -13,6 +17,7 @@ type User struct {
 
 func NewUser(username string, password string) *User {
 	return &User{
+		Id:            uuid.New().String(),
 		Username:      username,
 		Password:      password,
 		DateCreated:   time.Now(),
