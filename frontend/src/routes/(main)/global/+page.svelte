@@ -1,6 +1,5 @@
 <script lang="ts">
 	import ActionButton from '$lib/components/ActionButton.svelte';
-	import Modal from '$lib/components/Modal.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import { onMount } from 'svelte';
 	import Grumble from '$lib/components/Grumble.svelte';

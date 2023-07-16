@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import type { _Grumble } from '../../src/routes/(main)/grumbles/grumbles';
 
 export async function getGrumbles(page: Page) {
-	await page.route('http://localhost:3200/grumbles', async (route) => {
+	await page.route('http://localhost:3200/grumbles/*', async (route) => {
 		const grumbles = [
 			{
 				createdBy: 'user:1',
@@ -16,8 +16,23 @@ export async function getGrumbles(page: Page) {
 	});
 }
 
+export async function getCatetories(page: Page) {
+	await page.route('http://localhost:3200/grumbles/info/categories', async (route) => {
+		await route.fulfill({
+			json: [
+				{
+					id: 'testcat1',
+					type: 'friends',
+					people: ['jack'],
+					name: 'Weather'
+				}
+			]
+		});
+	});
+}
+
 export async function getNoGrumbles(page: Page) {
-	await page.route('http://localhost:3200/grumbles', async (route) => {
+	await page.route('http://localhost:3200/grumbles/*', async (route) => {
 		const grumbles: _Grumble[] = [];
 		await route.fulfill({
 			body: JSON.stringify(grumbles)
@@ -26,7 +41,7 @@ export async function getNoGrumbles(page: Page) {
 }
 
 export async function getLongGrumbles(page: Page) {
-	await page.route('http://localhost:3200/grumbles', async (route) => {
+	await page.route('http://localhost:3200/grumbles/*', async (route) => {
 		const grumbles = [
 			{
 				createdBy: 'user:1',

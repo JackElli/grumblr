@@ -2,7 +2,7 @@
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import Grumble from '$lib/components/Grumble.svelte';
 	import ActionButton from '$lib/components/ActionButton.svelte';
-	import type { _Category, _Grumble } from '../grumbles';
+	import type { _Grumble } from '../grumbles';
 	import NewGrumbleModal from '../NewGrumbleModal.svelte';
 	import StartMessage from '$lib/components/StartMessage.svelte';
 	import { userStore } from '$lib/stores/userStore';
@@ -21,6 +21,7 @@
 
 	async function newGrumble(e: CustomEvent) {
 		const grumbleText = e.detail.grumbleText;
+		const category = e.detail.category;
 		if (grumbleText == '') {
 			return;
 		}
@@ -29,7 +30,8 @@
 			createdBy: $userStore.id,
 			message: grumbleText,
 			dateCreated: new Date().toISOString(),
-			type: 'friends'
+			type: 'friends',
+			category: category
 		};
 
 		try {
@@ -52,7 +54,7 @@
 <div class="flex items-center justify-between">
 	<PageTitle>Friends grumbles</PageTitle>
 	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New grumble</ActionButton>
-	<NewGrumbleModal bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
+	<NewGrumbleModal {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 <Loading loading={grumbles == undefined && error == undefined}>
 	{#if error}

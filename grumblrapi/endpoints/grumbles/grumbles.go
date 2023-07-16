@@ -64,7 +64,7 @@ func (mgr *GrumblesMgr) FriendsGrumbles() func(w http.ResponseWriter, req *http.
 // Categories returns all of the categories in this friend group
 func (mgr *GrumblesMgr) Categories() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
-		grumbles, err := mgr.CategoryStorer.Query(
+		categories, err := mgr.CategoryStorer.Query(
 			"SELECT categories.* from grumblr.dev.categories WHERE type='friends' LIMIT 7",
 		)
 		if err != nil {
@@ -72,7 +72,7 @@ func (mgr *GrumblesMgr) Categories() func(w http.ResponseWriter, req *http.Reque
 		}
 
 		mgr.Logger.Info("Successfully retrieved categories")
-		mgr.Responder.Respond(w, 200, grumbles)
+		mgr.Responder.Respond(w, 200, categories)
 	}
 }
 

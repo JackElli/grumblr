@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { _Category } from '../../routes/(main)/grumbles/grumbles';
 
 	export let href: string;
 	export let name: string;
