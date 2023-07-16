@@ -8,7 +8,6 @@ import (
 	"grumblrapi/main/userstore"
 	"net/http"
 
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
@@ -26,12 +25,14 @@ type UserMgr struct {
 }
 
 func NewNewUserMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, userStore userstore.UserStorer) *UserMgr {
-	return &UserMgr{
+	e := &UserMgr{
 		Logger:    logger,
 		Router:    router,
 		Responder: responder,
 		UserStore: userStore,
 	}
+	e.Register()
+	return e
 }
 
 // NewUser inserts a user into the database
@@ -45,15 +46,13 @@ func (mgr *UserMgr) NewUser() func(w http.ResponseWriter, req *http.Request) {
 		json.NewDecoder(req.Body).Decode(&userDetails)
 
 		user := user.NewUser(userDetails.Username, userDetails.Password)
-		userId := uuid.New().String()
-		user.Id = userId
-
-		err := mgr.UserStore.Insert(userId, user)
+		err := mgr.UserStore.Insert(user.Id, user)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusInternalServerError, err)
 			return
 		}
-		mgr.Logger.Info(fmt.Sprintf("Succesfully added user with user id %s", userId))
+
+		mgr.Logger.Info(fmt.Sprintf("Succesfully added user with user id %s", user.Id))
 		mgr.Responder.Respond(w, http.StatusOK, "Succesfully added user")
 	}
 }
@@ -62,7 +61,6 @@ func (mgr *UserMgr) NewUser() func(w http.ResponseWriter, req *http.Request) {
 func (mgr *UserMgr) GetUser() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
 		userId := mux.Vars(req)["userId"]
-		fmt.Println(userId)
 
 		user, err := mgr.UserStore.Get(userId)
 		if err != nil {

@@ -1,8 +1,6 @@
 package grumblestore
 
 import (
-	"grumblrapi/main/grumble"
-
 	"github.com/couchbase/gocb/v2"
 	"go.uber.org/zap"
 )
@@ -10,9 +8,9 @@ import (
 var col = "grumbles"
 
 type GrumbleStorer interface {
-	Get(id string) (*grumble.Grumble, error)
-	Query(querystr string) ([]grumble.Grumble, error)
-	Insert(id string, grumble *grumble.Grumble) error
+	Get(id string) (*Grumble, error)
+	Query(querystr string) ([]Grumble, error)
+	Insert(id string, grumble *Grumble) error
 }
 
 type GrumbleStore struct {
@@ -30,18 +28,19 @@ func NewGrumbleStore(logger *zap.Logger, scope *gocb.Scope) *GrumbleStore {
 }
 
 // Get returns a grumble based on an id
-func (store *GrumbleStore) Get(id string) (*grumble.Grumble, error) {
+func (store *GrumbleStore) Get(id string) (*Grumble, error) {
 	return nil, nil
 }
 
 // Query allows us to execute a more fine grained query on the scope
-func (store *GrumbleStore) Query(querystr string) ([]grumble.Grumble, error) {
-	grumbles := make([]grumble.Grumble, 0)
+func (store *GrumbleStore) Query(querystr string) ([]Grumble, error) {
+	grumbles := make([]Grumble, 0)
 	queryResult, err := store.Scope.Query(querystr, nil)
 	if err != nil {
 		return nil, err
 	}
-	var result grumble.Grumble
+
+	var result Grumble
 	for queryResult.Next() {
 		err := queryResult.Row(&result)
 		if err != nil {
@@ -49,11 +48,12 @@ func (store *GrumbleStore) Query(querystr string) ([]grumble.Grumble, error) {
 		}
 		grumbles = append(grumbles, result)
 	}
+
 	return grumbles, nil
 }
 
 // Insert inserts a grumble into the db
-func (store *GrumbleStore) Insert(id string, grumble *grumble.Grumble) error {
+func (store *GrumbleStore) Insert(id string, grumble *Grumble) error {
 	_, err := store.Collection.Insert(id, *grumble, nil)
 	if err != nil {
 		return err

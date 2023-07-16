@@ -5,6 +5,7 @@ import (
 	"grumblrapi/endpoints/grumble"
 	"grumblrapi/endpoints/grumbles"
 	"grumblrapi/endpoints/user"
+	"grumblrapi/main/categorystore"
 	"grumblrapi/main/couchbase"
 	"grumblrapi/main/grumblestore"
 	"grumblrapi/main/responder"
@@ -32,20 +33,18 @@ func (e *Endpoints) SetupEndpoints(r *mux.Router) error {
 
 	scope := cb.Bucket.Scope("dev")
 
+	// Set up storers
 	grumbleStorer := grumblestore.NewGrumbleStore(e.Logger, scope)
+	categoryStorer := categorystore.NewCategoryStore(e.Logger, scope)
 	userStorer := userstore.NewUserStore(e.Logger, scope)
 	responder := responder.NewResponder()
 
+	// For the endpoints that aren't restricted by auth
 	public := r.PathPrefix("/").Subrouter()
-
-	newGrumbleMgr := grumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer)
-	newGrumbleMgr.Register()
-	newUserMgr := user.NewNewUserMgr(public, e.Logger, responder, userStorer)
-	newUserMgr.Register()
-	grumblesMgr := grumbles.NewGrumblesMgr(public, e.Logger, responder, grumbleStorer)
-	grumblesMgr.Register()
-	globalMgr := global.NewGlobalMgr(public, e.Logger, responder, grumbleStorer)
-	globalMgr.Register()
+	grumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer)
+	user.NewNewUserMgr(public, e.Logger, responder, userStorer)
+	grumbles.NewGrumblesMgr(public, e.Logger, responder, grumbleStorer, categoryStorer)
+	global.NewGlobalMgr(public, e.Logger, responder, grumbleStorer)
 
 	return nil
 }

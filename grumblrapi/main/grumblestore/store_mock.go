@@ -1,7 +1,6 @@
 package grumblestore
 
 import (
-	"grumblrapi/main/grumble"
 	"strings"
 	"time"
 )
@@ -12,45 +11,45 @@ func NewGrumbleStoreMock() *GrumbleStoreMock {
 	return &GrumbleStoreMock{}
 }
 
-func (store *GrumbleStoreMock) Get(id string) (*grumble.Grumble, error) {
+func (store *GrumbleStoreMock) Get(id string) (*Grumble, error) {
 	return nil, nil
 }
 
-func (store *GrumbleStoreMock) Query(querystr string) ([]grumble.Grumble, error) {
+func (store *GrumbleStoreMock) Query(querystr string) ([]Grumble, error) {
 	if strings.Contains(querystr, "type='friends'") {
-		return []grumble.Grumble{
+		return []Grumble{
 			{
 
 				CreatedBy: "user:1",
 				Message:   "This is a friends grumble",
 				Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-				Type:      grumble.Friends,
+				Type:      Friends,
 			},
 			{
 
 				CreatedBy: "user:2",
 				Message:   "This is another grumble",
 				Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-				Type:      grumble.Friends,
+				Type:      Friends,
 			},
 		}, nil
 	}
 
 	if strings.Contains(querystr, "type='global'") {
-		return []grumble.Grumble{
+		return []Grumble{
 			{
 
 				CreatedBy: "user:1",
 				Message:   "This is a global grumble",
 				Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-				Type:      grumble.Global,
+				Type:      Global,
 			},
 			{
 
 				CreatedBy: "user:2",
 				Message:   "This is another global grumble, very public",
 				Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-				Type:      grumble.Global,
+				Type:      Global,
 			},
 		}, nil
 	}
@@ -58,6 +57,6 @@ func (store *GrumbleStoreMock) Query(querystr string) ([]grumble.Grumble, error)
 	return nil, nil
 }
 
-func (store *GrumbleStoreMock) Insert(id string, grumble *grumble.Grumble) error {
+func (store *GrumbleStoreMock) Insert(id string, grumble *Grumble) error {
 	return nil
 }

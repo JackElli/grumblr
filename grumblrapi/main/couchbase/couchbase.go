@@ -33,7 +33,9 @@ func NewCouchbase(logger *zap.Logger, connectionStr string, username string, pas
 	if err != nil {
 		return nil, err
 	}
+
 	logger.Info(fmt.Sprintf("Successfully connected to %s, with username %s", bucketName, username))
+
 	return &Couchbase{
 		Bucket: bucket,
 	}, nil

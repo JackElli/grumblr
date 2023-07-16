@@ -1,4 +1,4 @@
-export const version = '0.0.1';
+export const version = '0.0.2';
 
 export function dateDiff(date: string): string {
 	const d = new Date(Date.parse(date)).getTime();

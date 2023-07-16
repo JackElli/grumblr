@@ -2,7 +2,7 @@ package global
 
 import (
 	"encoding/json"
-	"grumblrapi/main/grumble"
+
 	"grumblrapi/main/grumblestore"
 	"grumblrapi/main/responder"
 	"net/http"
@@ -53,7 +53,7 @@ func TestGrumbles(t *testing.T) {
 			r, _ := http.NewRequest("GET", testRoute, nil)
 			globalMgrMock.Router.ServeHTTP(w, r)
 
-			var response []grumble.Grumble
+			var response []grumblestore.Grumble
 			json.NewDecoder(w.Body).Decode(&response)
 
 			assert.Equal(t, len(response), testCase.expectedResultLen)

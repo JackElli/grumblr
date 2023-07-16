@@ -3,4 +3,11 @@ export type _Grumble = {
 	message: string;
 	dateCreated: string;
 	type: string;
+	category: string;
+};
+
+export type _Category = {
+	type: string;
+	people: string[];
+	name: string;
 };
