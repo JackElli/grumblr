@@ -3,6 +3,12 @@ import { Auth } from './AuthService';
 
 
 class GrumbleService {
+	async get(grumbleId: string): Promise<_Grumble> {
+		await Auth();
+		const resp = await fetch(`http://localhost:3200/grumble/${grumbleId}`);
+		return await resp.json();
+	}
+
 	async list(category: string): Promise<_Grumble[]> {
 		await Auth();
 		const resp = await fetch(`http://localhost:3200/grumbles/${category}`);
@@ -26,20 +32,33 @@ class GrumbleService {
 			comments: []
 		};
 
-		await fetch('http://localhost:3200/grumble', {
+		const data = await fetch('http://localhost:3200/grumble', {
 			method: 'POST',
 			credentials: 'include',
 			body: JSON.stringify(newGrumble)
 		});
 
-		return newGrumble;
-
+		const grumble = data.json()
+		return grumble;
 	}
 
 	async getCategories(): Promise<_Category[]> {
 		const resp = await fetch('http://localhost:3200/grumbles/info/categories', {
 			method: 'GET',
 			credentials: 'include'
+		});
+		return await resp.json();
+	}
+
+	async addComment(grumbleId: string, message: string) {
+		const user = await Auth();
+		const resp = await fetch(`http://localhost:3200/grumble/${grumbleId}/comment`, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify({
+				createdBy: user.id,
+				message: message
+			})
 		});
 		return await resp.json();
 	}

@@ -43,7 +43,7 @@ func TestGrumbles(t *testing.T) {
 				loggerMock,
 				responderMock,
 				grumbleStoreMock,
-				nil, // add test
+				nil,
 			)
 
 			w := httptest.NewRecorder()

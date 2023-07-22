@@ -49,6 +49,7 @@ func (mgr *GrumblesMgr) FriendsGrumbles() func(w http.ResponseWriter, req *http.
 			if err != nil {
 				mgr.Responder.Error(w, 500, err)
 			}
+
 		} else {
 			grumbles, err = mgr.GrumbleStorer.Query(fmt.Sprintf("SELECT grumbles.* from grumblr.dev.grumbles WHERE type='friends' AND category='%s' ORDER BY dateCreated DESC LIMIT 50", category))
 			if err != nil {

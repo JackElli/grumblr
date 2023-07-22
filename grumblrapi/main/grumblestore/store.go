@@ -1,6 +1,8 @@
 package grumblestore
 
 import (
+	"log"
+
 	"github.com/couchbase/gocb/v2"
 	"go.uber.org/zap"
 )
@@ -11,6 +13,7 @@ type GrumbleStorer interface {
 	Get(id string) (*Grumble, error)
 	Query(querystr string) ([]Grumble, error)
 	Insert(id string, grumble *Grumble) error
+	Update(id string, grumble *Grumble) error
 }
 
 type GrumbleStore struct {
@@ -29,7 +32,17 @@ func NewGrumbleStore(logger *zap.Logger, scope *gocb.Scope) *GrumbleStore {
 
 // Get returns a grumble based on an id
 func (store *GrumbleStore) Get(id string) (*Grumble, error) {
-	return nil, nil
+	grumbleData, err := store.Collection.Get(id, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var grumble Grumble
+	err = grumbleData.Content(&grumble)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &grumble, nil
 }
 
 // Query allows us to execute a more fine grained query on the scope
@@ -40,8 +53,8 @@ func (store *GrumbleStore) Query(querystr string) ([]Grumble, error) {
 		return nil, err
 	}
 
-	var result Grumble
 	for queryResult.Next() {
+		var result Grumble
 		err := queryResult.Row(&result)
 		if err != nil {
 			store.Logger.Error(err.Error())
@@ -50,6 +63,15 @@ func (store *GrumbleStore) Query(querystr string) ([]Grumble, error) {
 	}
 
 	return grumbles, nil
+}
+
+// Insert inserts a grumble into the db
+func (store *GrumbleStore) Update(id string, grumble *Grumble) error {
+	_, err := store.Collection.Upsert(id, *grumble, nil)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // Insert inserts a grumble into the db
