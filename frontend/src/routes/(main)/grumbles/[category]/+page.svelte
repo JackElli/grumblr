@@ -9,10 +9,12 @@
 	import Categories from '$lib/components/Categories.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import NetworkError from '$lib/components/NetworkError.svelte';
+	import GrumbleService from '$lib/services/GrumbleService';
 
 	export let data;
 
 	let newGrumbleModalVisible = false;
+	let loading = false;
 
 	$: grumbles = data.grumbles;
 	$: categories = data.categories;
@@ -20,41 +22,29 @@
 	$: welcome = $userStore?.welcome ?? true;
 
 	async function newGrumble(e: CustomEvent) {
+		loading = true;
 		const grumbleText = e.detail.grumbleText;
 		const category = e.detail.category;
 		if (grumbleText == '') {
 			return;
 		}
-
-		const newGrumble: _Grumble = {
-			createdBy: $userStore.id,
-			message: grumbleText,
-			dateCreated: new Date().toISOString(),
-			type: 'friends',
-			category: category
-		};
-
 		try {
-			await fetch('http://localhost:3200/grumble', {
-				method: 'POST',
-				credentials: 'include',
-				body: JSON.stringify(newGrumble)
-			});
+			const grumble = await GrumbleService.new(grumbleText, category, 'friends');
+			newGrumbleModalVisible = false;
+
+			grumbles?.splice(0, 0, grumble);
+			grumbles = grumbles;
 		} catch (e) {
-			console.log(e);
+			error = (e as Error).message;
 		}
-
-		newGrumbleModalVisible = false;
-
-		grumbles?.splice(0, 0, newGrumble);
-		grumbles = grumbles;
+		loading = false;
 	}
 </script>
 
 <div class="flex items-center justify-between">
 	<PageTitle>Friends grumbles</PageTitle>
 	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New grumble</ActionButton>
-	<NewGrumbleModal {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
+	<NewGrumbleModal {loading} {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 <Loading loading={grumbles == undefined && error == undefined}>
 	{#if error}

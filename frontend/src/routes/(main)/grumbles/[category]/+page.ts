@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import GrumbleService from '$lib/services/GrumbleService.js';
+import GrumbleService from '$lib/services/GrumbleService';
 
 export async function load({ params }) {
 	if (browser) {
