@@ -14,7 +14,7 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="modal-pos w-screen h-screen fixed z-20 top-0 left-0 bg-black bg-opacity-40"
-		on:click={click}
+		on:mousedown={click}
 	>
 		<div
 			bind:this={modal}

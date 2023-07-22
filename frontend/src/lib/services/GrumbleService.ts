@@ -16,7 +16,8 @@ class GrumbleService {
 			message: grumbleText,
 			dateCreated: new Date().toISOString(),
 			type: type,
-			category: category
+			category: category,
+			comments: []
 		};
 
 		await fetch('http://localhost:3200/grumble', {

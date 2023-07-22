@@ -2,7 +2,12 @@
 	import { dateDiff, userIconText } from '../../global';
 	import type { _Grumble } from '../../routes/(main)/grumbles/grumbles';
 	import Card from './Card.svelte';
+	import ShowGrumbleModal from './ShowGrumbleModal.svelte';
 	export let grumble: _Grumble;
+
+	let grumbleModal = false;
+
+	$: numOfComments = grumble.comments.length;
 </script>
 
 <Card class="p-3 flex justify-between items-center">
@@ -16,10 +21,16 @@
 			</a>
 			<div>
 				<p class="max-w-[700px]">{grumble.message}</p>
-				<p class="inline text-xs text-gray-500 hover:underline cursor-pointer">0 comments</p>
+				<button
+					on:click={() => (grumbleModal = true)}
+					class="inline text-xs text-gray-500 hover:underline cursor-pointer"
+					>{numOfComments} comment{numOfComments == 1 ? '' : 's'}</button
+				>
 			</div>
 		</div>
 	</div>
 
 	<p class="text-gray-500">{dateDiff(grumble.dateCreated)}</p>
 </Card>
+
+<ShowGrumbleModal bind:visible={grumbleModal} {grumble} />

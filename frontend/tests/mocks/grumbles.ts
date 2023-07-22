@@ -7,7 +7,13 @@ export async function getGrumbles(page: Page) {
 			{
 				createdBy: 'user:1',
 				message: 'this is the very first grumble',
-				dateCreated: '2023-06-03T20:24:35.060986337Z'
+				dateCreated: '2023-06-03T20:24:35.060986337Z',
+				comments: [
+					{
+						"message": "test comment",
+						"dateCreated": "023-07-22T14:21:36.92541872Z"
+					}
+				]
 			}
 		];
 		await route.fulfill({
@@ -47,7 +53,13 @@ export async function getLongGrumbles(page: Page) {
 				createdBy: 'user:1',
 				message:
 					'This is a very long grumble This is a very long grumble This is a very long grumble This is a very long grumble This is a very long grumble',
-				dateCreated: '2023-06-03T20:24:35.060986337Z'
+				dateCreated: '2023-06-03T20:24:35.060986337Z',
+				comments: [
+					{
+						"message": "test comment",
+						"dateCreated": "023-07-22T14:21:36.92541872Z"
+					}
+				]
 			}
 		];
 		await route.fulfill({
