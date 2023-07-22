@@ -7,6 +7,6 @@
 	$: selected = `/grumbles/${href}` == $page.url.pathname;
 </script>
 
-<a href={`/grumbles/${href}`} class={selected ? 'border-b-2 border-b-red-400' : ''}>
+<a href={`/grumbles/${href}`} class={selected ? 'border-b-2 border-b-[#806882]' : ''}>
 	{name}
 </a>

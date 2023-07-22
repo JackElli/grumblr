@@ -60,7 +60,7 @@
 
 <div class="flex items-center justify-between">
 	<PageTitle>Global grumbles</PageTitle>
-	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New grumble</ActionButton>
+	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
 	<NewGlobalGrumbleModal bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 

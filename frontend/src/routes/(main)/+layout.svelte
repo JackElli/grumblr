@@ -4,7 +4,7 @@
 	import Header from '../../lib/components/Header.svelte';
 </script>
 
-<div class="bg-gray-200 min-h-screen pb-10">
+<div class="bg-[#e9ede8] min-h-screen pb-10">
 	<Header />
 
 	<div class="block w-[90%] mx-auto pt-4">

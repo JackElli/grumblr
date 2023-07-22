@@ -43,7 +43,7 @@
 
 <div class="flex items-center justify-between">
 	<PageTitle>Friends grumbles</PageTitle>
-	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New grumble</ActionButton>
+	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
 	<NewGrumbleModal {loading} {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 <Loading loading={grumbles == undefined && error == undefined}>
