@@ -15,10 +15,12 @@
 	const dispatch = createEventDispatcher();
 
 	function newGrumble() {
-		dispatch('newGrumble', {
-			grumbleText: grumbleText,
-			category: selectedCategory
-		});
+		if (grumbleText != '') {
+			dispatch('newGrumble', {
+				grumbleText: grumbleText,
+				category: selectedCategory
+			});
+		}
 	}
 
 	$: grumbleTextbox && grumbleTextbox.focus();
