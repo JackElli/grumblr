@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test';
 import { getGlobalGrumbles } from '../mocks/global';
 import { getUser } from '../mocks/users';
+import { getCatetories } from '../mocks/grumbles';
 test.beforeEach(async ({ page }) => {
-	await getGlobalGrumbles(page);
 	await getUser(page);
+	await getGlobalGrumbles(page);
+	await getCatetories(page);
 	await page.goto('/global');
 })
 test('HAPPY global grumbles page loaded correctly', async ({ page }) => {

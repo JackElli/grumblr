@@ -9,6 +9,12 @@ class GrumbleService {
 		return await resp.json();
 	}
 
+	async listGlobal(category: string): Promise<_Grumble[]> {
+		await Auth();
+		const resp = await fetch(`http://localhost:3200/global/${category}`);
+		return await resp.json();
+	}
+
 	async new(grumbleText: string, category: string, type: string): Promise<_Grumble> {
 		const user = await Auth();
 		const newGrumble: _Grumble = {

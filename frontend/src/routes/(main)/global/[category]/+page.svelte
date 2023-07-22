@@ -2,14 +2,13 @@
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import Grumble from '$lib/components/Grumble.svelte';
 	import ActionButton from '$lib/components/ActionButton.svelte';
-	import type { _Grumble } from '../grumbles';
-	import NewGrumbleModal from '../NewGrumbleModal.svelte';
 	import StartMessage from '$lib/components/StartMessage.svelte';
 	import { userStore } from '$lib/stores/userStore';
 	import Categories from '$lib/components/Categories.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import NetworkError from '$lib/components/NetworkError.svelte';
 	import GrumbleService from '$lib/services/GrumbleService';
+	import NewGlobalGrumbleModal from '../NewGlobalGrumbleModal.svelte';
 
 	export let data;
 
@@ -29,7 +28,7 @@
 			return;
 		}
 		try {
-			const grumble = await GrumbleService.new(grumbleText, category, 'friends');
+			const grumble = await GrumbleService.new(grumbleText, category, 'global');
 			newGrumbleModalVisible = false;
 
 			grumbles?.splice(0, 0, grumble);
@@ -43,13 +42,13 @@
 
 <div class="flex items-center justify-between">
 	<div>
-		<PageTitle>Friends grumbles</PageTitle>
+		<PageTitle>Global grumbles</PageTitle>
 		{#if categories}
-			<Categories type="friends" {categories} class="mt-4" />
+			<Categories type="global" {categories} class="mt-4" />
 		{/if}
 	</div>
 	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
-	<NewGrumbleModal {loading} {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
+	<NewGlobalGrumbleModal {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
 </div>
 <Loading loading={grumbles == undefined && error == undefined}>
 	{#if error}

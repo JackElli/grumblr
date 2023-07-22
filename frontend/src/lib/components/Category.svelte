@@ -3,10 +3,13 @@
 
 	export let href: string;
 	export let name: string;
+	export let type: string;
 
-	$: selected = `/grumbles/${href}` == $page.url.pathname;
+	$: root = type == 'friends' ? 'grumbles' : 'global';
+
+	$: selected = `/${root}/${href}` == $page.url.pathname;
 </script>
 
-<a href={`/grumbles/${href}`} class={selected ? 'border-b-2 border-b-[#806882]' : ''}>
+<a href={`/${root}/${href}`} class={selected ? 'border-b-2 border-b-[#806882]' : ''}>
 	{name}
 </a>

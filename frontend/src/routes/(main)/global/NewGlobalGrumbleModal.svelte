@@ -2,18 +2,25 @@
 	import ActionButton from '$lib/components/ActionButton.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import type { _Category } from '../grumbles/grumbles';
 
 	export let newGrumbleModalVisible = false;
+	export let loading = false;
+	export let categories: _Category[] | undefined;
 	export let grumbleText = '';
 
 	let grumbleTextbox: HTMLTextAreaElement;
+	$: selectedCategory = categories ? categories[0].name : '';
 
 	const dispatch = createEventDispatcher();
 
 	function newGrumble() {
-		dispatch('newGrumble', {
-			grumbleText: grumbleText
-		});
+		if (grumbleText != '') {
+			dispatch('newGrumble', {
+				grumbleText: grumbleText,
+				category: selectedCategory
+			});
+		}
 	}
 
 	$: grumbleTextbox && grumbleTextbox.focus();
@@ -21,16 +28,27 @@
 
 <Modal
 	title="New global grumble"
-	subtitle="This grumble can be seen be everyone on the platform, write at your own risk."
+	subtitle="Beware! The public can see this grumble"
 	bind:visible={newGrumbleModalVisible}
-	class="w-96 h-96"
+	class="w-96 pb-5"
 >
-	<p>Add your grumble text, what are you angry about?</p>
+	<p>Select a category for your grumble</p>
+	<select
+		class="mt-1 bg-zinc-50 focus:bg-white border border-black px-2 rounded-sm cursor-pointer"
+		bind:value={selectedCategory}
+	>
+		{#if categories}
+			{#each categories as category}
+				<option value={category.name}>{category.name}</option>
+			{/each}
+		{/if}
+	</select>
+	<p class="mt-3">Add your grumble text, what are you angry about?</p>
 	<textarea
 		bind:this={grumbleTextbox}
 		bind:value={grumbleText}
-		class="mt-4 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md"
+		class="mt-1 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md focus:bg-white"
 		placeholder="Prompt: This website needs some work..."
 	/>
-	<ActionButton class="mt-2" on:click={newGrumble}>Create</ActionButton>
+	<ActionButton {loading} class="mt-4" on:click={newGrumble}>Create</ActionButton>
 </Modal>

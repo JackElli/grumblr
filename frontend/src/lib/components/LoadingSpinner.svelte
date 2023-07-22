@@ -1,5 +1,5 @@
 <script>
-	import spinner from '../svg/spinner.svg';
+	import Spinner from '../svg/spinner.svelte';
 </script>
 
-<img src={spinner} alt="spinner" class={`animate-spin ${$$props.class}`} />
+<Spinner class={`animate-spin ${$$props.class} text-[#574658] fill-current`} />

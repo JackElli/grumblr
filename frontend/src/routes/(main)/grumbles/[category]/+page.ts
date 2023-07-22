@@ -25,7 +25,7 @@ export async function load({ params }) {
 
 		return {
 			grumbles: grumbles ?? [],
-			categories: categories
+			categories: categories ?? []
 		};
 	}
 }

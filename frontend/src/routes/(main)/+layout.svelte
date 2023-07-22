@@ -6,7 +6,6 @@
 
 <div class="bg-[#e9ede8] min-h-screen pb-10">
 	<Header />
-
 	<div class="block w-[90%] mx-auto pt-4">
 		<slot />
 	</div>

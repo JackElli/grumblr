@@ -3,11 +3,12 @@
 	import Category from './Category.svelte';
 
 	export let categories: _Category[];
+	export let type: string;
 </script>
 
 <div class="flex gap-2 items-center {$$props.class}">
-	<Category href="recents" name="Recents" />
+	<Category {type} href="recents" name="Recents" />
 	{#each categories as category}
-		<Category href={category.name} name={category.name} />
+		<Category {type} href={category.name} name={category.name} />
 	{/each}
 </div>

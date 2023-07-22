@@ -14,8 +14,6 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-var testRoute = "/global"
-
 func TestGrumbles(t *testing.T) {
 	type testcase struct {
 		desc              string
@@ -50,7 +48,7 @@ func TestGrumbles(t *testing.T) {
 
 			w := httptest.NewRecorder()
 
-			r, _ := http.NewRequest("GET", testRoute, nil)
+			r, _ := http.NewRequest("GET", ROOT, nil)
 			globalMgrMock.Router.ServeHTTP(w, r)
 
 			var response []grumblestore.Grumble

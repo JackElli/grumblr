@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 export async function getGlobalGrumbles(page: Page) {
-	await page.route('http://localhost:3200/global', async (route) => {
+	await page.route('http://localhost:3200/global/*', async (route) => {
 		await route.fulfill({
 			json: [
 				{
