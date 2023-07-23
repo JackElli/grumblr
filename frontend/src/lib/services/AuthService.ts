@@ -10,9 +10,9 @@ export async function Auth(): Promise<User> {
 		});
 		const user = await resp.json();
 		userStore.set(user);
-		return user
+		return user;
 	} catch (e) {
 		console.error(e);
-		throw redirect(302, '/login')
+		throw redirect(302, '/login');
 	}
 }

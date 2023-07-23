@@ -10,7 +10,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('HAPPY friends grumbles page loaded correctly', async ({ page }) => {
-
 	await expect(page.getByRole('heading').getByText('Friends grumbles')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });
@@ -23,7 +22,6 @@ test('HAPPY long grumble', async ({ page }) => {
 });
 
 test('HAPPY new grumble button opens modal', async ({ page }) => {
-
 	await page.getByRole('button').getByText('New grumble').click();
 	await expect(page.getByText('Add your grumble text')).toBeVisible();
 	await expect(page).toHaveScreenshot();
@@ -36,7 +34,7 @@ test('NEGATIVE no grumbles available', async ({ page }) => {
 });
 
 test('HAPPY comments button shows comments', async ({ page }) => {
-	await page.getByText("1 comment").click()
+	await page.getByText('1 comment').click();
 	await expect(page.getByText('Viewing grumble')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });

@@ -7,7 +7,8 @@ test.beforeEach(async ({ page }) => {
 	await getGlobalGrumbles(page);
 	await getCatetories(page);
 	await page.goto('/global');
-})
+});
+
 test('HAPPY global grumbles page loaded correctly', async ({ page }) => {
 	await expect(page.getByRole('heading').getByText('Global grumbles')).toBeVisible();
 	await expect(page).toHaveScreenshot();

@@ -13,7 +13,7 @@ import (
 
 const (
 	ROOT       = "/grumbles/{category}"
-	CATEGORIES = "/grumbles/info/categories"
+	CATEGORIES = "/grumbles/info/categories/{type}"
 )
 
 type GrumblesMgr struct {
@@ -65,14 +65,16 @@ func (mgr *GrumblesMgr) FriendsGrumbles() func(w http.ResponseWriter, req *http.
 // Categories returns all of the categories in this friend group
 func (mgr *GrumblesMgr) Categories() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
+		_type := mux.Vars(req)["type"]
+
 		categories, err := mgr.CategoryStorer.Query(
-			"SELECT categories.* from grumblr.dev.categories WHERE type='friends' LIMIT 7",
+			fmt.Sprintf("SELECT categories.* from grumblr.dev.categories WHERE type='%s' LIMIT 7", _type),
 		)
 		if err != nil {
 			mgr.Responder.Error(w, 500, err)
 		}
 
-		mgr.Logger.Info("Successfully retrieved categories")
+		mgr.Logger.Info(fmt.Sprintf("Successfully retrieved categorie of type %s", _type))
 		mgr.Responder.Respond(w, 200, categories)
 	}
 }

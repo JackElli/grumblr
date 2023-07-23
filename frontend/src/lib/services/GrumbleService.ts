@@ -1,7 +1,6 @@
 import type { _Category, _Grumble } from '../../routes/(main)/grumbles/grumbles';
 import { Auth } from './AuthService';
 
-
 class GrumbleService {
 	async get(grumbleId: string): Promise<_Grumble> {
 		await Auth();
@@ -38,12 +37,12 @@ class GrumbleService {
 			body: JSON.stringify(newGrumble)
 		});
 
-		const grumble = data.json()
+		const grumble = data.json();
 		return grumble;
 	}
 
-	async getCategories(): Promise<_Category[]> {
-		const resp = await fetch('http://localhost:3200/grumbles/info/categories', {
+	async getCategories(type: string): Promise<_Category[]> {
+		const resp = await fetch(`http://localhost:3200/grumbles/info/categories/${type}`, {
 			method: 'GET',
 			credentials: 'include'
 		});
@@ -64,4 +63,4 @@ class GrumbleService {
 	}
 }
 
-export default new GrumbleService;
+export default new GrumbleService();

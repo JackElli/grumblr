@@ -9,7 +9,7 @@ export async function getGlobalGrumbles(page: Page) {
 					message: 'this is the very first global grumble',
 					dateCreated: '2023-06-03T20:24:35.060986337Z',
 					type: 'global',
-					comments: [],
+					comments: []
 				}
 			]
 		});

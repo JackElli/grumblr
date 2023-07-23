@@ -10,8 +10,9 @@ export async function getGrumbles(page: Page) {
 				dateCreated: '2023-06-03T20:24:35.060986337Z',
 				comments: [
 					{
-						"message": "test comment",
-						"dateCreated": "023-07-22T14:21:36.92541872Z"
+						createdBy: "asdasd",
+						message: 'test comment',
+						dateCreated: '023-07-22T14:21:36.92541872Z'
 					}
 				]
 			}
@@ -23,7 +24,7 @@ export async function getGrumbles(page: Page) {
 }
 
 export async function getCatetories(page: Page) {
-	await page.route('http://localhost:3200/grumbles/info/categories', async (route) => {
+	await page.route('http://localhost:3200/grumbles/info/categories/*', async (route) => {
 		await route.fulfill({
 			json: [
 				{
@@ -56,8 +57,9 @@ export async function getLongGrumbles(page: Page) {
 				dateCreated: '2023-06-03T20:24:35.060986337Z',
 				comments: [
 					{
-						"message": "test comment",
-						"dateCreated": "023-07-22T14:21:36.92541872Z"
+						createdBy: "asdasd",
+						message: 'test comment',
+						dateCreated: '023-07-22T14:21:36.92541872Z'
 					}
 				]
 			}
