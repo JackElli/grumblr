@@ -7,7 +7,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('profile page loaded correctly', async ({ page }) => {
-	await page.goto('/profile');
 	await expect(page.getByRole('heading').getByText('Profile')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });

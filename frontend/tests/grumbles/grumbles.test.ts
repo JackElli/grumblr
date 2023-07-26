@@ -16,7 +16,6 @@ test('HAPPY friends grumbles page loaded correctly', async ({ page }) => {
 
 test('HAPPY long grumble', async ({ page }) => {
 	await getLongGrumbles(page);
-
 	await expect(page.getByRole('heading').getByText('Friends grumbles')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });

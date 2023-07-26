@@ -10,6 +10,7 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import NetworkError from '$lib/components/NetworkError.svelte';
 	import GrumbleService from '$lib/services/GrumbleService';
+	import WelcomeBackMessage from '$lib/components/WelcomeBackMessage.svelte';
 
 	export let data;
 
@@ -59,6 +60,8 @@
 		<div class="mt-4">
 			{#if welcome}
 				<StartMessage />
+			{:else if data.currentCategory == 'recents'}
+				<WelcomeBackMessage />
 			{/if}
 
 			{#if grumbles.length > 0}

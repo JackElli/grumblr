@@ -1,27 +1,27 @@
 import type { _Category, _Grumble } from '../../routes/(main)/grumbles/grumbles';
-import { Auth } from './AuthService';
+import AuthService from './AuthService';
 
 class GrumbleService {
 	async get(grumbleId: string): Promise<_Grumble> {
-		await Auth();
+		await AuthService.auth();
 		const resp = await fetch(`http://localhost:3200/grumble/${grumbleId}`);
 		return await resp.json();
 	}
 
 	async list(category: string): Promise<_Grumble[]> {
-		await Auth();
+		await AuthService.auth();
 		const resp = await fetch(`http://localhost:3200/grumbles/${category}`);
 		return await resp.json();
 	}
 
 	async listGlobal(category: string): Promise<_Grumble[]> {
-		await Auth();
+		await AuthService.auth();
 		const resp = await fetch(`http://localhost:3200/global/${category}`);
 		return await resp.json();
 	}
 
 	async new(grumbleText: string, category: string, type: string): Promise<_Grumble> {
-		const user = await Auth();
+		const user = await AuthService.auth();
 		const newGrumble: _Grumble = {
 			createdBy: user.id,
 			message: grumbleText,
@@ -50,7 +50,7 @@ class GrumbleService {
 	}
 
 	async addComment(grumbleId: string, message: string) {
-		const user = await Auth();
+		const user = await AuthService.auth();
 		const resp = await fetch(`http://localhost:3200/grumble/${grumbleId}/comment`, {
 			method: 'POST',
 			credentials: 'include',

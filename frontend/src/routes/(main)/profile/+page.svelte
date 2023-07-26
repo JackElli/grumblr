@@ -1,8 +1,8 @@
 <script>
 	import ActionButton from '$lib/components/ActionButton.svelte';
 	import PageTitle from '$lib/components/PageTitle.svelte';
-
-	export let data;
+	import { userStore } from '$lib/stores/userStore';
+	import { userIconText } from '../../../global';
 </script>
 
 <div class="flex items-center justify-between">
@@ -10,7 +10,11 @@
 	<ActionButton>Profile settings</ActionButton>
 </div>
 <div class="mt-4 flex gap-4 items-center">
-	<div class="w-20 h-20 rounded-md border border-gray-500" />
-	<p class="text-2xl">{data.user.username}</p>
+	<p
+		class="flex text-4xl items-center justify-center w-24 h-24 border border-black rounded-md bg-gray-300 hover:bg-gray-100 cursor-pointer"
+	>
+		{userIconText($userStore.username)}
+	</p>
+	<p class="text-2xl">{$userStore.username}</p>
 </div>
 <p class="mt-2">(You will be able to upload a profile pic I promise)</p>
