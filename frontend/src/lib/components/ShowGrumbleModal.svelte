@@ -5,6 +5,7 @@
 	import { dateDiff, userIconText } from '../../global';
 	import ActionButton from './ActionButton.svelte';
 	import GrumbleService from '$lib/services/GrumbleService';
+	import UserIcon from './UserIcon.svelte';
 
 	export let visible = false;
 	export let loading = false;
@@ -30,11 +31,18 @@
 	}
 </script>
 
-<Modal title="Viewing grumble" bind:visible class="w-96 pb-5">
+<Modal title="Viewing grumble" bind:visible class="w-1/2 max-w-4xl pb-5">
 	<Loading {loading}>
-		<h1 class="text-xl italic">{grumble.message}</h1>
-		<div class="w-full border border-gray-300 mt-2 bg-gray-300" />
-		<div class="mt-6 mb-2 flex gap-4 items-center">
+		<div class=" bg-white px-4 py-2 rounded-md border border-black">
+			<div class="flex gap-2 items-center">
+				<UserIcon class="w-6 h-6 text-xs" userId={grumble.createdBy} />
+				<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
+			</div>
+
+			<h1 class="mt-2 text-xl">{grumble.message}</h1>
+		</div>
+
+		<div class="mt-5 mb-2 flex gap-4 items-center pt-5 border-t border-t-gray-300">
 			<h1 class="font-semibold">Comments</h1>
 			<ActionButton class="text-sm" on:click={() => (addComment = true)}>New comment</ActionButton>
 		</div>

@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { dateDiff, userIconText } from '../../global';
+	import { dateDiff } from '../../global';
 	import type { _Grumble } from '../../routes/(main)/grumbles/grumbles';
 	import Card from './Card.svelte';
 	import ShowGrumbleModal from './ShowGrumbleModal.svelte';
+	import UserIcon from './UserIcon.svelte';
 	export let grumble: _Grumble;
 
 	let grumbleModal = false;
@@ -13,12 +14,7 @@
 <Card class="p-3 flex justify-between items-center">
 	<div>
 		<div class="flex gap-3 items-center">
-			<a
-				href="/users/{grumble.createdBy}"
-				class="flex items-center justify-center w-8 h-8 border border-black rounded-full bg-gray-300 hover:bg-gray-100 cursor-pointer"
-			>
-				{userIconText(grumble.createdBy)}
-			</a>
+			<UserIcon class="w-8 h-8" userId={grumble.createdBy} />
 			<div>
 				<p class="max-w-[700px]">{grumble.message}</p>
 				<button
