@@ -40,6 +40,7 @@ func TestGrumbles(t *testing.T) {
 
 			grumblesMgrMock := NewGrumblesMgr(
 				rMock,
+				"dev",
 				loggerMock,
 				responderMock,
 				grumbleStoreMock,
@@ -100,6 +101,7 @@ func TestCategories(t *testing.T) {
 
 			grumblesMgrMock := NewGrumblesMgr(
 				rMock,
+				"dev",
 				loggerMock,
 				responderMock,
 				grumbleStoreMock,

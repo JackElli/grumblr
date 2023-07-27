@@ -10,7 +10,7 @@
 	export let grumbleText = '';
 
 	let grumbleTextbox: HTMLTextAreaElement;
-	$: selectedCategory = categories ? categories[0].name : '';
+	$: selectedCategory = categories && categories.length ? categories[0].name : '';
 
 	const dispatch = createEventDispatcher();
 

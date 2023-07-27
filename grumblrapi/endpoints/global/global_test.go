@@ -40,6 +40,7 @@ func TestGrumbles(t *testing.T) {
 
 			globalMgrMock := NewGlobalMgr(
 				rMock,
+				"dev",
 				loggerMock,
 				responderMock,
 				grumbleStoreMock,

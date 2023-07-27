@@ -1,22 +1,23 @@
+import { IP } from '../../global';
 import type { _Category, _Grumble } from '../../routes/(main)/grumbles/grumbles';
 import AuthService from './AuthService';
 
 class GrumbleService {
 	async get(grumbleId: string): Promise<_Grumble> {
 		await AuthService.auth();
-		const resp = await fetch(`http://localhost:3200/grumble/${grumbleId}`);
+		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}`);
 		return await resp.json();
 	}
 
 	async list(category: string): Promise<_Grumble[]> {
 		await AuthService.auth();
-		const resp = await fetch(`http://localhost:3200/grumbles/${category}`);
+		const resp = await fetch(`http://${IP}:3200/grumbles/${category}`);
 		return await resp.json();
 	}
 
 	async listGlobal(category: string): Promise<_Grumble[]> {
 		await AuthService.auth();
-		const resp = await fetch(`http://localhost:3200/global/${category}`);
+		const resp = await fetch(`http://${IP}:3200/global/${category}`);
 		return await resp.json();
 	}
 
@@ -31,7 +32,7 @@ class GrumbleService {
 			comments: []
 		};
 
-		const data = await fetch('http://localhost:3200/grumble', {
+		const data = await fetch(`http://${IP}:3200/grumble`, {
 			method: 'POST',
 			credentials: 'include',
 			body: JSON.stringify(newGrumble)
@@ -42,7 +43,7 @@ class GrumbleService {
 	}
 
 	async getCategories(type: string): Promise<_Category[]> {
-		const resp = await fetch(`http://localhost:3200/grumbles/info/categories/${type}`, {
+		const resp = await fetch(`http://${IP}:3200/grumbles/info/categories/${type}`, {
 			method: 'GET',
 			credentials: 'include'
 		});
@@ -51,7 +52,7 @@ class GrumbleService {
 
 	async addComment(grumbleId: string, message: string) {
 		const user = await AuthService.auth();
-		const resp = await fetch(`http://localhost:3200/grumble/${grumbleId}/comment`, {
+		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/comment`, {
 			method: 'POST',
 			credentials: 'include',
 			body: JSON.stringify({

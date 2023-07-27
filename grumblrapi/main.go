@@ -15,12 +15,15 @@ func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
+	const ENVIRONMENT = "prod"
+
 	r := mux.NewRouter()
 
 	endpoints := endpoints.NewEndpointsMgr(logger)
-	err := endpoints.SetupEndpoints(r)
+	err := endpoints.SetupEndpoints(ENVIRONMENT, r)
 	if err != nil {
 		logger.Error("Cannot setup endpoints", zap.Error(err))
+		return
 	}
 
 	logger.Info("Started grumblr api")
