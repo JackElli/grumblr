@@ -40,8 +40,8 @@ func (store *CategoryStore) Query(querystr string) ([]Category, error) {
 		return nil, err
 	}
 
-	var result Category
 	for queryResult.Next() {
+		var result Category
 		err := queryResult.Row(&result)
 		if err != nil {
 			store.Logger.Error(err.Error())

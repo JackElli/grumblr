@@ -40,10 +40,11 @@ func TestGrumbles(t *testing.T) {
 
 			grumblesMgrMock := NewGrumblesMgr(
 				rMock,
+				"dev",
 				loggerMock,
 				responderMock,
 				grumbleStoreMock,
-				nil, // add test
+				nil,
 			)
 
 			w := httptest.NewRecorder()
@@ -60,9 +61,12 @@ func TestGrumbles(t *testing.T) {
 	}
 }
 
+const CATEGORIES_ROOT = "/grumbles/info/categories/"
+
 func TestCategories(t *testing.T) {
 	type testcase struct {
 		desc           string
+		_type          string
 		expectedResult []categorystore.Category
 		expectedStatus int
 	}
@@ -75,7 +79,8 @@ func TestCategories(t *testing.T) {
 
 	testcases := []testcase{
 		{
-			desc: "HAPPY retrieved categories",
+			desc:  "HAPPY retrieved categories",
+			_type: "friends",
 			expectedResult: []categorystore.Category{
 				{
 					Id:   "testcat1",
@@ -96,6 +101,7 @@ func TestCategories(t *testing.T) {
 
 			grumblesMgrMock := NewGrumblesMgr(
 				rMock,
+				"dev",
 				loggerMock,
 				responderMock,
 				grumbleStoreMock,
@@ -104,7 +110,7 @@ func TestCategories(t *testing.T) {
 
 			w := httptest.NewRecorder()
 
-			r, _ := http.NewRequest("GET", CATEGORIES, nil)
+			r, _ := http.NewRequest("GET", CATEGORIES_ROOT+testCase._type, nil)
 			grumblesMgrMock.Router.ServeHTTP(w, r)
 
 			var response []categorystore.Category

@@ -60,3 +60,7 @@ func (store *GrumbleStoreMock) Query(querystr string) ([]Grumble, error) {
 func (store *GrumbleStoreMock) Insert(id string, grumble *Grumble) error {
 	return nil
 }
+
+func (store *GrumbleStoreMock) Update(id string, grumble *Grumble) error {
+	return nil
+}

@@ -20,6 +20,7 @@ func GetAllowedHeaders() []string {
 // GetAllowedOrigin returns the CORS origins we allow the backend
 // to receive from
 func GetAllowedOrigin() []string {
+	// return []string{"http://ec2-16-171-174-3.eu-north-1.compute.amazonaws.com:3000"}
 	return []string{"http://localhost:5173"}
 }
 

@@ -15,7 +15,7 @@ export async function load({ params }) {
 
 		let categories;
 		try {
-			categories = await GrumbleService.getCategories();
+			categories = await GrumbleService.getCategories('friends');
 		} catch (e) {
 			console.log(e);
 			return {
@@ -25,7 +25,8 @@ export async function load({ params }) {
 
 		return {
 			grumbles: grumbles ?? [],
-			categories: categories ?? []
+			categories: categories ?? [],
+			currentCategory: params.category
 		};
 	}
 }

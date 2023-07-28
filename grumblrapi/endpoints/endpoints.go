@@ -25,26 +25,36 @@ func NewEndpointsMgr(logger *zap.Logger) *Endpoints {
 	}
 }
 
-func (e *Endpoints) SetupEndpoints(r *mux.Router) error {
-	cb, err := couchbase.NewCouchbase(e.Logger, "db", "Administrator", "password", "grumblr")
+func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
+	cb, err := couchbase.NewCouchbase(
+		e.Logger,
+		"db",
+		"Administrator",
+		// "GrumblrAws2!",
+		"password",
+		"grumblr",
+	)
 	if err != nil {
 		return err
 	}
 
-	scope := cb.Bucket.Scope("dev")
+	// Set the environment
+	scope := cb.Bucket.Scope(env)
 
 	// Set up storers
 	grumbleStorer := grumblestore.NewGrumbleStore(e.Logger, scope)
 	categoryStorer := categorystore.NewCategoryStore(e.Logger, scope)
 	userStorer := userstore.NewUserStore(e.Logger, scope)
+
+	// For responding to the user
 	responder := responder.NewResponder()
 
 	// For the endpoints that aren't restricted by auth
 	public := r.PathPrefix("/").Subrouter()
 	grumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer)
 	user.NewNewUserMgr(public, e.Logger, responder, userStorer)
-	grumbles.NewGrumblesMgr(public, e.Logger, responder, grumbleStorer, categoryStorer)
-	global.NewGlobalMgr(public, e.Logger, responder, grumbleStorer)
+	grumbles.NewGrumblesMgr(public, env, e.Logger, responder, grumbleStorer, categoryStorer)
+	global.NewGlobalMgr(public, env, e.Logger, responder, grumbleStorer)
 
 	return nil
 }
