@@ -30,7 +30,8 @@ func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
 		e.Logger,
 		"db",
 		"Administrator",
-		"GrumblrAws2!",
+		// "GrumblrAws2!",
+		"password",
 		"grumblr",
 	)
 	if err != nil {

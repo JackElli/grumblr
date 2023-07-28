@@ -31,9 +31,9 @@
 	}
 </script>
 
-<Modal title="Viewing grumble" bind:visible class="w-1/2 max-w-4xl pb-5">
+<Modal title={`${grumble.category} /  Grumble`} bind:visible class="w-1/2 max-w-4xl pb-5">
 	<Loading {loading}>
-		<div class=" bg-white px-4 py-2 rounded-md border border-black">
+		<div class="shadow-lg bg-white px-4 py-2 rounded-md border border-black">
 			<div class="flex gap-2 items-center">
 				<UserIcon class="w-6 h-6 text-xs" userId={grumble.createdBy} />
 				<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>

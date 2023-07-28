@@ -1,5 +1,6 @@
 export const version = '0.0.2';
-export const IP = 'ec2-16-171-174-3.eu-north-1.compute.amazonaws.com'
+// export const IP = 'ec2-16-171-174-3.eu-north-1.compute.amazonaws.com'
+export const IP = 'localhost'
 
 export function dateDiff(date: string): string {
 	const d = new Date(Date.parse(date)).getTime();

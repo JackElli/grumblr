@@ -15,7 +15,7 @@ func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
-	const ENVIRONMENT = "prod"
+	const ENVIRONMENT = "dev"
 
 	r := mux.NewRouter()
 
