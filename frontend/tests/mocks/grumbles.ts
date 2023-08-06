@@ -6,6 +6,7 @@ export async function getGrumbles(page: Page) {
 		await route.fulfill({
 			json: [
 				{
+					id: "test123",
 					createdBy: 'user:1',
 					message: 'this is the very first grumble',
 					dateCreated: '2023-06-03T20:24:35.060986337Z',
@@ -15,7 +16,8 @@ export async function getGrumbles(page: Page) {
 							message: 'test comment',
 							dateCreated: '023-07-22T14:21:36.92541872Z'
 						}
-					]
+					],
+					category: "testing"
 				}
 			]
 		});

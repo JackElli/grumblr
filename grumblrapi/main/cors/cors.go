@@ -19,9 +19,13 @@ func GetAllowedHeaders() []string {
 
 // GetAllowedOrigin returns the CORS origins we allow the backend
 // to receive from
-func GetAllowedOrigin() []string {
-	// return []string{"http://ec2-16-171-174-3.eu-north-1.compute.amazonaws.com:3000"}
-	return []string{"http://localhost:5173"}
+func GetAllowedOrigin(env string) []string {
+	if env != "prod" {
+		return []string{"http://localhost:5173"}
+	}
+
+	// return the prod origin if on prod
+	return []string{""}
 }
 
 // GetExposedHeaders returns the headers we want to expose
@@ -30,13 +34,13 @@ func GetExposedHeaders() []string {
 }
 
 // setCorsMethods allows us to choose which headers are allowed
-func CORS(r *mux.Router) http.Handler {
+func CORS(r *mux.Router, env string) http.Handler {
 	return handlers.CORS(
 		handlers.AllowedMethods(
 			GetAllowedMethods(),
 		),
 		handlers.AllowedOrigins(
-			GetAllowedOrigin(),
+			GetAllowedOrigin(env),
 		),
 		handlers.ExposedHeaders(
 			GetExposedHeaders(),

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { getCatetories, getGrumbles, getLongGrumbles, getNoGrumbles } from '../mocks/grumbles';
-import { getUser } from '../mocks/users';
+import { getUser, getUserNoFriends } from '../mocks/users';
 
 test.beforeEach(async ({ page }) => {
 	await getUser(page);
@@ -9,7 +9,13 @@ test.beforeEach(async ({ page }) => {
 	await page.goto('/grumbles');
 });
 
-test('HAPPY friends grumbles page loaded correctly', async ({ page }) => {
+test('HAPPY friends grumbles page loaded correctly (no friends)', async ({ page }) => {
+	await getUserNoFriends(page);
+	await expect(page.getByRole('heading').getByText('Friends grumbles')).toBeVisible();
+	await expect(page).toHaveScreenshot();
+});
+
+test('HAPPY friends grumbles page loaded correctly (friends)', async ({ page }) => {
 	await expect(page.getByRole('heading').getByText('Friends grumbles')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });
@@ -34,6 +40,6 @@ test('NEGATIVE no grumbles available', async ({ page }) => {
 
 test('HAPPY comments button shows comments', async ({ page }) => {
 	await page.getByText('1 comment').click();
-	await expect(page.getByText('Viewing grumble')).toBeVisible();
+	await expect(page.getByText('Grumbles / testing')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });
