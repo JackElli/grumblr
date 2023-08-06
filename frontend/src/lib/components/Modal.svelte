@@ -1,11 +1,18 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+
 	export let visible = false;
 	export let title: string;
 	export let subtitle = '';
+
 	let modal: HTMLDivElement;
+
+	const dispatch = createEventDispatcher();
+
 	function click(e: any) {
 		if (e.target.className.includes('modal-pos')) {
 			visible = false;
+			dispatch('close');
 		}
 	}
 </script>
@@ -13,7 +20,7 @@
 {#if visible}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		class="modal-pos w-screen h-screen fixed z-20 top-0 left-0 bg-black bg-opacity-40"
+		class="modal-pos w-screen h-screen fixed z-20 top-0 left-0 bg-black bg-opacity-40 overflow-auto pb-5"
 		on:mousedown={click}
 	>
 		<div

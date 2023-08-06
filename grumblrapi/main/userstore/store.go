@@ -11,6 +11,7 @@ var col = "users"
 
 type UserStorer interface {
 	Get(id string) (*user.User, error)
+	Update(id string, user *user.User) error
 	Insert(id string, user *user.User) error
 }
 
@@ -45,6 +46,15 @@ func (store *UserStore) Get(id string) (*user.User, error) {
 // Insert inserts a user into the db
 func (store *UserStore) Insert(id string, user *user.User) error {
 	_, err := store.Collection.Insert(id, *user, nil)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Update updates a users information
+func (store *UserStore) Update(id string, user *user.User) error {
+	_, err := store.Collection.Upsert(id, *user, nil)
 	if err != nil {
 		return err
 	}

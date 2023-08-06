@@ -1,5 +1,5 @@
-<div class="p-3 bg-white border border-black">
-	<div class="w-9/12">
+<div class="bg-white border border-black">
+	<div class="p-3">
 		<h1 class="text-xl">Welcome to grumblr fair traveler 👋!</h1>
 		<p>
 			This is the place to rant about anything on your mind. There's too much negative negativity on
