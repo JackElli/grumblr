@@ -13,8 +13,9 @@ import (
 )
 
 const (
-	NEW_USER = "/user"
-	GET_USER = "/user/{userId}"
+	NEW_USER   = "/user"
+	GET_USER   = "/user/{userId}"
+	ADD_FRIEND = "/user/{userId}/friend"
 )
 
 type UserMgr struct {
@@ -71,7 +72,42 @@ func (mgr *UserMgr) GetUser() func(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// AddFriend adds a friendsId to the userIds friends list
+func (mgr *UserMgr) AddFriend() func(w http.ResponseWriter, req *http.Request) {
+	return func(w http.ResponseWriter, req *http.Request) {
+		userId := mux.Vars(req)["userId"]
+
+		// Decond data from request
+		var Friend struct {
+			FriendId string `json:"friendId"`
+		}
+		json.NewDecoder(req.Body).Decode(&Friend)
+
+		// Get the friends info
+		friend, err := mgr.UserStore.Get(Friend.FriendId)
+		if err != nil {
+			mgr.Responder.Error(w, http.StatusNotFound, err)
+		}
+
+		// Get the user who's wanting to add the friend
+		user, err := mgr.UserStore.Get(userId)
+		if err != nil {
+			mgr.Responder.Error(w, http.StatusNotFound, err)
+		}
+		user.Friends = append(user.Friends, *friend)
+
+		// Update the users information with the new friends list
+		err = mgr.UserStore.Update(userId, user)
+		if err != nil {
+			mgr.Responder.Error(w, http.StatusNotFound, err)
+		}
+
+		mgr.Responder.Respond(w, http.StatusOK, user)
+	}
+}
+
 func (mgr *UserMgr) Register() {
 	mgr.Router.HandleFunc(NEW_USER, mgr.NewUser()).Methods("POST")
 	mgr.Router.HandleFunc(GET_USER, mgr.GetUser()).Methods("GET")
+	mgr.Router.HandleFunc(ADD_FRIEND, mgr.AddFriend()).Methods("POST")
 }

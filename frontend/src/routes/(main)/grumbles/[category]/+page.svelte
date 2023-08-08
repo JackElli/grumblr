@@ -2,7 +2,6 @@
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import Grumble from '$lib/components/Grumble.svelte';
 	import ActionButton from '$lib/components/ActionButton.svelte';
-	import type { _Grumble } from '../grumbles';
 	import NewGrumbleModal from '../NewGrumbleModal.svelte';
 	import StartMessage from '$lib/components/StartMessage.svelte';
 	import { userStore } from '$lib/stores/userStore';
@@ -11,6 +10,7 @@
 	import NetworkError from '$lib/components/NetworkError.svelte';
 	import GrumbleService from '$lib/services/GrumbleService';
 	import WelcomeBackMessage from '$lib/components/WelcomeBackMessage.svelte';
+	import NoFriends from '../NoFriends.svelte';
 
 	export let data;
 
@@ -42,35 +42,51 @@
 	}
 </script>
 
-<div class="flex items-center justify-between">
-	<div>
-		<PageTitle>Friends grumbles</PageTitle>
-		{#if categories}
-			<Categories type="friends" {categories} class="mt-4" />
-		{/if}
-	</div>
-	<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
-	<NewGrumbleModal {loading} {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
-</div>
-<Loading loading={grumbles == undefined && error == undefined}>
-	{#if error}
-		<NetworkError {error} />
-	{/if}
-	{#if grumbles}
-		<div class="mt-4">
-			{#if welcome}
-				<StartMessage />
-			{:else if data.currentCategory == 'recents'}
-				<WelcomeBackMessage />
-			{/if}
-
-			{#if grumbles.length > 0}
-				{#each grumbles as grumble}
-					<Grumble {grumble} />
-				{/each}
-			{:else}
-				<h1 class="mt-2">No grumbles found here.</h1>
+<svelte:head>
+	<title>Grumblr | {data.currentCategory}</title>
+</svelte:head>
+<div class="w-full">
+	<div class="flex items-center justify-between">
+		<div>
+			<PageTitle>Friends grumbles</PageTitle>
+			{#if categories}
+				<Categories type="friends" {categories} class="mt-4" />
 			{/if}
 		</div>
-	{/if}
-</Loading>
+		{#if data.friends != 0}
+			<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
+			<NewGrumbleModal
+				{loading}
+				{categories}
+				bind:newGrumbleModalVisible
+				on:newGrumble={newGrumble}
+			/>
+		{/if}
+	</div>
+	<Loading loading={grumbles == undefined && error == undefined && data.friends == undefined}>
+		{#if error}
+			<NetworkError {error} />
+		{/if}
+		{#if data.friends == 0}
+			<NoFriends />
+		{:else if grumbles}
+			<div class="mt-4">
+				{#if data.currentCategory == 'recents'}
+					{#if welcome}
+						<StartMessage />
+					{:else}
+						<WelcomeBackMessage />
+					{/if}
+				{/if}
+
+				{#if grumbles.length > 0}
+					{#each grumbles as grumble}
+						<Grumble {grumble} />
+					{/each}
+				{:else}
+					<h1 class="mt-2">No grumbles found here.</h1>
+				{/if}
+			</div>
+		{/if}
+	</Loading>
+</div>

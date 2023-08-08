@@ -25,14 +25,39 @@ func NewEndpointsMgr(logger *zap.Logger) *Endpoints {
 	}
 }
 
+type Login struct {
+	Username string
+	Password string
+	Bucket   string
+}
+
+// getLogin returns the username, password and bucket of different envs
+// this is a way to get around using secrets
+func getLogin(env string) *Login {
+	if env == "prod" {
+		return &Login{
+			Username: "Administrator",
+			Password: "Grumblr2!",
+			Bucket:   "grumblr",
+		}
+	} else {
+		return &Login{
+			Username: "Administrator",
+			Password: "password",
+			Bucket:   "grumblr",
+		}
+	}
+}
+
+// SetupEndpoints sets up the means with which to talk to grumblrapi
 func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
+	loginDetails := getLogin(env)
 	cb, err := couchbase.NewCouchbase(
 		e.Logger,
 		"db",
-		"Administrator",
-		// "GrumblrAws2!",
-		"password",
-		"grumblr",
+		loginDetails.Username,
+		loginDetails.Password,
+		loginDetails.Bucket,
 	)
 	if err != nil {
 		return err
