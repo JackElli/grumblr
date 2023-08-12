@@ -22,11 +22,12 @@
 		loading = true;
 		const grumbleText = e.detail.grumbleText;
 		const category = e.detail.category;
+		const dataType = e.detail.dataType;
 		if (grumbleText == '') {
 			return;
 		}
 		try {
-			const grumble = await GrumbleService.new(grumbleText, category, 'global');
+			const grumble = await GrumbleService.new(grumbleText, dataType, category, 'global');
 			newGrumbleModalVisible = false;
 
 			grumbles?.splice(0, 0, grumble);

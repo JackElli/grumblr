@@ -45,7 +45,15 @@
 		<div class="flex gap-3 items-center break-words">
 			<UserIcon class="w-8 h-8 flex-shrink-0" userId={grumble.createdBy} />
 			<div>
-				<p class="max-w-[700px]">{grumble.message}</p>
+				{#if grumble.dataType == 'text'}
+					<p class="max-w-[700px]">{grumble.message}</p>
+				{:else}
+					<img
+						class="mt-4 w-60"
+						src={`data:${grumble.dataType};base64, ${grumble.message}`}
+						alt="grumble"
+					/>
+				{/if}
 				<div class="flex gap-2 mt-2">
 					<button
 						on:click={() =>

@@ -18,7 +18,8 @@
 		if (grumbleText != '') {
 			dispatch('newGrumble', {
 				grumbleText: grumbleText,
-				category: selectedCategory
+				category: selectedCategory,
+				dataType: 'text'
 			});
 			grumbleText = '';
 		}
