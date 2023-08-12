@@ -21,10 +21,11 @@ class GrumbleService {
 		return await resp.json();
 	}
 
-	async new(grumbleText: string, category: string, type: string): Promise<_Grumble> {
+	async new(grumbleText: string, dataType: string, category: string, type: string): Promise<_Grumble> {
 		const user = await AuthService.auth();
 		const newGrumble: _Grumble = {
 			createdBy: user.id,
+			dataType,
 			message: grumbleText,
 			dateCreated: new Date().toISOString(),
 			type: type,
