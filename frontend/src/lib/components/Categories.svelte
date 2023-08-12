@@ -6,7 +6,7 @@
 	export let type: string;
 </script>
 
-<div class="flex gap-2 items-center {$$props.class}">
+<div class="flex items-center {$$props.class}">
 	<Category {type} href="recents" name="Recents" />
 	{#each categories as category}
 		<Category {type} href={category.name} name={category.name} />

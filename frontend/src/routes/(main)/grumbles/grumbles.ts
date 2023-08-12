@@ -6,6 +6,8 @@ export type _Grumble = {
 	type: string;
 	category: string;
 	comments: Comment[];
+	agrees: Record<string, boolean>;
+	disagrees: Record<string, boolean>;
 };
 
 export type Comment = {

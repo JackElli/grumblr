@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"grumblrapi/main/responder"
-	"grumblrapi/main/user"
+
 	"grumblrapi/main/userstore"
 	"net/http"
 	"net/http/httptest"
@@ -34,7 +34,7 @@ func TestNewUser(t *testing.T) {
 		},
 	}
 
-	newUser := user.NewUser(
+	newUser := userstore.NewUser(
 		"jack",
 		"this is a test",
 	)
@@ -113,7 +113,7 @@ func TestAddFriend(t *testing.T) {
 			newUserMgrMock.Router.ServeHTTP(w, r)
 
 			// Check if user friend has been added
-			var user user.User
+			var user userstore.User
 			json.NewDecoder(w.Body).Decode(&user)
 
 			assert.Equal(t, len(user.Friends), testCase.expectedNumberOfFriends)

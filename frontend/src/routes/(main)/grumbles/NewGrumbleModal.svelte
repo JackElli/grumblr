@@ -20,6 +20,7 @@
 				grumbleText: grumbleText,
 				category: selectedCategory
 			});
+			grumbleText = '';
 		}
 	}
 
@@ -32,7 +33,7 @@
 	bind:visible={newGrumbleModalVisible}
 	class="w-96 pb-5"
 >
-	<p>Select a category for your grumble</p>
+	<p class="font-semibold">Select a category for your grumble</p>
 	<select
 		class="mt-1 bg-zinc-50 focus:bg-white border border-black px-2 rounded-sm cursor-pointer"
 		bind:value={selectedCategory}
@@ -43,7 +44,7 @@
 			{/each}
 		{/if}
 	</select>
-	<p class="mt-3">Add your grumble text, what are you angry about?</p>
+	<p class="mt-3 font-semibold">Add your grumble text, what are you angry about?</p>
 	<textarea
 		bind:this={grumbleTextbox}
 		bind:value={grumbleText}

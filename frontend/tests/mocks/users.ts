@@ -6,9 +6,11 @@ export async function getUser(page: Page) {
 			json: {
 				id: '1f21823a-8682-4900-b627-d6bd39e1b95b',
 				username: 'test1',
-				friends: [{
-					"test": 'asdasd'
-				}],
+				friends: [
+					{
+						test: 'asdasd'
+					}
+				],
 				welcome: true
 			}
 		});

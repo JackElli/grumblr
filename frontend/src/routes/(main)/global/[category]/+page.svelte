@@ -7,6 +7,7 @@
 	import NetworkError from '$lib/components/NetworkError.svelte';
 	import GrumbleService from '$lib/services/GrumbleService';
 	import NewGlobalGrumbleModal from '../NewGlobalGrumbleModal.svelte';
+	import NoGrumblesFound from '$lib/components/NoGrumblesFound.svelte';
 
 	export let data;
 
@@ -63,7 +64,7 @@
 						<Grumble {grumble} />
 					{/each}
 				{:else}
-					<h1 class="mt-2">No grumbles found here.</h1>
+					<NoGrumblesFound on:newGrumble={() => (newGrumbleModalVisible = true)} />
 				{/if}
 			</div>
 		{/if}

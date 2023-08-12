@@ -1,11 +1,11 @@
 import { page } from '$app/stores';
 import { get } from 'svelte/store';
 
-export const version = '0.0.5';
+export const version = '0.0.7';
 
 let ENV = 'dev';
 export const IP =
-	ENV === 'prod' ? 'ec2-16-171-199-209.eu-north-1.compute.amazonaws.com' : 'localhost';
+	ENV === 'prod' ? 'ec2-16-170-201-214.eu-north-1.compute.amazonaws.com' : 'localhost';
 
 export function dateDiff(date: string): string {
 	const d = new Date(Date.parse(date)).getTime();

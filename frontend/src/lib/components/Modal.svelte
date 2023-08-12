@@ -27,7 +27,7 @@
 			bind:this={modal}
 			class="bg-zinc-100 border border-black rounded-md p-4 mt-20 mx-auto {$$props.class}"
 		>
-			<h1 class="text-xl">{title}</h1>
+			<h1 class="text-xl font-bold">{title}</h1>
 			{#if subtitle}
 				<p class="text-gray-400 text-xs">{subtitle}</p>
 			{/if}

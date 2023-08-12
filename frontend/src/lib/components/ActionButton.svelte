@@ -2,12 +2,13 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 
 	export let loading = false;
+	export let disabled = false;
 </script>
 
 <button
 	on:click
-	disabled={loading}
-	class="flex gap-2 items-center {loading
+	disabled={loading || disabled}
+	class="flex gap-2 items-center {disabled
 		? 'opacity-50 cursor-not-allowed'
 		: ''} justify-center min-w-[120px] px-3 py-1 shadow-[0_2px_2px_1px_rgba(0,0,0,0.2)] rounded-md hover:shadow-[0_2px_4px_2px_rgba(0,0,0,0.3)] bg-[#574658] text-white {$$props.class} "
 >

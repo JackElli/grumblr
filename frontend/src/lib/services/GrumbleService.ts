@@ -29,6 +29,8 @@ class GrumbleService {
 			dateCreated: new Date().toISOString(),
 			type: type,
 			category: category,
+			agrees: {},
+			disagrees: {},
 			comments: []
 		};
 
@@ -58,6 +60,30 @@ class GrumbleService {
 			body: JSON.stringify({
 				createdBy: user.id,
 				message: message
+			})
+		});
+		return await resp.json();
+	}
+
+	async agree(grumbleId: string) {
+		const user = await AuthService.auth();
+		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/agree`, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify({
+				userId: user.id
+			})
+		});
+		return await resp.json();
+	}
+
+	async disagree(grumbleId: string) {
+		const user = await AuthService.auth();
+		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/disagree`, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify({
+				userId: user.id
 			})
 		});
 		return await resp.json();
