@@ -51,6 +51,7 @@ func (mgr *NewGrumbleMgr) NewGrumble() func(w http.ResponseWriter, req *http.Req
 		// Create a new grumble from template
 		grumble = *grumblestore.NewGrumble(
 			grumble.CreatedBy,
+			grumble.DataType,
 			grumble.Message,
 			grumble.Type,
 			grumble.Category,

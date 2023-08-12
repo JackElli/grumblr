@@ -34,7 +34,7 @@ test('HAPPY new grumble button opens modal', async ({ page }) => {
 
 test('NEGATIVE no grumbles available', async ({ page }) => {
 	await getNoGrumbles(page);
-	await expect(page.getByText('No grumbles found here.')).toBeVisible();
+	await expect(page.getByText('No grumbles found here')).toBeVisible();
 	await expect(page).toHaveScreenshot();
 });
 

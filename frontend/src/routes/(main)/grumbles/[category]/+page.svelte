@@ -11,6 +11,7 @@
 	import GrumbleService from '$lib/services/GrumbleService';
 	import WelcomeBackMessage from '$lib/components/WelcomeBackMessage.svelte';
 	import NoFriends from '../NoFriends.svelte';
+	import NoGrumblesFound from '$lib/components/NoGrumblesFound.svelte';
 
 	export let data;
 
@@ -26,11 +27,12 @@
 		loading = true;
 		const grumbleText = e.detail.grumbleText;
 		const category = e.detail.category;
+		const dataType = e.detail.dataType;
 		if (grumbleText == '') {
 			return;
 		}
 		try {
-			const grumble = await GrumbleService.new(grumbleText, category, 'friends');
+			const grumble = await GrumbleService.new(grumbleText, dataType, category, 'friends');
 			newGrumbleModalVisible = false;
 
 			grumbles?.splice(0, 0, grumble);
@@ -87,7 +89,7 @@
 						<Grumble {grumble} />
 					{/each}
 				{:else}
-					<h1 class="mt-2">No grumbles found here.</h1>
+					<NoGrumblesFound on:newGrumble={() => (newGrumbleModalVisible = true)} />
 				{/if}
 			</div>
 		{/if}

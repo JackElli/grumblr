@@ -22,7 +22,8 @@
 		if (grumbleText != '') {
 			dispatch('newGrumble', {
 				grumbleText: grumbleText,
-				category: selectedCategory
+				category: selectedCategory,
+				dataType: 'text'
 			});
 			grumbleText = '';
 		}
@@ -48,11 +49,11 @@
 			{/each}
 		{/if}
 	</select>
-	<p class="mt-3 font-semibold">Add your grumble text, what are you angry about?</p>
+	<p class="mt-6 font-semibold">Add your grumble text, what are you angry about?</p>
 	<textarea
 		bind:this={grumbleTextbox}
 		bind:value={grumbleText}
-		class="mt-1 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md focus:bg-white"
+		class="mt-2 p-2 bg-gray-100 border border-black w-full h-40 resize-none outline-none rounded-md focus:bg-white"
 		placeholder="Prompt: This website needs some work..."
 	/>
 	<p class="text-sm {charsLeft < 20 ? 'text-red-600' : charsLeft < 50 ? 'text-orange-400' : ''} ">

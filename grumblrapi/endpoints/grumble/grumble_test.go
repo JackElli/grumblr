@@ -34,6 +34,7 @@ func TestNewGrumble(t *testing.T) {
 
 	newGrumble := grumblestore.NewGrumble(
 		"jack",
+		grumblestore.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -89,6 +90,7 @@ func TestComment(t *testing.T) {
 
 	newGrumble := grumblestore.NewGrumble(
 		"jack",
+		grumblestore.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -161,6 +163,7 @@ func TestAgree(t *testing.T) {
 
 	newGrumble := grumblestore.NewGrumble(
 		"jack",
+		grumblestore.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -232,6 +235,7 @@ func TestDisagree(t *testing.T) {
 
 	newGrumble := grumblestore.NewGrumble(
 		"jack",
+		grumblestore.Text,
 		"this is a test",
 		"friends",
 		"Test",

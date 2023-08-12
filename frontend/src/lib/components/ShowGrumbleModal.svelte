@@ -56,8 +56,15 @@
 				<UserIcon class="w-6 h-6 text-xs" userId={grumble.createdBy} />
 				<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
 			</div>
-
-			<h1 class="mt-2 text-3xl break-words">{grumble.message}</h1>
+			{#if grumble.dataType == 'text'}
+				<h1 class="mt-2 text-3xl break-words">{grumble.message}</h1>
+			{:else}
+				<img
+					class="mt-4 w-1/2"
+					src={`data:${grumble.dataType};base64, ${grumble.message}`}
+					alt="grumble"
+				/>
+			{/if}
 		</div>
 
 		<div class="flex gap-2 mt-4">
@@ -115,7 +122,15 @@
 			<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
 		</div>
 
-		<h1 class="mt-2 text-xl break-words">{grumble.message}</h1>
+		{#if grumble.dataType == 'text'}
+			<h1 class="mt-2 text-3xl break-words">{grumble.message}</h1>
+		{:else}
+			<img
+				class="mt-4 w-1/2"
+				src={`data:${grumble.dataType};base64, ${grumble.message}`}
+				alt="grumble"
+			/>
+		{/if}
 	</div>
 	<textarea
 		placeholder="Type your comment here..."
