@@ -12,7 +12,16 @@ func NewGrumbleStoreMock() *GrumbleStoreMock {
 }
 
 func (store *GrumbleStoreMock) Get(id string) (*Grumble, error) {
-	return nil, nil
+	grumble := Grumble{
+		CreatedBy: "user:1",
+		Message:   "This is a friends grumble",
+		Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
+		Comments:  []Comment{},
+		Agrees:    make(map[string]bool),
+		Disagrees: make(map[string]bool),
+		Type:      Friends,
+	}
+	return &grumble, nil
 }
 
 func (store *GrumbleStoreMock) Query(querystr string) ([]Grumble, error) {

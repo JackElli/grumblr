@@ -76,7 +76,7 @@ func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
 
 	// For the endpoints that aren't restricted by auth
 	public := r.PathPrefix("/").Subrouter()
-	grumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer)
+	grumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer, userStorer)
 	user.NewNewUserMgr(public, e.Logger, responder, userStorer)
 	grumbles.NewGrumblesMgr(public, env, e.Logger, responder, grumbleStorer, categoryStorer)
 	global.NewGlobalMgr(public, env, e.Logger, responder, grumbleStorer)

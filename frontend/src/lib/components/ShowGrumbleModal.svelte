@@ -6,10 +6,17 @@
 	import ActionButton from './ActionButton.svelte';
 	import GrumbleService from '$lib/services/GrumbleService';
 	import UserIcon from './UserIcon.svelte';
+	import { createEventDispatcher } from 'svelte';
+	import { userStore } from '$lib/stores/userStore';
 
 	export let visible = false;
 	export let loading = false;
 	export let grumble: _Grumble;
+
+	$: numOfAgrees = Object.keys(grumble.agrees).length;
+	$: numOfDisagrees = Object.keys(grumble.disagrees).length;
+
+	const dispatch = createEventDispatcher();
 
 	let addComment = false;
 	let actionLoading = false;
@@ -22,15 +29,23 @@
 		if (grumble.id) {
 			actionLoading = true;
 			try {
-				await GrumbleService.addComment(grumble.id, commentMessage);
+				grumble = await GrumbleService.addComment(grumble.id, commentMessage);
 				addComment = false;
 				commentMessage = '';
-				grumble = await GrumbleService.get(grumble.id);
+				dispatch('comment');
 			} catch (e) {
 				console.log(e);
 			}
 			actionLoading = false;
 		}
+	}
+
+	function agree() {
+		dispatch('agree');
+	}
+
+	function disagree() {
+		dispatch('disagree');
 	}
 </script>
 
@@ -42,9 +57,23 @@
 				<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
 			</div>
 
-			<h1 class="mt-2 text-3xl">{grumble.message}</h1>
+			<h1 class="mt-2 text-3xl break-words">{grumble.message}</h1>
 		</div>
 
+		<div class="flex gap-2 mt-4">
+			<button
+				class="inline text-md text-gray-500 {$userStore.id in grumble.agrees
+					? 'text-green-800 font-bold'
+					: ''} hover:text-green-700 cursor-pointer"
+				on:click={agree}>{numOfAgrees} agrees</button
+			>
+			<button
+				class="inline text-md text-gray-500 {$userStore.id in grumble.disagrees
+					? 'text-red-800 font-bold'
+					: ''} hover:text-red-700 cursor-pointer"
+				on:click={disagree}>{numOfDisagrees} disagrees</button
+			>
+		</div>
 		<div class="mt-5 mb-2 flex gap-4 items-center pt-5 border-t border-t-gray-300">
 			<h1 class="font-semibold">Comments</h1>
 			<ActionButton class="text-sm" on:click={() => (addComment = true)}>New comment</ActionButton>
@@ -55,16 +84,18 @@
 		{:else}
 			<div class="mt-7">
 				{#each grumble.comments as comment}
-					<div class="py-4 px-2 border-b flex justify-between items-center even:bg-zinc-50">
+					<div
+						class="py-4 px-2 border-b flex justify-between items-center hover:bg-gray-50 hover:shadow-sm"
+					>
 						<div class="flex gap-2 items-center">
 							<UserIcon class="w-6 h-6 text-xs" userId={grumble.createdBy} />
 							<div>
-								<p class="text-xs text-gray-700">{grumble.createdBy}</p>
-								<p>{comment.message}</p>
+								<p class="text-xs text-gray-700">
+									{grumble.createdBy} - {dateDiff(comment.dateCreated)}
+								</p>
+								<p class="text-md">{comment.message}</p>
 							</div>
 						</div>
-
-						<p class="text-xs text-gray-700">{dateDiff(comment.dateCreated)}</p>
 					</div>
 				{/each}
 			</div>
@@ -84,7 +115,7 @@
 			<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
 		</div>
 
-		<h1 class="mt-2 text-xl">{grumble.message}</h1>
+		<h1 class="mt-2 text-xl break-words">{grumble.message}</h1>
 	</div>
 	<textarea
 		placeholder="Type your comment here..."

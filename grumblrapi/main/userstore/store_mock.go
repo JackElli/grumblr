@@ -1,35 +1,33 @@
 package userstore
 
-import (
-	"grumblrapi/main/user"
-)
-
 type UserStoreMock struct{}
 
 func NewUserStoreMock() *UserStoreMock {
 	return &UserStoreMock{}
 }
 
-func (store *UserStoreMock) Get(id string) (*user.User, error) {
+func (store *UserStoreMock) Get(id string) (*User, error) {
 	switch id {
 	case "test1":
-		return user.NewUser(
-			"test",
-			"test",
-		), nil
+		return &User{
+			Id:       "test1",
+			Username: "test1",
+			Password: "test",
+		}, nil
 	case "test2":
-		return user.NewUser(
-			"test2",
-			"test",
-		), nil
+		return &User{
+			Id:       "test2",
+			Username: "test2",
+			Password: "test3",
+		}, nil
 	}
 	return nil, nil
 }
 
-func (store *UserStoreMock) Update(id string, user *user.User) error {
+func (store *UserStoreMock) Update(id string, user *User) error {
 	return nil
 }
 
-func (store *UserStoreMock) Insert(id string, user *user.User) error {
+func (store *UserStoreMock) Insert(id string, user *User) error {
 	return nil
 }

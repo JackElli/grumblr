@@ -67,14 +67,17 @@
 		{#if error}
 			<NetworkError {error} />
 		{/if}
+
+		{#if welcome}
+			<StartMessage class="mt-3" />
+		{/if}
+
 		{#if data.friends == 0}
 			<NoFriends />
 		{:else if grumbles}
 			<div class="mt-4">
 				{#if data.currentCategory == 'recents'}
-					{#if welcome}
-						<StartMessage />
-					{:else}
+					{#if !welcome}
 						<WelcomeBackMessage />
 					{/if}
 				{/if}

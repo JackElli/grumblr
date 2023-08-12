@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"grumblrapi/main/responder"
-	"grumblrapi/main/user"
 	"grumblrapi/main/userstore"
 	"net/http"
 
@@ -46,7 +45,7 @@ func (mgr *UserMgr) NewUser() func(w http.ResponseWriter, req *http.Request) {
 		}
 		json.NewDecoder(req.Body).Decode(&userDetails)
 
-		user := user.NewUser(userDetails.Username, userDetails.Password)
+		user := userstore.NewUser(userDetails.Username, userDetails.Password)
 		err := mgr.UserStore.Insert(user.Id, user)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusInternalServerError, err)

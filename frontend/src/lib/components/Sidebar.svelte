@@ -7,6 +7,7 @@
 >
 	<SidebarTab href="/grumbles">Friends Grumbles</SidebarTab>
 	<SidebarTab href="/global">Global Grumbles</SidebarTab>
+	<SidebarTab disabled href="/global">Top Grumblr's</SidebarTab>
 	<SidebarTab href="/profile">Your Profile</SidebarTab>
-	<p class="text-xs absolute left-2 bottom-2 text-gray-500">JE | 2023</p>
+	<p class="text-xs absolute left-auto right-auto bottom-2 text-gray-500">grumblr | 2023</p>
 </div>
