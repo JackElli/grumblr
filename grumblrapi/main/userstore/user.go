@@ -1,4 +1,4 @@
-package user
+package userstore
 
 import (
 	"time"
@@ -13,6 +13,7 @@ type User struct {
 	DateCreated   time.Time `json:"dateCreated"`
 	Friends       []User    `json:"friends"`
 	WelcomePrompt bool      `json:"welcome"`
+	Categories    []string  `json:"categories"`
 }
 
 func NewUser(username string, password string) *User {
@@ -23,5 +24,6 @@ func NewUser(username string, password string) *User {
 		DateCreated:   time.Now(),
 		Friends:       []User{},
 		WelcomePrompt: true,
+		Categories:    []string{},
 	}
 }

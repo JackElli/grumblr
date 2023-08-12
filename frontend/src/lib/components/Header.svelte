@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import SearchBar from './SearchBar.svelte';
-	import SubHeader from './SubHeader.svelte';
 
 	$: selected = $page.url.pathname == '/profile';
 </script>
@@ -10,7 +9,7 @@
 	<div class="flex h-full mx-auto justify-between w-[65%] items-center">
 		<div class="flex gap-5 items-center min-w-[400px]">
 			<a href="/">
-				<h1 class="text-3xl bg-[#dbe5e6] rounded-sm px-2 hover:bg-zinc-100">gr</h1>
+				<h1 class="text-2xl font-semibold text-white">grumblr</h1>
 			</a>
 			<SearchBar />
 		</div>

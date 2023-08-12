@@ -25,7 +25,7 @@ func GetAllowedOrigin(env string) []string {
 	}
 
 	// Return the prod origin if on prod
-	return []string{"http://ec2-16-171-199-209.eu-north-1.compute.amazonaws.com:3000"}
+	return []string{"http://ec2-16-170-201-214.eu-north-1.compute.amazonaws.com:3000"}
 }
 
 // GetExposedHeaders returns the headers we want to expose

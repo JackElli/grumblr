@@ -10,6 +10,11 @@
 	$: selected = `/${root}/${href}` == $page.url.pathname;
 </script>
 
-<a href={`/${root}/${href}`} class={selected ? 'border-b-2 border-b-[#806882]' : ''}>
+<a
+	href={`/${root}/${href}`}
+	class={`px-2 rounded-t-sm ${
+		selected ? 'border-b-2 border-b-[#806882] bg-[#f8faf7]' : 'hover:bg-[#f8faf7]'
+	}`}
+>
 	{name}
 </a>

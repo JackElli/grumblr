@@ -1,4 +1,4 @@
-<div class="bg-white border border-black">
+<div class="bg-white border border-black {$$props.class}">
 	<div class="p-3">
 		<h1 class="text-xl">Welcome to grumblr fair traveler 👋!</h1>
 		<p>
