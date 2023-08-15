@@ -43,7 +43,11 @@
 <Card class="p-3 flex justify-between items-center">
 	<div>
 		<div class="flex gap-3 items-center break-words">
-			<UserIcon class="w-8 h-8 flex-shrink-0" userId={grumble.createdBy} />
+			<UserIcon
+				class="w-8 h-8 flex-shrink-0"
+				userId={grumble.createdBy}
+				username={grumble.createdByUsername}
+			/>
 			<div>
 				{#if grumble.dataType == 'text'}
 					<p class="max-w-[700px]">{grumble.message}</p>
@@ -62,13 +66,13 @@
 						>{numOfComments} comment{numOfComments == 1 ? '' : 's'}</button
 					>
 					<button
-						class="inline text-xs text-gray-500 {$userStore.id in grumble.agrees
+						class="inline text-xs text-gray-500 {$userStore?.id in grumble.agrees
 							? 'text-green-800 font-bold'
 							: ''} hover:text-green-700 cursor-pointer"
 						on:click={agree}>{numOfAgrees} agrees</button
 					>
 					<button
-						class="inline text-xs text-gray-500 {$userStore.id in grumble.disagrees
+						class="inline text-xs text-gray-500 {$userStore?.id in grumble.disagrees
 							? 'text-red-800 font-bold'
 							: ''} hover:text-red-700 cursor-pointer"
 						on:click={disagree}>{numOfDisagrees} disagrees</button

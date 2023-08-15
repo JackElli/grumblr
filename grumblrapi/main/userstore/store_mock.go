@@ -24,6 +24,10 @@ func (store *UserStoreMock) Get(id string) (*User, error) {
 	return nil, nil
 }
 
+func (store *UserStoreMock) GetByUsername(username string) (*User, error) {
+	return nil, nil
+}
+
 func (store *UserStoreMock) Update(id string, user *User) error {
 	return nil
 }

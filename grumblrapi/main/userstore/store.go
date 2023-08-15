@@ -1,6 +1,8 @@
 package userstore
 
 import (
+	"fmt"
+
 	"github.com/couchbase/gocb/v2"
 	"go.uber.org/zap"
 )
@@ -9,6 +11,7 @@ var col = "users"
 
 type UserStorer interface {
 	Get(id string) (*User, error)
+	GetByUsername(username string) (*User, error)
 	Update(id string, user *User) error
 	Insert(id string, user *User) error
 }
@@ -16,12 +19,14 @@ type UserStorer interface {
 type UserStore struct {
 	Logger     *zap.Logger
 	Collection *gocb.Collection
+	Scope      *gocb.Scope
 }
 
 func NewUserStore(logger *zap.Logger, scope *gocb.Scope) *UserStore {
 	return &UserStore{
 		Logger:     logger,
 		Collection: scope.Collection(col),
+		Scope:      scope,
 	}
 }
 
@@ -34,6 +39,25 @@ func (store *UserStore) Get(id string) (*User, error) {
 
 	var user User
 	err = userResult.Content(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+// GetByUsername returns a user based on a username
+func (store *UserStore) GetByUsername(username string) (*User, error) {
+	userResult, err := store.Scope.Query(
+		fmt.Sprintf("SELECT users.* FROM grumblr.dev.users WHERE username='%s'", username),
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	var user User
+	err = userResult.One(&user)
 	if err != nil {
 		return nil, err
 	}

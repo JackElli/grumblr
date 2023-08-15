@@ -1,8 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { getUser } from '../mocks/users';
+import { auth } from '../mocks/auth';
+import { getGlobalCategories } from '../mocks/global';
 
 test.beforeEach(async ({ page }) => {
-	await getUser(page);
+	await auth(page);
+	await getGlobalCategories(page);
+
 	await page.goto('/profile');
 });
 

@@ -18,16 +18,17 @@ const (
 )
 
 type Grumble struct {
-	Id        string          `json:"id"`
-	CreatedBy string          `json:"createdBy"`
-	Message   string          `json:"message"`
-	Comments  []Comment       `json:"comments"`
-	Agrees    map[string]bool `json:"agrees"`
-	Disagrees map[string]bool `json:"disagrees"`
-	Date      time.Time       `json:"dateCreated"`
-	Type      Type            `json:"type"`
-	DataType  DataType        `json:"dataType"`
-	Category  string          `json:"category"`
+	Id                string          `json:"id"`
+	CreatedBy         string          `json:"createdBy"`
+	CreatedByUsername string          `json:"createdByUsername,omitempty"`
+	Message           string          `json:"message"`
+	Comments          []Comment       `json:"comments"`
+	Agrees            map[string]bool `json:"agrees"`
+	Disagrees         map[string]bool `json:"disagrees"`
+	Date              time.Time       `json:"dateCreated"`
+	Type              Type            `json:"type"`
+	DataType          DataType        `json:"dataType"`
+	Category          string          `json:"category"`
 }
 
 func NewGrumble(createdBy string, dateType DataType, message string, _type Type, category string) *Grumble {

@@ -6,7 +6,11 @@
 
 	$: getCategories();
 	async function getCategories() {
-		categories = await GrumbleService.getCategories('global');
+		try {
+			categories = await GrumbleService.categories('global');
+		} catch (err) {
+			console.log(err);
+		}
 	}
 </script>
 

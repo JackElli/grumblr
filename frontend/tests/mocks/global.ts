@@ -11,7 +11,29 @@ export async function getGlobalGrumbles(page: Page) {
 					type: 'global',
 					agrees: {},
 					disagrees: {},
-					comments: []
+					comments: [],
+					dataType: 'text'
+				}
+			]
+		});
+	});
+}
+
+export async function getGlobalCategories(page: Page) {
+	await page.route('http://localhost:3200/grumbles/info/categories/global', async (route) => {
+		await route.fulfill({
+			json: [
+				{
+					id: '',
+					type: 'global',
+					people: [],
+					name: 'Amazing'
+				},
+				{
+					id: '',
+					type: 'global',
+					people: [],
+					name: 'Random'
 				}
 			]
 		});

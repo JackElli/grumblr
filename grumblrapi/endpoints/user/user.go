@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/json"
-	"fmt"
 	"grumblrapi/main/responder"
 	"grumblrapi/main/userstore"
 	"net/http"
@@ -12,7 +11,6 @@ import (
 )
 
 const (
-	NEW_USER   = "/user"
 	GET_USER   = "/user/{userId}"
 	ADD_FRIEND = "/user/{userId}/friend"
 )
@@ -33,28 +31,6 @@ func NewNewUserMgr(router *mux.Router, logger *zap.Logger, responder responder.R
 	}
 	e.Register()
 	return e
-}
-
-// NewUser inserts a user into the database
-func (mgr *UserMgr) NewUser() func(w http.ResponseWriter, req *http.Request) {
-	return func(w http.ResponseWriter, req *http.Request) {
-		//TODO add validation here
-		var userDetails struct {
-			Username string `json:"username"`
-			Password string `json:"password"`
-		}
-		json.NewDecoder(req.Body).Decode(&userDetails)
-
-		user := userstore.NewUser(userDetails.Username, userDetails.Password)
-		err := mgr.UserStore.Insert(user.Id, user)
-		if err != nil {
-			mgr.Responder.Error(w, http.StatusInternalServerError, err)
-			return
-		}
-
-		mgr.Logger.Info(fmt.Sprintf("Succesfully added user with user id %s", user.Id))
-		mgr.Responder.Respond(w, http.StatusOK, "Succesfully added user")
-	}
 }
 
 // NewUser inserts a user into the database
@@ -106,7 +82,6 @@ func (mgr *UserMgr) AddFriend() func(w http.ResponseWriter, req *http.Request) {
 }
 
 func (mgr *UserMgr) Register() {
-	mgr.Router.HandleFunc(NEW_USER, mgr.NewUser()).Methods("POST")
 	mgr.Router.HandleFunc(GET_USER, mgr.GetUser()).Methods("GET")
 	mgr.Router.HandleFunc(ADD_FRIEND, mgr.AddFriend()).Methods("POST")
 }
