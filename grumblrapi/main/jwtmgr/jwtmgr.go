@@ -1,15 +1,15 @@
-package jwtmanager
+package jwtmgr
 
 import (
 	"errors"
-	"grumblrapi/main/userstore"
+	"grumblrapi/main/usermgr"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
 
 type JWTManager interface {
-	CreateJWT(user *userstore.User, expirationDate time.Time) (string, error)
+	CreateJWT(user *usermgr.User, expirationDate time.Time) (string, error)
 	ParseJWT(jwtStr string) (*jwt.MapClaims, bool)
 	JwtInDate(claims jwt.MapClaims) bool
 	GetCurrentUserId(jwtStr string) (string, error)
@@ -26,7 +26,7 @@ func NewJWTManager(secretKey []byte) *JWTManage {
 }
 
 // createJWT creates a JWT and returns the token and an error if there is one
-func (jwtMgr *JWTManage) CreateJWT(user *userstore.User, expirationDate time.Time) (string, error) {
+func (jwtMgr *JWTManage) CreateJWT(user *usermgr.User, expirationDate time.Time) (string, error) {
 	t := jwt.New(jwt.SigningMethodHS256)
 
 	claims := t.Claims.(jwt.MapClaims)

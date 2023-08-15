@@ -1,4 +1,4 @@
-package categorystore
+package categorymgr
 
 import (
 	"strings"

@@ -2,8 +2,8 @@ package grumbles
 
 import (
 	"encoding/json"
-	"grumblrapi/main/categorystore"
-	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/categorymgr"
+	"grumblrapi/main/grumblemgr"
 	"grumblrapi/main/responder"
 	"net/http"
 	"net/http/httptest"
@@ -24,7 +24,7 @@ func TestGrumbles(t *testing.T) {
 	loggerMock, _ := zap.NewProduction()
 	defer loggerMock.Sync()
 	responderMock := responder.NewResponder()
-	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
+	grumbleStoreMock := grumblemgr.NewGrumbleStoreMock()
 
 	testcases := []testcase{
 		{
@@ -52,7 +52,7 @@ func TestGrumbles(t *testing.T) {
 			r, _ := http.NewRequest("GET", ROOT, nil)
 			grumblesMgrMock.Router.ServeHTTP(w, r)
 
-			var response []grumblestore.Grumble
+			var response []grumblemgr.Grumble
 			json.NewDecoder(w.Body).Decode(&response)
 
 			assert.Equal(t, len(response), testCase.expectedResultLen)
@@ -67,21 +67,21 @@ func TestCategories(t *testing.T) {
 	type testcase struct {
 		desc           string
 		_type          string
-		expectedResult []categorystore.Category
+		expectedResult []categorymgr.Category
 		expectedStatus int
 	}
 
 	loggerMock, _ := zap.NewProduction()
 	defer loggerMock.Sync()
 	responderMock := responder.NewResponder()
-	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
-	categoryStoreMock := categorystore.NewCategoryStoreMock()
+	grumbleStoreMock := grumblemgr.NewGrumbleStoreMock()
+	categoryStoreMock := categorymgr.NewCategoryStoreMock()
 
 	testcases := []testcase{
 		{
 			desc:  "HAPPY retrieved categories",
 			_type: "friends",
-			expectedResult: []categorystore.Category{
+			expectedResult: []categorymgr.Category{
 				{
 					Id:   "testcat1",
 					Type: "friends",
@@ -113,7 +113,7 @@ func TestCategories(t *testing.T) {
 			r, _ := http.NewRequest("GET", CATEGORIES_ROOT+testCase._type, nil)
 			grumblesMgrMock.Router.ServeHTTP(w, r)
 
-			var response []categorystore.Category
+			var response []categorymgr.Category
 			json.NewDecoder(w.Body).Decode(&response)
 
 			assert.DeepEqual(t, response, testCase.expectedResult)

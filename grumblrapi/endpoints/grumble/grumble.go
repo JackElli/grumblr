@@ -3,9 +3,9 @@ package grumble
 import (
 	"encoding/json"
 	"fmt"
-	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/grumblemgr"
 	"grumblrapi/main/responder"
-	"grumblrapi/main/userstore"
+	"grumblrapi/main/usermgr"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -24,11 +24,11 @@ type NewGrumbleMgr struct {
 	Logger       *zap.Logger
 	Router       *mux.Router
 	Responder    responder.Responder
-	GrumbleStore grumblestore.GrumbleStorer
-	UserStore    userstore.UserStorer
+	GrumbleStore grumblemgr.GrumbleStorer
+	UserStore    usermgr.UserStorer
 }
 
-func NewNewGrumbleMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, grumbleStore grumblestore.GrumbleStorer, userStore userstore.UserStorer) *NewGrumbleMgr {
+func NewNewGrumbleMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, grumbleStore grumblemgr.GrumbleStorer, userStore usermgr.UserStorer) *NewGrumbleMgr {
 	e := &NewGrumbleMgr{
 		Logger:       logger,
 		Router:       router,
@@ -45,11 +45,11 @@ func (mgr *NewGrumbleMgr) NewGrumble() func(w http.ResponseWriter, req *http.Req
 	return func(w http.ResponseWriter, req *http.Request) {
 		//TODO add validation here
 		// Get grumble details from endpoint call
-		var grumble grumblestore.Grumble
+		var grumble grumblemgr.Grumble
 		json.NewDecoder(req.Body).Decode(&grumble)
 
 		// Create a new grumble from template
-		grumble = *grumblestore.NewGrumble(
+		grumble = *grumblemgr.NewGrumble(
 			grumble.CreatedBy,
 			grumble.DataType,
 			grumble.Message,
@@ -92,11 +92,11 @@ func (mgr *NewGrumbleMgr) Comment() func(w http.ResponseWriter, req *http.Reques
 		grumbleId := mux.Vars(req)["grumbleId"]
 		//TODO add validation here
 		// Get grumble details from endpoint call
-		var comment grumblestore.Comment
+		var comment grumblemgr.Comment
 		json.NewDecoder(req.Body).Decode(&comment)
 
 		// Create a new comment from template
-		comment = *grumblestore.NewComment(
+		comment = *grumblemgr.NewComment(
 			comment.CreatedBy,
 			comment.Message,
 		)
@@ -109,7 +109,7 @@ func (mgr *NewGrumbleMgr) Comment() func(w http.ResponseWriter, req *http.Reques
 		}
 
 		// Prepend comment
-		grumble.Comments = append([]grumblestore.Comment{comment}, grumble.Comments...)
+		grumble.Comments = append([]grumblemgr.Comment{comment}, grumble.Comments...)
 
 		// Update database
 		err = mgr.GrumbleStore.Update(grumbleId, grumble)

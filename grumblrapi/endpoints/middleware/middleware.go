@@ -1,15 +1,15 @@
 package middleware
 
 import (
-	"grumblrapi/main/jwtmanager"
+	"grumblrapi/main/jwtmgr"
 	"net/http"
 )
 
 type MiddlewareMgr struct {
-	JWTMgr jwtmanager.JWTManager
+	JWTMgr jwtmgr.JWTManager
 }
 
-func NewMiddlewareMgr(jwtMgr jwtmanager.JWTManager) *MiddlewareMgr {
+func NewMiddlewareMgr(jwtMgr jwtmgr.JWTManager) *MiddlewareMgr {
 	return &MiddlewareMgr{
 		JWTMgr: jwtMgr,
 	}

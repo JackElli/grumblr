@@ -2,8 +2,8 @@ package grumbles
 
 import (
 	"fmt"
-	"grumblrapi/main/categorystore"
-	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/categorymgr"
+	"grumblrapi/main/grumblemgr"
 	"grumblrapi/main/responder"
 	"net/http"
 
@@ -21,11 +21,11 @@ type GrumblesMgr struct {
 	Logger         *zap.Logger
 	Router         *mux.Router
 	Responder      responder.Responder
-	GrumbleStorer  grumblestore.GrumbleStorer
-	CategoryStorer categorystore.CategoryStorer
+	GrumbleStorer  grumblemgr.GrumbleStorer
+	CategoryStorer categorymgr.CategoryStorer
 }
 
-func NewGrumblesMgr(router *mux.Router, env string, logger *zap.Logger, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer, categoryStorer categorystore.CategoryStorer) *GrumblesMgr {
+func NewGrumblesMgr(router *mux.Router, env string, logger *zap.Logger, responder responder.Responder, grumbleStorer grumblemgr.GrumbleStorer, categoryStorer categorymgr.CategoryStorer) *GrumblesMgr {
 	e := &GrumblesMgr{
 		Env:            env,
 		Logger:         logger,
@@ -43,7 +43,7 @@ func (mgr *GrumblesMgr) FriendsGrumbles() func(w http.ResponseWriter, req *http.
 	return func(w http.ResponseWriter, req *http.Request) {
 		category := mux.Vars(req)["category"]
 
-		var grumbles []grumblestore.Grumble
+		var grumbles []grumblemgr.Grumble
 		var err error
 
 		if category == "recents" {

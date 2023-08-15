@@ -3,10 +3,9 @@ package grumble
 import (
 	"bytes"
 	"encoding/json"
-
-	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/grumblemgr"
 	"grumblrapi/main/responder"
-	"grumblrapi/main/userstore"
+	"grumblrapi/main/usermgr"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -29,12 +28,12 @@ func TestNewGrumble(t *testing.T) {
 	defer loggerMock.Sync()
 
 	responderMock := responder.NewResponder()
-	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
-	userStoreMock := userstore.NewUserStoreMock()
+	grumblemgrMock := grumblemgr.NewGrumbleStoreMock()
+	usermgrMock := usermgr.NewUserStoreMock()
 
-	newGrumble := grumblestore.NewGrumble(
+	newGrumble := grumblemgr.NewGrumble(
 		"jack",
-		grumblestore.Text,
+		grumblemgr.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -56,8 +55,8 @@ func TestNewGrumble(t *testing.T) {
 				rMock,
 				loggerMock,
 				responderMock,
-				grumbleStoreMock,
-				userStoreMock,
+				grumblemgrMock,
+				usermgrMock,
 			)
 			newGrumbleMgrMock.Register()
 
@@ -77,7 +76,7 @@ func TestComment(t *testing.T) {
 
 	type testcase struct {
 		desc           string
-		expectedResult grumblestore.Grumble
+		expectedResult grumblemgr.Grumble
 		expectedStatus int
 	}
 
@@ -85,12 +84,12 @@ func TestComment(t *testing.T) {
 	defer loggerMock.Sync()
 
 	responderMock := responder.NewResponder()
-	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
-	userStoreMock := userstore.NewUserStoreMock()
+	grumblemgrMock := grumblemgr.NewGrumbleStoreMock()
+	usermgrMock := usermgr.NewUserStoreMock()
 
-	newGrumble := grumblestore.NewGrumble(
+	newGrumble := grumblemgr.NewGrumble(
 		"jack",
-		grumblestore.Text,
+		grumblemgr.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -99,13 +98,13 @@ func TestComment(t *testing.T) {
 	var COMMENT_TEST = "/grumble/" + newGrumble.Id + "/comment"
 
 	grumbleMock := newGrumble
-	grumbleMock.Comments = []grumblestore.Comment{
+	grumbleMock.Comments = []grumblemgr.Comment{
 		{
 			Message: "hello this is a test comment",
 		},
 	}
 
-	var payload = grumblestore.NewComment(
+	var payload = grumblemgr.NewComment(
 		"jack",
 		"hello this is a test comment",
 	)
@@ -126,8 +125,8 @@ func TestComment(t *testing.T) {
 				rMock,
 				loggerMock,
 				responderMock,
-				grumbleStoreMock,
-				userStoreMock,
+				grumblemgrMock,
+				usermgrMock,
 			)
 			newGrumbleMgrMock.Register()
 
@@ -137,7 +136,7 @@ func TestComment(t *testing.T) {
 			r, _ := http.NewRequest("POST", COMMENT_TEST, bytes.NewBuffer(newGrumbleData))
 			newGrumbleMgrMock.Router.ServeHTTP(w, r)
 
-			var response grumblestore.Grumble
+			var response grumblemgr.Grumble
 			json.NewDecoder(w.Body).Decode(&response)
 
 			assert.Equal(t, w.Result().StatusCode, testCase.expectedStatus)
@@ -150,7 +149,7 @@ func TestAgree(t *testing.T) {
 
 	type testcase struct {
 		desc           string
-		expectedResult grumblestore.Grumble
+		expectedResult grumblemgr.Grumble
 		expectedStatus int
 	}
 
@@ -158,12 +157,12 @@ func TestAgree(t *testing.T) {
 	defer loggerMock.Sync()
 
 	responderMock := responder.NewResponder()
-	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
-	userStoreMock := userstore.NewUserStoreMock()
+	grumblemgrMock := grumblemgr.NewGrumbleStoreMock()
+	usermgrMock := usermgr.NewUserStoreMock()
 
-	newGrumble := grumblestore.NewGrumble(
+	newGrumble := grumblemgr.NewGrumble(
 		"jack",
-		grumblestore.Text,
+		grumblemgr.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -198,8 +197,8 @@ func TestAgree(t *testing.T) {
 				rMock,
 				loggerMock,
 				responderMock,
-				grumbleStoreMock,
-				userStoreMock,
+				grumblemgrMock,
+				usermgrMock,
 			)
 			newGrumbleMgrMock.Register()
 
@@ -209,7 +208,7 @@ func TestAgree(t *testing.T) {
 			r, _ := http.NewRequest("POST", AGREE_TEST, bytes.NewBuffer(agreeData))
 			newGrumbleMgrMock.Router.ServeHTTP(w, r)
 
-			var response grumblestore.Grumble
+			var response grumblemgr.Grumble
 			json.NewDecoder(w.Body).Decode(&response)
 
 			assert.Equal(t, w.Result().StatusCode, testCase.expectedStatus)
@@ -222,7 +221,7 @@ func TestDisagree(t *testing.T) {
 
 	type testcase struct {
 		desc           string
-		expectedResult grumblestore.Grumble
+		expectedResult grumblemgr.Grumble
 		expectedStatus int
 	}
 
@@ -230,12 +229,12 @@ func TestDisagree(t *testing.T) {
 	defer loggerMock.Sync()
 
 	responderMock := responder.NewResponder()
-	grumbleStoreMock := grumblestore.NewGrumbleStoreMock()
-	userStoreMock := userstore.NewUserStoreMock()
+	grumblemgrMock := grumblemgr.NewGrumbleStoreMock()
+	usermgrMock := usermgr.NewUserStoreMock()
 
-	newGrumble := grumblestore.NewGrumble(
+	newGrumble := grumblemgr.NewGrumble(
 		"jack",
-		grumblestore.Text,
+		grumblemgr.Text,
 		"this is a test",
 		"friends",
 		"Test",
@@ -270,8 +269,8 @@ func TestDisagree(t *testing.T) {
 				rMock,
 				loggerMock,
 				responderMock,
-				grumbleStoreMock,
-				userStoreMock,
+				grumblemgrMock,
+				usermgrMock,
 			)
 			newGrumbleMgrMock.Register()
 
@@ -281,7 +280,7 @@ func TestDisagree(t *testing.T) {
 			r, _ := http.NewRequest("POST", DISAGREE_TEST, bytes.NewBuffer(agreeData))
 			newGrumbleMgrMock.Router.ServeHTTP(w, r)
 
-			var response grumblestore.Grumble
+			var response grumblemgr.Grumble
 			json.NewDecoder(w.Body).Decode(&response)
 
 			assert.Equal(t, w.Result().StatusCode, testCase.expectedStatus)

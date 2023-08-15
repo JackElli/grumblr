@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"grumblrapi/main/jwtmanager"
+	"grumblrapi/main/jwtmgr"
 	"grumblrapi/main/responder"
-	"grumblrapi/main/userstore"
+	"grumblrapi/main/usermgr"
 	"net/http"
 	"time"
 
@@ -26,11 +26,11 @@ type AuthMgr struct {
 	Logger    *zap.Logger
 	Router    *mux.Router
 	Responder responder.Responder
-	UserStore userstore.UserStorer
-	JWTMgr    jwtmanager.JWTManager
+	UserStore usermgr.UserStorer
+	JWTMgr    jwtmgr.JWTManager
 }
 
-func NewAuthMgr(router *mux.Router, env string, logger *zap.Logger, responder responder.Responder, userStore userstore.UserStorer, jwtMgr jwtmanager.JWTManager) *AuthMgr {
+func NewAuthMgr(router *mux.Router, env string, logger *zap.Logger, responder responder.Responder, userStore usermgr.UserStorer, jwtMgr jwtmgr.JWTManager) *AuthMgr {
 	e := &AuthMgr{
 		Env:       env,
 		Logger:    logger,
@@ -161,7 +161,7 @@ func (mgr *AuthMgr) NewUser() func(w http.ResponseWriter, req *http.Request) {
 		}
 		json.NewDecoder(req.Body).Decode(&userDetails)
 
-		user := userstore.NewUser(userDetails.Username, userDetails.Password)
+		user := usermgr.NewUser(userDetails.Username, userDetails.Password)
 		err := mgr.UserStore.Insert(user.Id, user)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusInternalServerError, err)
