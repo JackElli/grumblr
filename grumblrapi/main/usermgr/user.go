@@ -1,4 +1,4 @@
-package userstore
+package usermgr
 
 import (
 	"time"

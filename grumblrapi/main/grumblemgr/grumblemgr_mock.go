@@ -1,4 +1,4 @@
-package grumblestore
+package grumblemgr
 
 import (
 	"strings"

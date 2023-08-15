@@ -3,7 +3,7 @@ package user
 import (
 	"encoding/json"
 	"grumblrapi/main/responder"
-	"grumblrapi/main/userstore"
+	"grumblrapi/main/usermgr"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -19,10 +19,10 @@ type UserMgr struct {
 	Logger    *zap.Logger
 	Router    *mux.Router
 	Responder responder.Responder
-	UserStore userstore.UserStorer
+	UserStore usermgr.UserStorer
 }
 
-func NewNewUserMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, userStore userstore.UserStorer) *UserMgr {
+func NewNewUserMgr(router *mux.Router, logger *zap.Logger, responder responder.Responder, userStore usermgr.UserStorer) *UserMgr {
 	e := &UserMgr{
 		Logger:    logger,
 		Router:    router,

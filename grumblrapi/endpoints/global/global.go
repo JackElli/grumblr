@@ -2,7 +2,7 @@ package global
 
 import (
 	"fmt"
-	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/grumblemgr"
 	"grumblrapi/main/responder"
 	"net/http"
 
@@ -19,10 +19,10 @@ type GlobalMgr struct {
 	Logger        *zap.Logger
 	Router        *mux.Router
 	Responder     responder.Responder
-	GrumbleStorer grumblestore.GrumbleStorer
+	GrumbleStorer grumblemgr.GrumbleStorer
 }
 
-func NewGlobalMgr(router *mux.Router, env string, logger *zap.Logger, responder responder.Responder, grumbleStorer grumblestore.GrumbleStorer) *GlobalMgr {
+func NewGlobalMgr(router *mux.Router, env string, logger *zap.Logger, responder responder.Responder, grumbleStorer grumblemgr.GrumbleStorer) *GlobalMgr {
 	e := &GlobalMgr{
 		Env:           env,
 		Logger:        logger,
@@ -39,7 +39,7 @@ func (mgr *GlobalMgr) GlobalGrumbles() func(w http.ResponseWriter, req *http.Req
 	return func(w http.ResponseWriter, req *http.Request) {
 		category := mux.Vars(req)["category"]
 
-		var grumbles []grumblestore.Grumble
+		var grumbles []grumblemgr.Grumble
 		var err error
 
 		if category == "recents" {
