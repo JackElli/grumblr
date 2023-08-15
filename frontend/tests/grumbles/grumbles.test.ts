@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { getCatetories, getGrumbles, getLongGrumbles, getNoGrumbles } from '../mocks/grumbles';
-import { getUser, getUserNoFriends } from '../mocks/users';
+import { getUserNoFriends } from '../mocks/users';
+import { auth } from '../mocks/auth';
 
 test.beforeEach(async ({ page }) => {
-	await getUser(page);
+	await auth(page);
 	await getGrumbles(page);
 	await getCatetories(page);
 	await page.goto('/grumbles');

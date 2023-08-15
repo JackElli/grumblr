@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { userStore } from '$lib/stores/userStore';
+	import { userIconText } from '../../global';
 	import SearchBar from './SearchBar.svelte';
 
 	$: selected = $page.url.pathname == '/profile';
@@ -21,7 +23,7 @@
 					? 'bg-gray-100'
 					: 'bg-gray-300'} hover:bg-gray-100 cursor-pointer"
 			>
-				JE
+				{userIconText($userStore?.username ?? '?')}
 			</a>
 		</div>
 	</div>

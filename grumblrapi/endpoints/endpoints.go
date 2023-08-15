@@ -1,19 +1,24 @@
 package endpoints
 
 import (
+	"grumblrapi/endpoints/auth"
 	"grumblrapi/endpoints/global"
 	"grumblrapi/endpoints/grumble"
 	"grumblrapi/endpoints/grumbles"
+	"grumblrapi/endpoints/middleware"
 	"grumblrapi/endpoints/user"
 	"grumblrapi/main/categorystore"
 	"grumblrapi/main/couchbase"
 	"grumblrapi/main/grumblestore"
+	"grumblrapi/main/jwtmanager"
 	"grumblrapi/main/responder"
 	"grumblrapi/main/userstore"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
+
+var SECRET_KEY = []byte("hellothisisasecretkey")
 
 type Endpoints struct {
 	Logger *zap.Logger
@@ -65,21 +70,27 @@ func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
 
 	// Set the environment
 	scope := cb.Bucket.Scope(env)
+	responder := responder.NewResponder()
 
-	// Set up storers
+	// Set up managers
+	jwtMgr := jwtmanager.NewJWTManager(SECRET_KEY)
+	middlewareMgr := middleware.NewMiddlewareMgr(jwtMgr)
+	// TODO change name to managers
 	grumbleStorer := grumblestore.NewGrumbleStore(e.Logger, scope)
 	categoryStorer := categorystore.NewCategoryStore(e.Logger, scope)
 	userStorer := userstore.NewUserStore(e.Logger, scope)
 
-	// For responding to the user
-	responder := responder.NewResponder()
-
-	// For the endpoints that aren't restricted by auth
+	// The public endpoint for auth
 	public := r.PathPrefix("/").Subrouter()
-	grumble.NewNewGrumbleMgr(public, e.Logger, responder, grumbleStorer, userStorer)
-	user.NewNewUserMgr(public, e.Logger, responder, userStorer)
-	grumbles.NewGrumblesMgr(public, env, e.Logger, responder, grumbleStorer, categoryStorer)
-	global.NewGlobalMgr(public, env, e.Logger, responder, grumbleStorer)
+	auth.NewAuthMgr(public, env, e.Logger, responder, userStorer, jwtMgr)
+
+	// For the endpoints that are restricted by auth
+	restricted := r.PathPrefix("/").Subrouter()
+	restricted.Use(middlewareMgr.Middleware)
+	grumble.NewNewGrumbleMgr(restricted, e.Logger, responder, grumbleStorer, userStorer)
+	user.NewNewUserMgr(restricted, e.Logger, responder, userStorer)
+	grumbles.NewGrumblesMgr(restricted, env, e.Logger, responder, grumbleStorer, categoryStorer)
+	global.NewGlobalMgr(restricted, env, e.Logger, responder, grumbleStorer)
 
 	return nil
 }

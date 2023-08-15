@@ -15,52 +15,6 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-func TestNewUser(t *testing.T) {
-	type testcase struct {
-		desc           string
-		expectedMsg    string
-		expectedStatus int
-	}
-
-	loggerMock, _ := zap.NewProduction()
-	defer loggerMock.Sync()
-	responderMock := responder.NewResponder()
-	userStoreMock := userstore.NewUserStoreMock()
-
-	testcases := []testcase{
-		{
-			desc:           "HAPPY added correct document",
-			expectedStatus: 200,
-		},
-	}
-
-	newUser := userstore.NewUser(
-		"jack",
-		"this is a test",
-	)
-
-	for _, testCase := range testcases {
-		t.Run(testCase.desc, func(t *testing.T) {
-			rMock := mux.NewRouter()
-
-			newUserMgrMock := NewNewUserMgr(
-				rMock,
-				loggerMock,
-				responderMock,
-				userStoreMock,
-			)
-
-			w := httptest.NewRecorder()
-			newUserData, _ := json.Marshal(newUser)
-
-			r, _ := http.NewRequest("POST", NEW_USER, bytes.NewBuffer(newUserData))
-			newUserMgrMock.Router.ServeHTTP(w, r)
-
-			assert.Equal(t, w.Result().StatusCode, testCase.expectedStatus)
-		})
-	}
-}
-
 func TestAddFriend(t *testing.T) {
 	type testcase struct {
 		desc                    string

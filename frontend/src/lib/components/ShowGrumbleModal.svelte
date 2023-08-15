@@ -53,7 +53,11 @@
 	<Loading {loading}>
 		<div class="shadow-lg bg-white px-4 py-2 rounded-md border border-black">
 			<div class="flex gap-2 items-center">
-				<UserIcon class="w-6 h-6 text-xs" userId={grumble.createdBy} />
+				<UserIcon
+					class="w-6 h-6 text-xs"
+					userId={grumble.createdBy}
+					username={grumble.createdByUsername}
+				/>
 				<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
 			</div>
 			{#if grumble.dataType == 'text'}
@@ -69,13 +73,13 @@
 
 		<div class="flex gap-2 mt-4">
 			<button
-				class="inline text-md text-gray-500 {$userStore.id in grumble.agrees
+				class="inline text-md text-gray-500 {$userStore?.id in grumble.agrees
 					? 'text-green-800 font-bold'
 					: ''} hover:text-green-700 cursor-pointer"
 				on:click={agree}>{numOfAgrees} agrees</button
 			>
 			<button
-				class="inline text-md text-gray-500 {$userStore.id in grumble.disagrees
+				class="inline text-md text-gray-500 {$userStore?.id in grumble.disagrees
 					? 'text-red-800 font-bold'
 					: ''} hover:text-red-700 cursor-pointer"
 				on:click={disagree}>{numOfDisagrees} disagrees</button
@@ -95,10 +99,10 @@
 						class="py-4 px-2 border-b flex justify-between items-center hover:bg-gray-50 hover:shadow-sm"
 					>
 						<div class="flex gap-2 items-center">
-							<UserIcon class="w-6 h-6 text-xs" userId={grumble.createdBy} />
+							<UserIcon class="w-6 h-6 text-xs" userId={comment.createdBy} />
 							<div>
 								<p class="text-xs text-gray-700">
-									{grumble.createdBy} - {dateDiff(comment.dateCreated)}
+									{comment.createdBy} - {dateDiff(comment.dateCreated)}
 								</p>
 								<p class="text-md">{comment.message}</p>
 							</div>

@@ -1,7 +1,7 @@
 import { page } from '$app/stores';
 import { get } from 'svelte/store';
 
-export const version = '0.0.7';
+export const version = '0.0.9';
 
 let ENV = 'dev';
 export const IP =

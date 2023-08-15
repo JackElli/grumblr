@@ -1,17 +1,37 @@
 import { userStore, type User } from '$lib/stores/userStore';
 import { redirect } from '@sveltejs/kit';
 import { IP } from '../../global';
-class GrumbleService {
-	async auth(): Promise<User> {
-		const userId = '1f21823a-8682-4900-b627-d6bd39e1b95b';
+import { goto } from '$app/navigation';
+import NetworkService from './NetworkService';
+
+class AuthService {
+	async auth(username?: string, password?: string): Promise<User> {
+		const user = await NetworkService.post(`http://${IP}:3200/auth`, {
+			username: username,
+			password: password
+		});
+		userStore.set(user);
+		return user;
+	}
+
+	async new(username: string, password: string): Promise<User> {
 		try {
-			const resp = await fetch(`http://${IP}:3200/user/${userId}`, {
-				method: 'GET',
-				credentials: 'include'
+			const resp = await fetch(`http://${IP}:3200/user`, {
+				method: 'POST',
+				credentials: 'include',
+				body: JSON.stringify({
+					username: username,
+					password: password
+				})
 			});
-			const user = await resp.json();
-			userStore.set(user);
-			return user;
+			const json = await resp.json();
+			const waitForAuth = async () => {
+				await this.auth(username, password);
+				goto('/grumbles');
+			};
+			setTimeout(waitForAuth, 700);
+
+			return json.user;
 		} catch (e) {
 			console.error(e);
 			throw redirect(302, '/login');
@@ -19,4 +39,4 @@ class GrumbleService {
 	}
 }
 
-export default new GrumbleService();
+export default new AuthService();

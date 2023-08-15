@@ -17,10 +17,10 @@
 
 	let newGrumbleModalVisible = false;
 	let loading = false;
+	let error: string | undefined = undefined;
 
 	$: grumbles = data.grumbles;
 	$: categories = data.categories;
-	$: error = data.error;
 	$: welcome = $userStore?.welcome ?? true;
 
 	async function newGrumble(e: CustomEvent) {
@@ -51,11 +51,11 @@
 	<div class="flex items-center justify-between">
 		<div>
 			<PageTitle>Friends grumbles</PageTitle>
-			{#if categories}
+			{#if categories && $userStore?.friends.length != 0}
 				<Categories type="friends" {categories} class="mt-4" />
 			{/if}
 		</div>
-		{#if data.friends != 0}
+		{#if $userStore?.friends.length != 0}
 			<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
 			<NewGrumbleModal
 				{loading}
@@ -65,7 +65,9 @@
 			/>
 		{/if}
 	</div>
-	<Loading loading={grumbles == undefined && error == undefined && data.friends == undefined}>
+	<Loading
+		loading={grumbles == undefined && error == undefined && $userStore?.friends == undefined}
+	>
 		{#if error}
 			<NetworkError {error} />
 		{/if}
@@ -74,7 +76,7 @@
 			<StartMessage class="mt-3" />
 		{/if}
 
-		{#if data.friends == 0}
+		{#if $userStore?.friends.length == 0}
 			<NoFriends />
 		{:else if grumbles}
 			<div class="mt-4">

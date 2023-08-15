@@ -1,6 +1,7 @@
 export type _Grumble = {
 	id?: string;
 	createdBy: string;
+	createdByUsername?: string;
 	dataType: string;
 	message: string;
 	dateCreated: string;

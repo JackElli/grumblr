@@ -3,29 +3,14 @@ import GrumbleService from '$lib/services/GrumbleService';
 
 export async function load({ params }) {
 	if (browser) {
-		let grumbles;
-		try {
-			grumbles = await GrumbleService.listGlobal(params.category);
-		} catch (e) {
-			console.log(e);
-			return {
-				error: `Unable to fetch grumbles ${e}`
-			};
-		}
+		const grumbles = GrumbleService.listGlobal(params.category);
+		const categories = GrumbleService.categories('global');
 
-		let categories;
-		try {
-			categories = await GrumbleService.getCategories('global');
-		} catch (e) {
-			console.log(e);
-			return {
-				error: `Unable to fetch categories ${e}`
-			};
-		}
+		const [g, c] = await Promise.all([grumbles, categories]);
 
 		return {
-			grumbles: grumbles ?? [],
-			categories: categories ?? [],
+			grumbles: g,
+			categories: c,
 			currentCategory: params.category
 		};
 	}

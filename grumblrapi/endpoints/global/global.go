@@ -43,12 +43,13 @@ func (mgr *GlobalMgr) GlobalGrumbles() func(w http.ResponseWriter, req *http.Req
 		var err error
 
 		if category == "recents" {
-			grumbles, err = mgr.GrumbleStorer.Query(fmt.Sprintf("SELECT grumbles.* from grumblr.%s.grumbles WHERE type='global' ORDER BY dateCreated DESC LIMIT 50", mgr.Env))
+			grumbles, err = mgr.GrumbleStorer.Query(fmt.Sprintf("SELECT g.*, u.username as createdByUsername FROM grumblr.%s.grumbles AS g LEFT JOIN grumblr.%s.users AS u ON g.createdBy=u.id WHERE g.type='global' ORDER BY g.dateCreated DESC LIMIT 50", mgr.Env, mgr.Env))
 			if err != nil {
 				mgr.Responder.Error(w, 500, err)
 			}
 		} else {
-			grumbles, err = mgr.GrumbleStorer.Query(fmt.Sprintf("SELECT grumbles.* from grumblr.%s.grumbles WHERE type='global' AND category='%s' ORDER BY dateCreated DESC LIMIT 50", mgr.Env, category))
+
+			grumbles, err = mgr.GrumbleStorer.Query(fmt.Sprintf("SELECT g.*, u.username as createdByUsername FROM grumblr.%s.grumbles AS g LEFT JOIN grumblr.%s.users AS u ON g.createdBy=u.id WHERE g.type='global' AND g.category='%s' ORDER BY g.dateCreated DESC LIMIT 50", mgr.Env, mgr.Env, category))
 			if err != nil {
 				mgr.Responder.Error(w, 500, err)
 			}

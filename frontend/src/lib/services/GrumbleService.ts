@@ -1,28 +1,29 @@
+import { get } from 'svelte/store';
 import { IP } from '../../global';
 import type { _Category, _Grumble } from '../../routes/(main)/grumbles/grumbles';
-import AuthService from './AuthService';
+import NetworkService from './NetworkService';
+import { userStore } from '$lib/stores/userStore';
 
 class GrumbleService {
-	async get(grumbleId: string): Promise<_Grumble> {
-		await AuthService.auth();
-		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}`);
-		return await resp.json();
+	get(grumbleId: string): Promise<_Grumble> {
+		return NetworkService.get(`http://${IP}:3200/grumble/${grumbleId}`);
 	}
 
-	async list(category: string): Promise<_Grumble[]> {
-		await AuthService.auth();
-		const resp = await fetch(`http://${IP}:3200/grumbles/${category}`);
-		return await resp.json();
+	list(category: string): Promise<_Grumble[]> {
+		return NetworkService.get(`http://${IP}:3200/grumbles/${category}`);
 	}
 
-	async listGlobal(category: string): Promise<_Grumble[]> {
-		await AuthService.auth();
-		const resp = await fetch(`http://${IP}:3200/global/${category}`);
-		return await resp.json();
+	listGlobal(category: string): Promise<_Grumble[]> {
+		return NetworkService.get(`http://${IP}:3200/global/${category}`);
 	}
 
-	async new(grumbleText: string, dataType: string, category: string, type: string): Promise<_Grumble> {
-		const user = await AuthService.auth();
+	async new(
+		grumbleText: string,
+		dataType: string,
+		category: string,
+		type: string
+	): Promise<_Grumble> {
+		const user = get(userStore);
 		const newGrumble: _Grumble = {
 			createdBy: user.id,
 			dataType,
@@ -45,16 +46,12 @@ class GrumbleService {
 		return grumble;
 	}
 
-	async getCategories(type: string): Promise<_Category[]> {
-		const resp = await fetch(`http://${IP}:3200/grumbles/info/categories/${type}`, {
-			method: 'GET',
-			credentials: 'include'
-		});
-		return await resp.json();
+	categories(type: string): Promise<_Category[]> {
+		return NetworkService.get(`http://${IP}:3200/grumbles/info/categories/${type}`);
 	}
 
 	async addComment(grumbleId: string, message: string) {
-		const user = await AuthService.auth();
+		const user = get(userStore);
 		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/comment`, {
 			method: 'POST',
 			credentials: 'include',
@@ -67,7 +64,7 @@ class GrumbleService {
 	}
 
 	async agree(grumbleId: string) {
-		const user = await AuthService.auth();
+		const user = get(userStore);
 		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/agree`, {
 			method: 'POST',
 			credentials: 'include',
@@ -79,7 +76,7 @@ class GrumbleService {
 	}
 
 	async disagree(grumbleId: string) {
-		const user = await AuthService.auth();
+		const user = get(userStore);
 		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/disagree`, {
 			method: 'POST',
 			credentials: 'include',

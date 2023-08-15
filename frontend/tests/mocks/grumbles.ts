@@ -19,7 +19,8 @@ export async function getGrumbles(page: Page) {
 					],
 					agrees: {},
 					disagrees: {},
-					category: 'testing'
+					category: 'testing',
+					dataType: 'text'
 				}
 			]
 		});
@@ -67,6 +68,7 @@ export async function getLongGrumbles(page: Page) {
 					],
 					agrees: {},
 					disagrees: {},
+					dataType: 'text'
 				}
 			]
 		});

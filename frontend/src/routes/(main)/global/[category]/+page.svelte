@@ -13,10 +13,10 @@
 
 	let newGrumbleModalVisible = false;
 	let loading = false;
+	let error: string | undefined = undefined;
 
 	$: grumbles = data.grumbles;
 	$: categories = data.categories;
-	$: error = data.error;
 
 	async function newGrumble(e: CustomEvent) {
 		loading = true;
