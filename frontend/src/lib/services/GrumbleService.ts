@@ -17,12 +17,7 @@ class GrumbleService {
 		return NetworkService.get(`http://${IP}:3200/global/${category}`);
 	}
 
-	async new(
-		grumbleText: string,
-		dataType: string,
-		category: string,
-		type: string
-	): Promise<_Grumble> {
+	new(grumbleText: string, dataType: string, category: string, type: string): Promise<_Grumble> {
 		const user = get(userStore);
 		const newGrumble: _Grumble = {
 			createdBy: user.id,
@@ -36,55 +31,33 @@ class GrumbleService {
 			comments: []
 		};
 
-		const data = await fetch(`http://${IP}:3200/grumble`, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify(newGrumble)
-		});
-
-		const grumble = data.json();
-		return grumble;
+		return NetworkService.post(`http://${IP}:3200/grumble`, newGrumble);
 	}
 
 	categories(type: string): Promise<_Category[]> {
 		return NetworkService.get(`http://${IP}:3200/grumbles/info/categories/${type}`);
 	}
 
-	async addComment(grumbleId: string, message: string) {
+	addComment(grumbleId: string, message: string) {
 		const user = get(userStore);
-		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/comment`, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify({
-				createdBy: user.id,
-				message: message
-			})
+		return NetworkService.post(`http://${IP}:3200/grumble/${grumbleId}/comment`, {
+			createdBy: user.id,
+			message: message
 		});
-		return await resp.json();
 	}
 
-	async agree(grumbleId: string) {
+	agree(grumbleId: string) {
 		const user = get(userStore);
-		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/agree`, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify({
-				userId: user.id
-			})
+		return NetworkService.post(`http://${IP}:3200/grumble/${grumbleId}/agree`, {
+			userId: user.id
 		});
-		return await resp.json();
 	}
 
-	async disagree(grumbleId: string) {
+	disagree(grumbleId: string) {
 		const user = get(userStore);
-		const resp = await fetch(`http://${IP}:3200/grumble/${grumbleId}/disagree`, {
-			method: 'POST',
-			credentials: 'include',
-			body: JSON.stringify({
-				userId: user.id
-			})
+		return NetworkService.post(`http://${IP}:3200/grumble/${grumbleId}/disagree`, {
+			userId: user.id
 		});
-		return await resp.json();
 	}
 }
 

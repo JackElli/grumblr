@@ -7,10 +7,11 @@ import (
 )
 
 type Comment struct {
-	Id        string    `json:"id"`
-	CreatedBy string    `json:"createdBy"`
-	Message   string    `json:"message"`
-	Date      time.Time `json:"dateCreated"`
+	Id                string    `json:"id"`
+	CreatedBy         string    `json:"createdBy"`
+	CreatedByUsername string    `json:"createdByUsername,omitempty"`
+	Message           string    `json:"message"`
+	Date              time.Time `json:"dateCreated"`
 }
 
 func NewComment(createdBy string, message string) *Comment {

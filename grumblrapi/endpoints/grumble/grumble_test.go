@@ -98,7 +98,7 @@ func TestComment(t *testing.T) {
 	var COMMENT_TEST = "/grumble/" + newGrumble.Id + "/comment"
 
 	grumbleMock := newGrumble
-	grumbleMock.Comments = []grumblemgr.Comment{
+	grumbleMock.Comments = []*grumblemgr.Comment{
 		{
 			Message: "hello this is a test comment",
 		},

@@ -15,6 +15,7 @@ export type _Grumble = {
 export type Comment = {
 	id: string;
 	createdBy: string;
+	createdByUsername?: string;
 	message: string;
 	dateCreated: string;
 };

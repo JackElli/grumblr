@@ -22,7 +22,7 @@ type Grumble struct {
 	CreatedBy         string          `json:"createdBy"`
 	CreatedByUsername string          `json:"createdByUsername,omitempty"`
 	Message           string          `json:"message"`
-	Comments          []Comment       `json:"comments"`
+	Comments          []*Comment      `json:"comments"`
 	Agrees            map[string]bool `json:"agrees"`
 	Disagrees         map[string]bool `json:"disagrees"`
 	Date              time.Time       `json:"dateCreated"`
@@ -36,7 +36,7 @@ func NewGrumble(createdBy string, dateType DataType, message string, _type Type,
 		Id:        uuid.New().String(),
 		CreatedBy: createdBy,
 		Message:   message,
-		Comments:  []Comment{},
+		Comments:  []*Comment{},
 		Agrees:    make(map[string]bool),
 		Disagrees: make(map[string]bool),
 		Date:      time.Now(),

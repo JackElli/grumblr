@@ -14,6 +14,7 @@
 	let newGrumbleModalVisible = false;
 	let loading = false;
 	let error: string | undefined = undefined;
+	let newError: string | undefined = undefined;
 
 	$: grumbles = data.grumbles;
 	$: categories = data.categories;
@@ -33,7 +34,7 @@
 			grumbles?.splice(0, 0, grumble);
 			grumbles = grumbles;
 		} catch (e) {
-			error = (e as Error).message;
+			newError = (e as Error).message;
 		}
 		loading = false;
 	}
@@ -52,12 +53,15 @@
 			{/if}
 		</div>
 		<ActionButton on:click={() => (newGrumbleModalVisible = true)}>New Grumble</ActionButton>
-		<NewGlobalGrumbleModal {categories} bind:newGrumbleModalVisible on:newGrumble={newGrumble} />
+		<NewGlobalGrumbleModal
+			{categories}
+			bind:newGrumbleModalVisible
+			bind:newError
+			on:newGrumble={newGrumble}
+		/>
 	</div>
 	<Loading loading={grumbles == undefined && error == undefined}>
-		{#if error}
-			<NetworkError {error} />
-		{/if}
+		<NetworkError {error} />
 		{#if grumbles}
 			<div class="mt-4">
 				{#if grumbles.length > 0}

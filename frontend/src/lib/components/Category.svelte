@@ -6,7 +6,6 @@
 	export let type: string;
 
 	$: root = type == 'friends' ? 'grumbles' : 'global';
-
 	$: selected = `/${root}/${href}` == $page.url.pathname;
 </script>
 

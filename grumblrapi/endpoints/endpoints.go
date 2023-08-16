@@ -73,11 +73,11 @@ func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
 	responder := responder.NewResponder()
 
 	// Set up managers
+	userMgr := usermgr.NewUserStore(env, e.Logger, scope)
 	jwtMgr := jwtmgr.NewJWTManager(SECRET_KEY)
 	middlewareMgr := middleware.NewMiddlewareMgr(jwtMgr)
-	grumbleMgr := grumblemgr.NewGrumbleStore(e.Logger, scope)
+	grumbleMgr := grumblemgr.NewGrumbleStore(e.Logger, scope, userMgr)
 	categoryMgr := categorymgr.NewCategoryStore(e.Logger, scope)
-	userMgr := usermgr.NewUserStore(env, e.Logger, scope)
 
 	// The public endpoint for auth
 	public := r.PathPrefix("/").Subrouter()
