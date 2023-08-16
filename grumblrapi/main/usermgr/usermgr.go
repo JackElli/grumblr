@@ -13,17 +13,19 @@ type UserStorer interface {
 	Get(id string) (*User, error)
 	GetByUsername(username string) (*User, error)
 	Update(id string, user *User) error
-	Insert(id string, user *User) error
+	Insert(id string, user *User, opts *gocb.InsertOptions) error
 }
 
 type UserStore struct {
+	Env        string
 	Logger     *zap.Logger
 	Collection *gocb.Collection
 	Scope      *gocb.Scope
 }
 
-func NewUserStore(logger *zap.Logger, scope *gocb.Scope) *UserStore {
+func NewUserStore(env string, logger *zap.Logger, scope *gocb.Scope) *UserStore {
 	return &UserStore{
+		Env:        env,
 		Logger:     logger,
 		Collection: scope.Collection(col),
 		Scope:      scope,
@@ -48,9 +50,18 @@ func (store *UserStore) Get(id string) (*User, error) {
 
 // GetByUsername returns a user based on a username
 func (store *UserStore) GetByUsername(username string) (*User, error) {
+	nps := map[string]interface{}{
+		"username": username,
+	}
+
 	userResult, err := store.Scope.Query(
-		fmt.Sprintf("SELECT users.* FROM grumblr.dev.users WHERE username='%s'", username),
-		nil,
+		fmt.Sprintf(
+			"SELECT users.* FROM grumblr.%s.users WHERE username=$username",
+			store.Env,
+		),
+		&gocb.QueryOptions{
+			NamedParameters: nps,
+		},
 	)
 	if err != nil {
 		return nil, err
@@ -66,8 +77,8 @@ func (store *UserStore) GetByUsername(username string) (*User, error) {
 }
 
 // Insert inserts a user into the db
-func (store *UserStore) Insert(id string, user *User) error {
-	_, err := store.Collection.Insert(id, *user, nil)
+func (store *UserStore) Insert(id string, user *User, opts *gocb.InsertOptions) error {
+	_, err := store.Collection.Insert(id, *user, opts)
 	if err != nil {
 		return err
 	}

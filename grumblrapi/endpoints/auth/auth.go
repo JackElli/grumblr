@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/couchbase/gocb/v2"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
@@ -162,7 +163,10 @@ func (mgr *AuthMgr) NewUser() func(w http.ResponseWriter, req *http.Request) {
 		json.NewDecoder(req.Body).Decode(&userDetails)
 
 		user := usermgr.NewUser(userDetails.Username, userDetails.Password)
-		err := mgr.UserStore.Insert(user.Id, user)
+		err := mgr.UserStore.Insert(user.Id, user, &gocb.InsertOptions{
+			// This will change when we move away from demo
+			Expiry: 24 * time.Hour,
+		})
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusInternalServerError, err)
 			return

@@ -1,5 +1,7 @@
 package usermgr
 
+import "github.com/couchbase/gocb/v2"
+
 type UserStoreMock struct{}
 
 func NewUserStoreMock() *UserStoreMock {
@@ -32,6 +34,6 @@ func (store *UserStoreMock) Update(id string, user *User) error {
 	return nil
 }
 
-func (store *UserStoreMock) Insert(id string, user *User) error {
+func (store *UserStoreMock) Insert(id string, user *User, opts *gocb.InsertOptions) error {
 	return nil
 }

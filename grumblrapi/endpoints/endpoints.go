@@ -77,7 +77,7 @@ func (e *Endpoints) SetupEndpoints(env string, r *mux.Router) error {
 	middlewareMgr := middleware.NewMiddlewareMgr(jwtMgr)
 	grumbleMgr := grumblemgr.NewGrumbleStore(e.Logger, scope)
 	categoryMgr := categorymgr.NewCategoryStore(e.Logger, scope)
-	userMgr := usermgr.NewUserStore(e.Logger, scope)
+	userMgr := usermgr.NewUserStore(env, e.Logger, scope)
 
 	// The public endpoint for auth
 	public := r.PathPrefix("/").Subrouter()

@@ -7,14 +7,12 @@
 	import GrumbleService from '$lib/services/GrumbleService';
 	import UserIcon from './UserIcon.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { userStore } from '$lib/stores/userStore';
+	import AgreeButton from './AgreeButton.svelte';
+	import DisagreeButton from './DisagreeButton.svelte';
 
 	export let visible = false;
 	export let loading = false;
 	export let grumble: _Grumble;
-
-	$: numOfAgrees = Object.keys(grumble.agrees).length;
-	$: numOfDisagrees = Object.keys(grumble.disagrees).length;
 
 	const dispatch = createEventDispatcher();
 
@@ -71,19 +69,9 @@
 			{/if}
 		</div>
 
-		<div class="flex gap-2 mt-4">
-			<button
-				class="inline text-md text-gray-500 {$userStore?.id in grumble.agrees
-					? 'text-green-800 font-bold'
-					: ''} hover:text-green-700 cursor-pointer"
-				on:click={agree}>{numOfAgrees} agrees</button
-			>
-			<button
-				class="inline text-md text-gray-500 {$userStore?.id in grumble.disagrees
-					? 'text-red-800 font-bold'
-					: ''} hover:text-red-700 cursor-pointer"
-				on:click={disagree}>{numOfDisagrees} disagrees</button
-			>
+		<div class="flex gap-2 mt-4 justify-center">
+			<AgreeButton textSize="text-lg" agrees={grumble.agrees} on:agree={agree} />
+			<DisagreeButton textSize="text-lg" disagrees={grumble.disagrees} on:disagree={disagree} />
 		</div>
 		<div class="mt-5 mb-2 flex gap-4 items-center pt-5 border-t border-t-gray-300">
 			<h1 class="font-semibold">Comments</h1>
@@ -91,7 +79,7 @@
 		</div>
 
 		{#if grumble.comments.length == 0}
-			No comments yet
+			<p class="mt-4">No comments yet</p>
 		{:else}
 			<div class="mt-7">
 				{#each grumble.comments as comment}
