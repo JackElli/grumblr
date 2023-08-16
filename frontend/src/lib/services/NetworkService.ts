@@ -16,8 +16,11 @@ class NetworkService {
 			body: JSON.stringify(data)
 		});
 
-		if (response.status == 401) {
-			throw redirect(302, '/login');
+		if (!response.ok) {
+			if (response.status == 401) {
+				throw redirect(302, '/login');
+			}
+			throw new Error('Oops, something wrong has happened.');
 		}
 
 		return await response.json();

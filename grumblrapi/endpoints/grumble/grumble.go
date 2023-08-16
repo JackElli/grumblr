@@ -109,7 +109,7 @@ func (mgr *NewGrumbleMgr) Comment() func(w http.ResponseWriter, req *http.Reques
 		}
 
 		// Prepend comment
-		grumble.Comments = append([]grumblemgr.Comment{comment}, grumble.Comments...)
+		grumble.Comments = append([]*grumblemgr.Comment{&comment}, grumble.Comments...)
 
 		// Update database
 		err = mgr.GrumbleStore.Update(grumbleId, grumble)

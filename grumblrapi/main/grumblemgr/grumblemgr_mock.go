@@ -16,7 +16,7 @@ func (store *GrumbleStoreMock) Get(id string) (*Grumble, error) {
 		CreatedBy: "user:1",
 		Message:   "This is a friends grumble",
 		Date:      time.Date(1974, time.May, 19, 1, 2, 3, 4, time.UTC),
-		Comments:  []Comment{},
+		Comments:  []*Comment{},
 		Agrees:    make(map[string]bool),
 		Disagrees: make(map[string]bool),
 		Type:      Friends,

@@ -3,11 +3,13 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { _Category } from '../grumbles/grumbles';
+	import NetworkError from '$lib/components/NetworkError.svelte';
 
 	export let newGrumbleModalVisible = false;
 	export let loading = false;
 	export let categories: _Category[] | undefined;
 	export let grumbleText = '';
+	export let newError: string | undefined = undefined;
 
 	const MAX_CHARS = 200;
 	const dispatch = createEventDispatcher();
@@ -18,6 +20,7 @@
 	$: charsLeft = MAX_CHARS - grumbleText.length;
 	$: grumbleText = grumbleText.substr(0, MAX_CHARS);
 
+	// TODO clean this logic
 	function newGrumble() {
 		if (grumbleText != '') {
 			dispatch('newGrumble', {
@@ -38,6 +41,7 @@
 	bind:visible={newGrumbleModalVisible}
 	class="w-96 pb-5"
 >
+	<NetworkError error={newError} />
 	<p class="font-semibold">Select a category for your grumble</p>
 	<select
 		class="mt-1 bg-zinc-50 focus:bg-white border border-black px-2 rounded-sm cursor-pointer"

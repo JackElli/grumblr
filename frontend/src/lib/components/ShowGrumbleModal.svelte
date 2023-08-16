@@ -9,10 +9,12 @@
 	import { createEventDispatcher } from 'svelte';
 	import AgreeButton from './AgreeButton.svelte';
 	import DisagreeButton from './DisagreeButton.svelte';
+	import NetworkError from './NetworkError.svelte';
 
 	export let visible = false;
 	export let loading = false;
 	export let grumble: _Grumble;
+	export let error: string | undefined = undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -27,6 +29,7 @@
 		if (grumble.id) {
 			actionLoading = true;
 			try {
+				// TODO could we bind this to the parent?
 				grumble = await GrumbleService.addComment(grumble.id, commentMessage);
 				addComment = false;
 				commentMessage = '';
@@ -48,6 +51,7 @@
 </script>
 
 <Modal on:close title={`Grumbles / ${grumble.category}`} bind:visible class="w-1/2 max-w-4xl pb-5 ">
+	<NetworkError {error} />
 	<Loading {loading}>
 		<div class="shadow-lg bg-white px-4 py-2 rounded-md border border-black">
 			<div class="flex gap-2 items-center">
@@ -56,7 +60,9 @@
 					userId={grumble.createdBy}
 					username={grumble.createdByUsername}
 				/>
-				<p class="text-xs">{dateDiff(grumble.dateCreated)}</p>
+				<p class="text-xs">
+					{grumble.createdByUsername ?? grumble.createdBy} - {dateDiff(grumble.dateCreated)}
+				</p>
 			</div>
 			{#if grumble.dataType == 'text'}
 				<h1 class="mt-2 text-3xl break-words">{grumble.message}</h1>
@@ -70,8 +76,13 @@
 		</div>
 
 		<div class="flex gap-2 mt-4 justify-center">
-			<AgreeButton textSize="text-lg" agrees={grumble.agrees} on:agree={agree} />
-			<DisagreeButton textSize="text-lg" disagrees={grumble.disagrees} on:disagree={disagree} />
+			<AgreeButton forModal textSize="text-lg" agrees={grumble.agrees} on:agree={agree} />
+			<DisagreeButton
+				forModal
+				textSize="text-lg"
+				disagrees={grumble.disagrees}
+				on:disagree={disagree}
+			/>
 		</div>
 		<div class="mt-5 mb-2 flex gap-4 items-center pt-5 border-t border-t-gray-300">
 			<h1 class="font-semibold">Comments</h1>
@@ -87,10 +98,14 @@
 						class="py-4 px-2 border-b flex justify-between items-center hover:bg-gray-50 hover:shadow-sm"
 					>
 						<div class="flex gap-2 items-center">
-							<UserIcon class="w-6 h-6 text-xs" userId={comment.createdBy} />
+							<UserIcon
+								class="w-6 h-6 text-xs"
+								userId={comment.createdBy}
+								username={comment.createdByUsername}
+							/>
 							<div>
 								<p class="text-xs text-gray-700">
-									{comment.createdBy} - {dateDiff(comment.dateCreated)}
+									{comment.createdByUsername ?? comment.createdBy} - {dateDiff(comment.dateCreated)}
 								</p>
 								<p class="text-md">{comment.message}</p>
 							</div>

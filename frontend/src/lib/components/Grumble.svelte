@@ -11,10 +11,14 @@
 	import UserIcon from './UserIcon.svelte';
 
 	export let grumble: _Grumble;
+	export let demo = false;
+
+	let error: string | undefined;
 
 	$: grumbleModal =
 		$page.url.searchParams.get('id') != null && $page.url.searchParams.get('id') == grumble.id;
 	$: numOfComments = grumble.comments.length;
+	$: grumbleModal && refresh();
 
 	$: if (grumbleModal) {
 		scrollToLastPos();
@@ -28,26 +32,49 @@
 	}
 
 	async function agree() {
-		grumble = await GrumbleService.agree(grumble.id ?? '');
+		error = undefined;
+		try {
+			grumble = await GrumbleService.agree(grumble.id ?? '');
+		} catch (e) {
+			error = (e as Error).message;
+		}
 	}
 
 	async function disagree() {
-		grumble = await GrumbleService.disagree(grumble.id ?? '');
+		error = undefined;
+		try {
+			grumble = await GrumbleService.disagree(grumble.id ?? '');
+		} catch (e) {
+			error = (e as Error).message;
+		}
 	}
 
 	async function refresh() {
-		grumble = await GrumbleService.get(grumble.id ?? '');
+		error = undefined;
+		try {
+			grumble = await GrumbleService.get(grumble.id ?? '');
+		} catch (e) {
+			error = (e as Error).message;
+		}
 	}
 </script>
 
 <Card class="p-3 flex justify-between items-center">
 	<div>
 		<div class="flex gap-3 items-center break-words">
-			<UserIcon
-				class="w-8 h-8 flex-shrink-0"
-				userId={grumble.createdBy}
-				username={grumble.createdByUsername}
-			/>
+			{#if !demo}
+				<UserIcon
+					class="w-8 h-8 flex-shrink-0"
+					userId={grumble.createdBy}
+					username={grumble.createdByUsername}
+				/>
+			{:else}
+				<div
+					class="flex items-center justify-center border border-black rounded-full bg-gray-300 w-8 h-8 flex-shrink-0"
+				>
+					{grumble.createdByUsername?.charAt(0)}
+				</div>
+			{/if}
 			<div>
 				{#if grumble.dataType == 'text'}
 					<p class="max-w-[700px]">{grumble.message}</p>
@@ -59,15 +86,21 @@
 					/>
 				{/if}
 				<div class="flex gap-2 mt-2">
-					<button
-						on:click={() =>
-							goto(`${$page.url.pathname}?id=${grumble.id}&scrollTo=${window.scrollY}`)}
-						class="inline text-xs text-gray-500 hover:underline cursor-pointer"
-						>{numOfComments} comment{numOfComments == 1 ? '' : 's'}</button
-					>
+					{#if !demo}
+						<button
+							on:click={() =>
+								goto(`${$page.url.pathname}?id=${grumble.id}&scrollTo=${window.scrollY}`)}
+							class="inline text-xs text-gray-500 hover:underline cursor-pointer"
+							>{numOfComments} comment{numOfComments == 1 ? '' : 's'}</button
+						>
 
-					<AgreeButton agrees={grumble.agrees} class="text-xl" on:agree={agree} />
-					<DisagreeButton disagrees={grumble.disagrees} on:disagree={disagree} />
+						<AgreeButton agrees={grumble.agrees} class="text-xl" on:agree={agree} />
+						<DisagreeButton disagrees={grumble.disagrees} on:disagree={disagree} />
+					{:else}
+						<p class="inline text-xs text-gray-500">234 comments</p>
+						<p class="inline text-xs text-gray-500">1k agrees</p>
+						<p class="inline text-xs text-gray-500">834 disagrees</p>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -82,5 +115,6 @@
 	on:comment={refresh}
 	on:close={closeModal}
 	bind:visible={grumbleModal}
+	bind:error
 	{grumble}
 />

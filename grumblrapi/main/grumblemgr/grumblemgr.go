@@ -1,6 +1,7 @@
 package grumblemgr
 
 import (
+	"grumblrapi/main/usermgr"
 	"log"
 
 	"github.com/couchbase/gocb/v2"
@@ -20,13 +21,15 @@ type GrumbleStore struct {
 	Logger     *zap.Logger
 	Scope      *gocb.Scope
 	Collection *gocb.Collection
+	UserMgr    usermgr.UserStorer
 }
 
-func NewGrumbleStore(logger *zap.Logger, scope *gocb.Scope) *GrumbleStore {
+func NewGrumbleStore(logger *zap.Logger, scope *gocb.Scope, userMgr usermgr.UserStorer) *GrumbleStore {
 	return &GrumbleStore{
 		Logger:     logger,
 		Scope:      scope,
 		Collection: scope.Collection(col),
+		UserMgr:    userMgr, // Added to aid with user queries
 	}
 }
 
@@ -42,6 +45,23 @@ func (store *GrumbleStore) Get(id string) (*Grumble, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Leave error for now (non blocking)
+	// TODO check for 404
+	grumbleCreator, err := store.UserMgr.Get(grumble.CreatedBy)
+	if err == nil {
+		grumble.CreatedByUsername = grumbleCreator.Username
+	}
+
+	// Update comments users
+	for _, c := range grumble.Comments {
+		commentCreator, err := store.UserMgr.Get(c.CreatedBy)
+		if err != nil {
+			continue
+		}
+		c.CreatedByUsername = commentCreator.Username
+	}
+
 	return &grumble, nil
 }
 
