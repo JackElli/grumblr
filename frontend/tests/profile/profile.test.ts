@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { getUser } from '../mocks/users';
 import { auth } from '../mocks/auth';
 import { getGlobalCategories } from '../mocks/global';
 

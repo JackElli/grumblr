@@ -4,6 +4,6 @@
 <p class="mt-6">
 	If not, you can always find them later and view the <a
 		href="/global"
-		class="underline font-semibold">global grumbles</a
+		class="underline font-semibold hover:text-gray-700">global grumbles</a
 	> for now.
 </p>

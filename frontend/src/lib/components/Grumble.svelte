@@ -2,19 +2,19 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import GrumbleService from '$lib/services/GrumbleService';
-	import { userStore } from '$lib/stores/userStore';
 	import { dateDiff, scrollToLastPos } from '../../global';
 	import type { _Grumble } from '../../routes/(main)/grumbles/grumbles';
+	import AgreeButton from './AgreeButton.svelte';
 	import Card from './Card.svelte';
+	import DisagreeButton from './DisagreeButton.svelte';
 	import ShowGrumbleModal from './ShowGrumbleModal.svelte';
 	import UserIcon from './UserIcon.svelte';
+
 	export let grumble: _Grumble;
 
 	$: grumbleModal =
 		$page.url.searchParams.get('id') != null && $page.url.searchParams.get('id') == grumble.id;
 	$: numOfComments = grumble.comments.length;
-	$: numOfAgrees = Object.keys(grumble.agrees).length;
-	$: numOfDisagrees = Object.keys(grumble.disagrees).length;
 
 	$: if (grumbleModal) {
 		scrollToLastPos();
@@ -65,18 +65,9 @@
 						class="inline text-xs text-gray-500 hover:underline cursor-pointer"
 						>{numOfComments} comment{numOfComments == 1 ? '' : 's'}</button
 					>
-					<button
-						class="inline text-xs text-gray-500 {$userStore?.id in grumble.agrees
-							? 'text-green-800 font-bold'
-							: ''} hover:text-green-700 cursor-pointer"
-						on:click={agree}>{numOfAgrees} agrees</button
-					>
-					<button
-						class="inline text-xs text-gray-500 {$userStore?.id in grumble.disagrees
-							? 'text-red-800 font-bold'
-							: ''} hover:text-red-700 cursor-pointer"
-						on:click={disagree}>{numOfDisagrees} disagrees</button
-					>
+
+					<AgreeButton agrees={grumble.agrees} class="text-xl" on:agree={agree} />
+					<DisagreeButton disagrees={grumble.disagrees} on:disagree={disagree} />
 				</div>
 			</div>
 		</div>
