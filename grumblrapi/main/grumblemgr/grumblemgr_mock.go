@@ -3,6 +3,8 @@ package grumblemgr
 import (
 	"strings"
 	"time"
+
+	"github.com/couchbase/gocb/v2"
 )
 
 type GrumbleStoreMock struct{}
@@ -24,7 +26,7 @@ func (store *GrumbleStoreMock) Get(id string) (*Grumble, error) {
 	return &grumble, nil
 }
 
-func (store *GrumbleStoreMock) Query(querystr string) ([]Grumble, error) {
+func (store *GrumbleStoreMock) Query(querystr string, options *gocb.QueryOptions) ([]Grumble, error) {
 	if strings.Contains(querystr, "type='friends'") {
 		return []Grumble{
 			{

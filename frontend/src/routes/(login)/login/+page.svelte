@@ -84,8 +84,8 @@
 			<div class="mt-24 pb-10">
 				<h1 class="text-2xl font-bold text-[#574658]">Examples of fantastic grumbles</h1>
 				<Grumble demo grumble={exampleGrumble} />
-				<Grumble grumble={exampleGrumble2} demo />
-				<Grumble grumble={exampleGrumble3} demo />
+				<Grumble demo grumble={exampleGrumble2} />
+				<Grumble demo grumble={exampleGrumble3} />
 			</div>
 			<ActionButton class="mt-20 w-72 h-9 mx-auto" on:click={() => (modalVisible = true)}
 				>Try it today</ActionButton

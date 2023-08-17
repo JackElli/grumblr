@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	GET_USER   = "/user/{userId}"
-	ADD_FRIEND = "/user/{userId}/friend"
+	ROOT       = "/user"
+	GET_USER   = ROOT + "/{userId}"
+	ADD_FRIEND = ROOT + "/{userId}/friend"
 )
 
 type UserMgr struct {
@@ -33,7 +34,7 @@ func NewNewUserMgr(router *mux.Router, logger *zap.Logger, responder responder.R
 	return e
 }
 
-// NewUser inserts a user into the database
+// GetUser returns the user from the db
 func (mgr *UserMgr) GetUser() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
 		userId := mux.Vars(req)["userId"]
@@ -41,6 +42,7 @@ func (mgr *UserMgr) GetUser() func(w http.ResponseWriter, req *http.Request) {
 		user, err := mgr.UserStore.Get(userId)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusNotFound, err)
+			return
 		}
 
 		mgr.Responder.Respond(w, http.StatusOK, user)
@@ -62,12 +64,14 @@ func (mgr *UserMgr) AddFriend() func(w http.ResponseWriter, req *http.Request) {
 		friend, err := mgr.UserStore.Get(Friend.FriendId)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusNotFound, err)
+			return
 		}
 
 		// Get the user who's wanting to add the friend
 		user, err := mgr.UserStore.Get(userId)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusNotFound, err)
+			return
 		}
 		user.Friends = append(user.Friends, *friend)
 
@@ -75,6 +79,7 @@ func (mgr *UserMgr) AddFriend() func(w http.ResponseWriter, req *http.Request) {
 		err = mgr.UserStore.Update(userId, user)
 		if err != nil {
 			mgr.Responder.Error(w, http.StatusNotFound, err)
+			return
 		}
 
 		mgr.Responder.Respond(w, http.StatusOK, user)

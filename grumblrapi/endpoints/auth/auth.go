@@ -48,12 +48,18 @@ func NewAuthMgr(router *mux.Router, env string, logger *zap.Logger, responder re
 // it also sets a cookie for the client of this JWT
 func (mgr *AuthMgr) Auth() func(w http.ResponseWriter, req *http.Request) {
 	return func(w http.ResponseWriter, req *http.Request) {
+
+		// Check if we have a cookie, if it's a valid cookie
+		// we want to return the user info back
 		c, err := req.Cookie("token")
 		if err == nil {
-			hasValidCookie := mgr.checkCookie(w, c)
-			if hasValidCookie {
+			hasValidCookie, user := mgr.checkCookie(w, c)
+			if !hasValidCookie {
+				mgr.Responder.Error(w, 401, errors.New("unauthorised"))
 				return
 			}
+			mgr.Responder.Respond(w, 200, user)
+			return
 		}
 
 		var authVal struct {
@@ -99,9 +105,8 @@ func (mgr *AuthMgr) Auth() func(w http.ResponseWriter, req *http.Request) {
 // checkCookie, checks to see whether the auth endpoint hit already
 // contains a cookie and therfore we don't need to create a new
 // one
-func (mgr *AuthMgr) checkCookie(w http.ResponseWriter, c *http.Cookie) bool {
+func (mgr *AuthMgr) checkCookie(w http.ResponseWriter, c *http.Cookie) (bool, *usermgr.User) {
 	jwtStr := c.Value
-
 	// If the jwt passed in the cookie is invalid, we want to
 	// remove the cookie
 	jwtClaims, jwtOk := mgr.JWTMgr.ParseJWT(jwtStr)
@@ -110,8 +115,7 @@ func (mgr *AuthMgr) checkCookie(w http.ResponseWriter, c *http.Cookie) bool {
 			Name:    "token",
 			Expires: time.Now(),
 		})
-		mgr.Responder.Error(w, 401, errors.New("not authorised"))
-		return false
+		return false, nil
 	}
 
 	claims := *jwtClaims
@@ -125,15 +129,10 @@ func (mgr *AuthMgr) checkCookie(w http.ResponseWriter, c *http.Cookie) bool {
 			Name:    "token",
 			Expires: time.Now(),
 		})
-		mgr.Responder.Error(w, 401, err)
-		return false
+		return false, nil
 	}
 
-	// If the jwt inside the cookie is valid, we can respond with
-	// the user
-	mgr.Responder.Respond(w, 200, user)
-
-	return true
+	return true, user
 }
 
 // authUser returns true if user is authed, false if not

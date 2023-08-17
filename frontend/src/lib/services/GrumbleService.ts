@@ -9,6 +9,10 @@ class GrumbleService {
 		return NetworkService.get(`http://${IP}:3200/grumble/${grumbleId}`);
 	}
 
+	listByUser(userId: string): Promise<_Grumble[]> {
+		return NetworkService.get(`http://${IP}:3200/grumbles/user/${userId}`);
+	}
+
 	list(category: string): Promise<_Grumble[]> {
 		return NetworkService.get(`http://${IP}:3200/grumbles/${category}`);
 	}
