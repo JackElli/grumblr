@@ -4,8 +4,11 @@
 	import PageTitle from '$lib/components/PageTitle.svelte';
 	import { userIconText } from '../../../global';
 	import GlobalCategories from './GlobalCategories.svelte';
+	import Grumble from '$lib/components/Grumble.svelte';
 
 	export let data;
+
+	$: grumblesByUser = data.grumbles ?? [];
 </script>
 
 <svelte:head>
@@ -18,7 +21,7 @@
 		<ActionButton disabled>Profile settings</ActionButton>
 	</div>
 
-	<Loading loading={data.user == undefined}>
+	<Loading loading={data.user == undefined || data.grumbles == undefined}>
 		<div class="mt-4 flex flex-col gap-y-10">
 			<div class="flex gap-4 items-center pb-3 border-b border-b-gray-200">
 				<p
@@ -51,7 +54,15 @@
 			<div class="pb-3 border-b border-b-gray-200">
 				<h1 class="text-xl font-semibold">Your grumbles</h1>
 				<p class="text-gray-700 text-xs">All of your grumbles you've ever posted</p>
-				<p class="mt-4">(Under construction) 🔨</p>
+				<div class="mt-4">
+					{#if grumblesByUser.length > 0}
+						{#each grumblesByUser as grumble}
+							<Grumble {grumble} />
+						{/each}
+					{:else}
+						<p class="mt-4">You haven't added any grumbles yet.</p>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</Loading>

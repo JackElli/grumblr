@@ -14,10 +14,10 @@ import (
 
 const (
 	ROOT        = "/grumble"
-	GET_GRUMBLE = "/grumble/{grumbleId}"
-	ADD_COMMENT = "/grumble/{grumbleId}/comment"
-	AGREE       = "/grumble/{grumbleId}/agree"
-	DISAGREE    = "/grumble/{grumbleId}/disagree"
+	GET_GRUMBLE = ROOT + "/{grumbleId}"
+	ADD_COMMENT = ROOT + "/{grumbleId}/comment"
+	AGREE       = ROOT + "/{grumbleId}/agree"
+	DISAGREE    = ROOT + "/{grumbleId}/disagree"
 )
 
 type NewGrumbleMgr struct {

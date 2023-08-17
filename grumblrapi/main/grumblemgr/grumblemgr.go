@@ -12,7 +12,7 @@ var col = "grumbles"
 
 type GrumbleStorer interface {
 	Get(id string) (*Grumble, error)
-	Query(querystr string) ([]Grumble, error)
+	Query(querystr string, options *gocb.QueryOptions) ([]Grumble, error)
 	Insert(id string, grumble *Grumble) error
 	Update(id string, grumble *Grumble) error
 }
@@ -66,9 +66,9 @@ func (store *GrumbleStore) Get(id string) (*Grumble, error) {
 }
 
 // Query allows us to execute a more fine grained query on the scope
-func (store *GrumbleStore) Query(querystr string) ([]Grumble, error) {
+func (store *GrumbleStore) Query(querystr string, options *gocb.QueryOptions) ([]Grumble, error) {
 	grumbles := make([]Grumble, 0)
-	queryResult, err := store.Scope.Query(querystr, nil)
+	queryResult, err := store.Scope.Query(querystr, options)
 	if err != nil {
 		return nil, err
 	}
