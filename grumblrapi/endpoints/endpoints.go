@@ -13,12 +13,13 @@ import (
 	"grumblrapi/main/jwtmgr"
 	"grumblrapi/main/responder"
 	"grumblrapi/main/usermgr"
+	"os"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
 
-var SECRET_KEY = []byte("hellothisisasecretkey")
+var SECRET_KEY = []byte(os.Getenv("SECRET_KEY"))
 
 type Endpoints struct {
 	Logger *zap.Logger
@@ -39,18 +40,10 @@ type Login struct {
 // getLogin returns the username, password and bucket of different envs
 // this is a way to get around using secrets
 func getLogin(env string) *Login {
-	if env == "prod" {
-		return &Login{
-			Username: "Administrator",
-			Password: "Grumblr2!",
-			Bucket:   "grumblr",
-		}
-	} else {
-		return &Login{
-			Username: "Administrator",
-			Password: "password",
-			Bucket:   "grumblr",
-		}
+	return &Login{
+		Username: os.Getenv("USERNAME"),
+		Password: os.Getenv("PASSWORD"),
+		Bucket:   os.Getenv("BUCKET"),
 	}
 }
 

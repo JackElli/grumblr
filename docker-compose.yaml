@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3200:3200"
+    env_file:
+      - path: ./.env
     networks:
       - grumblr_default
   db:

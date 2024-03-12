@@ -5,6 +5,7 @@ import (
 	"grumblrapi/main/cors"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
@@ -15,7 +16,10 @@ func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
 
-	const ENVIRONMENT = "dev"
+	ENVIRONMENT, exists := os.LookupEnv("ENVIRONMENT")
+	if !exists {
+		panic("cannot find environment in the env file!")
+	}
 
 	r := mux.NewRouter()
 
