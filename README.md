@@ -10,7 +10,10 @@
 We use Docker for our builds, makes it nice and easy to run multiple services at once and have our prod the same as our dev.
 
 1) ```
-   git clone git@github.com:JackElli/grumblr.git
+   git clone https://github.com/JackElli/grumblr.git
+   cd grumblr
+   cp .env.example .env
+   docker network create grumblr_default
     ```
 
 2) Run docker and do
@@ -22,7 +25,7 @@ We use Docker for our builds, makes it nice and easy to run multiple services at
 
 4) Then create the bucket `grumblr` and scope `dev` with 3 collections in the dev scope `grumbles`, `categories` and `users`.
 
-5) Go to `localhost:5173` and you should see the following
+5) Go to `localhost:5173` and you should see the following, (if not, restart your grumblrapi container)
 ![login](images/login.png)
 
 6) Remember, this is local, so you can break it and nothing will happen to grumblr.
@@ -40,5 +43,8 @@ We use Docker for our builds, makes it nice and easy to run multiple services at
 
 8) Once we have the indexes, we should be able to use grumblr as normal.
 
+9) Cookies will be saved for grumblr for authentication purposes, it will store a JWT every time you log in. This JWT makes sure that you have access to grumblr. You can view this in the `application` tab under `token` in the developer tools on your browser.
+
 ## Any changes are welcome!
 Quite a few features haven't been implemented yet, but we've added the barebones front end framework to show how it will look once they are implemented.
+
